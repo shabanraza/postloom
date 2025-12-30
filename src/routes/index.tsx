@@ -190,10 +190,10 @@ function HomePage() {
                             <span className="text-sm font-medium text-blue-900 dark:text-blue-100">100% Free Forever</span>
                         </div>
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
-                            Create Professional <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-[shimmer_3s_linear_infinite]">Tweet Cards</span> in Seconds
+                            Free <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-[shimmer_3s_linear_infinite]">Tweet Card Generator</span> & Social Media Card Creator
                         </h1>
                         <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto leading-relaxed">
-                            Design stunning tweet cards for Instagram, LinkedIn, Twitter, and more. Export as PNG or animated GIF.
+                            Create professional tweet cards, Instagram posts, LinkedIn graphics, and Twitter designs in seconds. Free social media card maker with animated GIF export. No design skills required - 100% free forever.
                         </p>
                         <div className="flex items-center justify-center gap-4">
                             <Link to="/tweet-studio">
@@ -211,13 +211,15 @@ function HomePage() {
                             {/* Light Mode Screenshot */}
                             <img 
                                 src="/postloom_light.png" 
-                                alt="Postloom Tool - Light Mode" 
+                                alt="Postloom Free Tweet Card Generator and Social Media Card Creator Tool - Light Mode Interface" 
+                                title="Postloom - Free Tweet Card Generator Tool"
                                 className="w-full h-auto dark:hidden block"
                             />
                             {/* Dark Mode Screenshot */}
                             <img 
                                 src="/postloom_dark.png" 
-                                alt="Postloom Tool - Dark Mode" 
+                                alt="Postloom Free Tweet Card Generator and Social Media Card Creator Tool - Dark Mode Interface" 
+                                title="Postloom - Free Tweet Card Generator Tool"
                                 className="w-full h-auto hidden dark:block"
                             />
                         </div>

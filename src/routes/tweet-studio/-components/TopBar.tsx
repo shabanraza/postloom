@@ -12,7 +12,6 @@ import {
 import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Progress } from '@/components/ui/progress'
 import { ThemeToggle } from './ThemeToggle'
-import { KeyboardShortcutsModal } from './KeyboardShortcutsModal'
 import { useTweetStudioStore } from '../-state'
 import { EXPORT_SIZES } from '../-constants'
 import { exportAsPng, exportAsGif, estimateFileSize } from '../-export'
@@ -232,8 +231,6 @@ export function TopBar() {
                         </Tooltip>
 
                         <div className="w-px h-5 bg-slate-200 dark:bg-slate-800 mx-1" />
-
-                        <KeyboardShortcutsModal />
 
                         <Tooltip>
                             <TooltipTrigger asChild>

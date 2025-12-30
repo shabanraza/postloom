@@ -17,43 +17,6 @@ interface GifOptions extends ExportOptions {
     onProgress?: (progress: number) => void
 }
 
-/**
- * Add watermark to canvas
- */
-function addWatermark(canvas: HTMLCanvasElement, width: number, height: number): void {
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    // Watermark text
-    const text = 'postloom.com'
-    const fontSize = Math.max(12, Math.min(width, height) * 0.018) // Responsive font size (1.8% of smaller dimension)
-    ctx.font = `500 ${fontSize}px system-ui, -apple-system, sans-serif`
-    
-    // Position in bottom-right corner with padding
-    const padding = fontSize * 1.2
-    const x = width - padding
-    const y = height - padding
-    
-    // Measure text for background
-    ctx.textAlign = 'right'
-    ctx.textBaseline = 'bottom'
-    const metrics = ctx.measureText(text)
-    const textWidth = metrics.width
-    const textHeight = fontSize
-    
-    // Draw semi-transparent background for better visibility
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'
-    ctx.fillRect(
-        x - textWidth - padding * 0.3,
-        y - textHeight - padding * 0.2,
-        textWidth + padding * 0.6,
-        textHeight + padding * 0.4
-    )
-    
-    // Draw watermark text
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)' // More visible
-    ctx.fillText(text, x, y)
-}
 
 /**
  * Capture the canvas as a high-quality PNG at exact export dimensions
@@ -89,7 +52,7 @@ export async function exportAsPng(
             },
         })
 
-        // Convert data URL to image, add watermark, then convert to blob
+        // Convert data URL to image, then convert to blob (high quality, no watermark)
         const img = new Image()
         await new Promise<void>((resolve, reject) => {
             img.onload = () => {
@@ -101,10 +64,8 @@ export async function exportAsPng(
                 // Draw the captured image
                 ctx.drawImage(img, 0, 0, width, height)
                 
-                // Add watermark
-                addWatermark(canvas, width, height)
-                
-                // Convert to blob and download
+                // Convert to blob and download (high quality, no watermark)
+                // Use maximum quality (1.0) for PNG export
                 canvas.toBlob((blob) => {
                     if (blob) {
                         const filename = generateFilename(username, 'png')
@@ -113,7 +74,7 @@ export async function exportAsPng(
                     } else {
                         reject(new Error('Failed to create blob'))
                     }
-                }, 'image/png', 1.0)
+                }, 'image/png', 1.0) // Maximum quality PNG
             }
             img.onerror = reject
             img.src = dataUrl
@@ -196,8 +157,7 @@ export async function exportAsGif(
                 img.onload = () => {
                     clearTimeout(timeout)
                     ctx.drawImage(img, 0, 0, width, height)
-                    // Add watermark
-                    addWatermark(canvas, width, height)
+                    // No watermark - high quality export
                     resolve()
                 }
                 img.onerror = () => {
@@ -245,8 +205,7 @@ export async function exportAsGif(
             endImg.onload = () => {
                 clearTimeout(timeout)
                 endCtx.drawImage(endImg, 0, 0, width, height)
-                // Add watermark
-                addWatermark(endCanvas, width, height)
+                // No watermark - high quality export
                 resolve()
             }
             endImg.onerror = () => {
@@ -343,7 +302,7 @@ export async function exportAsGif(
 }
 
 /**
- * Estimate file size
+ * Estimate file size (more accurate calculation)
  */
 export function estimateFileSize(
     width: number,
@@ -355,12 +314,20 @@ export function estimateFileSize(
     const pixels = width * height
 
     if (format === 'png') {
-        const bytes = pixels * 1.5
+        // PNG: More accurate estimate based on typical compression
+        // High quality PNGs typically use 3-4 bytes per pixel after compression
+        // For tweet cards with text and simple graphics, compression is better (~2.5 bytes/pixel)
+        const bytes = pixels * 2.5
         return formatBytes(bytes)
     } else {
-        const frameCount = textLength > 0 ? Math.ceil((textLength / 50) * fps) : fps * 5
-        const bytes = frameCount * pixels * 0.25
-        return formatBytes(Math.min(bytes, 8 * 1024 * 1024))
+        // GIF: Calculate based on actual frame count
+        // Each character typically takes ~0.05 seconds at default speed
+        const charsPerSecond = 50 // Default speed
+        const totalSeconds = textLength > 0 ? (textLength / charsPerSecond) + 1 : 5 // +1 for final frame
+        const frameCount = Math.ceil(totalSeconds * fps)
+        // GIF with 256 colors: ~0.5-1 byte per pixel per frame after compression
+        const bytes = frameCount * pixels * 0.75
+        return formatBytes(Math.min(bytes, 10 * 1024 * 1024)) // Cap at 10MB for display
     }
 }
 

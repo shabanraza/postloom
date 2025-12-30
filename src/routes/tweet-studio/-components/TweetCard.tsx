@@ -408,25 +408,6 @@ export function TweetCard() {
                 </div>
                 )}
 
-                {/* Watermark */}
-                <div
-                    className="absolute bottom-0 right-0 pointer-events-none"
-                    style={{
-                        padding: padding * 0.6,
-                    }}
-                >
-                    <span
-                        className={cn(
-                            "text-xs font-medium opacity-40",
-                            theme === 'dark' || theme === 'dim' 
-                                ? 'text-white' 
-                                : 'text-slate-600'
-                        )}
-                        style={{ fontSize: baseFontSize * 0.7 }}
-                    >
-                        postloom.com
-                    </span>
-                </div>
             </div>
 
             {/* Threaded Reply (if Reply Context active) */}

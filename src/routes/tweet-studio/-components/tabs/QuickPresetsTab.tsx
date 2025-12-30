@@ -1,7 +1,7 @@
 import { Slider } from '@/components/ui/slider'
 import { useTweetStudioStore } from '../../-state'
 import { TEMPLATES, PADDING_RANGE } from '../../-constants'
-import type { TweetCardTheme } from '../../-types'
+import type { TweetCardTheme, ShadowPreset } from '../../-types'
 import { cn } from '../../-utils'
 import { trackDesignPreset } from '@/lib/analytics'
 
@@ -63,6 +63,9 @@ export function QuickPresetsTab() {
         setPadding,
         setCardScale,
         setTweetTheme,
+        setShadow,
+        setShadowIntensity,
+        setFontSizeMultiplier,
         export: exportSettings,
     } = useTweetStudioStore()
 
@@ -217,6 +220,42 @@ export function QuickPresetsTab() {
                     min={PADDING_RANGE.min}
                     max={PADDING_RANGE.max}
                     step={PADDING_RANGE.step}
+                    className="w-full"
+                />
+            </div>
+
+            {/* Font Size Control */}
+            <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">Font Size</span>
+                    <span className="text-[10px] font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
+                        {Math.round((design.fontSizeMultiplier || 1.0) * 100)}%
+                    </span>
+                </div>
+                <Slider
+                    value={[design.fontSizeMultiplier || 1.0]}
+                    onValueChange={([value]) => setFontSizeMultiplier(value)}
+                    min={0.5}
+                    max={2.0}
+                    step={0.05}
+                    className="w-full"
+                />
+            </div>
+
+            {/* Shadow Control */}
+            <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">Shadow</span>
+                    <span className="text-[10px] font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
+                        {design.shadowIntensity || 50}
+                    </span>
+                </div>
+                <Slider
+                    value={[design.shadowIntensity || 50]}
+                    onValueChange={([value]) => setShadowIntensity(value)}
+                    min={0}
+                    max={100}
+                    step={1}
                     className="w-full"
                 />
             </div>

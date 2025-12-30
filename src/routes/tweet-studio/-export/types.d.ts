@@ -1,33 +1,45 @@
-declare module 'gif.js' {
-    interface GIFOptions {
-        workers?: number
-        quality?: number
-        width?: number
-        height?: number
-        repeat?: number
-        workerScript?: string
-        background?: string
-        transparent?: string | null
+declare module 'gifenc' {
+    interface QuantizeOptions {
+        format?: 'rgb565' | 'rgb444' | 'rgba4444'
+        oneBitAlpha?: boolean | number
+        clearAlpha?: boolean
+        clearAlphaThreshold?: number
+        clearAlphaColor?: number
     }
 
-    interface FrameOptions {
+    interface WriteFrameOptions {
+        palette?: number[][]
+        first?: boolean
+        transparent?: boolean
+        transparentIndex?: number
         delay?: number
-        copy?: boolean
+        repeat?: number
         dispose?: number
     }
 
-    class GIF {
-        constructor(options?: GIFOptions)
-        addFrame(canvas: HTMLCanvasElement, options?: FrameOptions): void
-        on(event: 'start', callback: () => void): void
-        on(event: 'progress', callback: (progress: number) => void): void
-        on(event: 'finished', callback: (blob: Blob) => void): void
-        on(event: 'error', callback: (error: Error) => void): void
-        render(): void
-        abort(): void
+    interface GIFEncoderOptions {
+        auto?: boolean
     }
 
-    export default GIF
+    interface GIFEncoder {
+        writeFrame(index: Uint8Array, width: number, height: number, opts?: WriteFrameOptions): void
+        finish(): void
+        bytes(): Uint8Array
+    }
+
+    export function quantize(
+        rgba: Uint8Array | Uint8ClampedArray,
+        maxColors: number,
+        options?: QuantizeOptions
+    ): number[][]
+
+    export function applyPalette(
+        rgba: Uint8Array | Uint8ClampedArray,
+        palette: number[][],
+        format?: 'rgb565' | 'rgb444' | 'rgba4444'
+    ): Uint8Array
+
+    export function GIFEncoder(options?: GIFEncoderOptions): GIFEncoder
 }
 
 declare module 'html2canvas' {

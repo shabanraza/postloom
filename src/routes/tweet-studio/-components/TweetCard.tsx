@@ -161,18 +161,39 @@ export function TweetCard() {
         dim: { bg: 'bg-[#15202B]', text: 'text-[#F7F9F9]', subtext: 'text-[#8B98A5]', border: 'border-[#38444D]', icon: 'text-[#8B98A5]' },
     }[theme]
 
-    // Shadow styles based on design.shadow
-    const shadowStyles: Record<string, string> = {
-        none: 'none',
-        soft: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
-        medium: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
-        hard: '8px 8px 0 0 #000',
-        glow: '0 0 20px rgba(59, 130, 246, 0.5)',
+    // Shadow styles based on design.shadow and shadowIntensity
+    const shadowIntensity = design.shadowIntensity || 50
+    const intensityMultiplier = shadowIntensity / 50 // Normalize to 0-2 range
+    
+    const getShadowStyle = (): string => {
+        const baseShadows: Record<string, string> = {
+            none: 'none',
+            soft: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+            medium: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+            hard: '8px 8px 0 0 #000',
+            glow: '0 0 20px rgba(59, 130, 246, 0.5)',
+        }
+        
+        if (design.shadow === 'none') return 'none'
+        if (design.shadow === 'hard') return baseShadows.hard // Hard shadow doesn't scale
+        if (design.shadow === 'glow') {
+            const opacity = 0.5 * intensityMultiplier
+            return `0 0 ${20 * intensityMultiplier}px rgba(59, 130, 246, ${opacity})`
+        }
+        
+        // For soft and medium, scale the blur and spread
+        const blur = design.shadow === 'soft' ? 6 : 15
+        const spread = design.shadow === 'soft' ? 4 : 6
+        return `0 ${4 * intensityMultiplier}px ${blur * intensityMultiplier}px -1px rgba(0, 0, 0, ${0.1 * intensityMultiplier}), 0 ${2 * intensityMultiplier}px ${spread * intensityMultiplier}px -2px rgba(0, 0, 0, ${0.1 * intensityMultiplier})`
     }
+    
+    const shadowStyle = getShadowStyle()
 
     // Base sizes that scale with canvas size for readability
     // Minimum 16px font size as requested
-    const baseFontSize = Math.max(16, 16 * fontScale)
+    // Apply user-controlled font size multiplier
+    const fontSizeMultiplier = design.fontSizeMultiplier || 1.0
+    const baseFontSize = Math.max(16, 16 * fontScale * fontSizeMultiplier)
     const avatarSize = Math.max(48, 48 * fontScale)
     const iconSize = Math.max(20, 20 * fontScale)
     const smallIconSize = Math.max(14, 14 * fontScale)
@@ -191,14 +212,14 @@ export function TweetCard() {
             {/* Main Tweet Card */}
             <div
                 className={cn(
-                    "w-full transition-colors border",
+                    "w-full transition-colors border relative",
                     // Only apply solid bg if not glass mode
                     design.backgroundType !== 'glass' && themeStyles.bg,
                     themeStyles.border
                 )}
                 style={{
                     borderRadius: design.borderRadius || 16,
-                    boxShadow: shadowStyles[design.shadow || 'soft'],
+                    boxShadow: shadowStyle,
                     fontFamily: design.fontFamily || 'system-ui, sans-serif',
                     padding: padding,
                     // Glass effect: transparent background with blur
@@ -386,6 +407,26 @@ export function TweetCard() {
                     </div>
                 </div>
                 )}
+
+                {/* Watermark */}
+                <div
+                    className="absolute bottom-0 right-0 pointer-events-none"
+                    style={{
+                        padding: padding * 0.6,
+                    }}
+                >
+                    <span
+                        className={cn(
+                            "text-xs font-medium opacity-40",
+                            theme === 'dark' || theme === 'dim' 
+                                ? 'text-white' 
+                                : 'text-slate-600'
+                        )}
+                        style={{ fontSize: baseFontSize * 0.7 }}
+                    >
+                        postloom.com
+                    </span>
+                </div>
             </div>
 
             {/* Threaded Reply (if Reply Context active) */}

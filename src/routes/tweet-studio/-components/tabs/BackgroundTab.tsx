@@ -93,6 +93,23 @@ export function BackgroundTab() {
                                 title={color}
                             />
                         ))}
+                        {/* Custom Color Picker */}
+                        <label
+                            className={cn(
+                                'relative w-full aspect-square rounded-full border-2 border-dashed flex items-center justify-center cursor-pointer transition-all hover:scale-110 overflow-hidden',
+                                design.backgroundColor && !COLOR_PRESETS.includes(design.backgroundColor)
+                                    ? 'border-blue-500 ring-2 ring-blue-500/30'
+                                    : 'border-slate-300 dark:border-slate-600'
+                            )}
+                        >
+                            <input
+                                type="color"
+                                value={design.backgroundColor}
+                                onChange={(e) => setBackgroundColor(e.target.value)}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                            <span className="text-xs text-slate-400 pointer-events-none">🎨</span>
+                        </label>
                     </div>
                 </div>
             )}

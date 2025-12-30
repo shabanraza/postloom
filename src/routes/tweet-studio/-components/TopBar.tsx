@@ -18,6 +18,7 @@ import { EXPORT_SIZES } from '../-constants'
 import { exportAsPng, exportAsGif, estimateFileSize } from '../-export'
 import { fetchTweetFromUrl } from '../-utils/fetch-tweet'
 import { trackTweetImport, trackExport } from '@/lib/analytics'
+import { PostloomLogo } from '@/components/PostloomLogo'
 import type { ExportPreset } from '../-types'
 
 export function TopBar() {
@@ -162,14 +163,7 @@ export function TopBar() {
             <header className="grid grid-cols-3 h-16 shrink-0 items-center px-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800/60 relative z-30">
                 {/* Left Section - Logo */}
                 <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2.5">
-                        <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white">
-                            <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.592 1.25-3.598 1.995-5.77 1.995-.375 0-.745-.022-1.11-.065 2.06 1.32 4.51 2.09 7.14 2.09 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z" />
-                            </svg>
-                        </div>
-                        <span className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">Postloom</span>
-                    </div>
+                    <PostloomLogo size="md" showText={true} className="[&_span]:dark:text-white" />
                 </div>
 
                 {/* Center Section - Import Tweet URL (Prominent) */}
@@ -299,14 +293,6 @@ export function TopBar() {
                             </div>
 
                             <DropdownMenuSeparator className="bg-slate-100 dark:bg-slate-800 my-1" />
-
-                            {/* Legal Disclaimer Notice */}
-                            <div className="px-3 py-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/60 rounded-lg mx-2 mb-2">
-                                <p className="text-[10px] text-amber-800 dark:text-amber-200 leading-relaxed">
-                                    <span className="font-semibold">Note:</span> This content was created using Postloom. 
-                                    Ensure compliance with platform terms and applicable laws.
-                                </p>
-                            </div>
 
                             {/* Export Buttons */}
                             <div className="p-1 space-y-1">

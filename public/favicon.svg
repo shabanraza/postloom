@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <!-- Back card -->
+  <rect
+    x="10"
+    y="18"
+    width="38"
+    height="26"
+    rx="6"
+    fill="#94a3b8"
+  />
+
+  <!-- Middle card -->
+  <rect
+    x="14"
+    y="14"
+    width="38"
+    height="26"
+    rx="6"
+    fill="#64748b"
+  />
+
+  <!-- Top card -->
+  <rect
+    x="18"
+    y="10"
+    width="38"
+    height="26"
+    rx="6"
+    fill="#0f172a"
+  />
+
+  <!-- Speech bubble cutout -->
+  <path
+    d="M30 20H42C43.1 20 44 20.9 44 22V26C44 27.1 43.1 28 42 28H35L31 31V28H30C28.9 28 28 27.1 28 26V22C28 20.9 28.9 20 30 20Z"
+    fill="#ffffff"
+  />
+</svg>

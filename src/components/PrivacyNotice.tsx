@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { env } from '@/env'
 
 export function PrivacyNotice() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
     // Only show if GA4 is enabled (requires cookie consent)
-    const ga4Id = env.VITE_GA4_MEASUREMENT_ID
+    const ga4Id = import.meta.env.VITE_GA4_MEASUREMENT_ID
     if (!ga4Id) {
       return
     }

@@ -61,11 +61,13 @@ export interface DesignSettings {
     padding: number
     scale: number
     shadow: ShadowPreset
+    shadowIntensity: number // 0-100 for shadow slider
     // Card-level styling (from templates)
     cardScale: number
     borderRadius: number
     fontWeight: number
     fontFamily: string
+    fontSizeMultiplier: number // 0.5 to 2.0 for font size control
 }
 
 export type ShadowPreset = 'none' | 'soft' | 'medium' | 'hard' | 'glow'

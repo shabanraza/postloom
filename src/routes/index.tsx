@@ -1,90 +1,46 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { motion } from 'framer-motion'
 import { 
-    Sparkles, 
-    Zap, 
-    Palette, 
     Download, 
-    Image as ImageIcon, 
     Film,
     CheckCircle2,
     ArrowRight,
-    Star,
+    Sparkles,
+    Palette,
+    Wand2,
     TrendingUp,
     Layers,
-    Wand2,
-    Code,
-    Layout,
-    Type,
-    PlayCircle,
-    Shield,
-    CreditCard,
-    X,
-    Instagram,
-    Linkedin,
-    Check,
-    XCircle
+    Star
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { PostloomLogo } from '@/components/PostloomLogo'
+import { ThemeToggle } from '@/routes/tweet-studio/-components/ThemeToggle'
 
 export const Route = createFileRoute('/')({ component: HomePage })
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
-    }
-}
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.5 }
-    }
-}
 
 const features = [
     {
         icon: Wand2,
         title: 'Smart Templates',
-        description: 'Pre-built templates for every platform and use case',
-        gradient: 'from-purple-500 to-pink-500'
+        description: 'Pre-built templates for every platform'
     },
     {
         icon: Palette,
         title: 'Custom Design',
-        description: 'Full control over colors, fonts, and styling',
-        gradient: 'from-blue-500 to-cyan-500'
+        description: 'Full control over colors and styling'
     },
     {
         icon: Film,
         title: 'Animated GIFs',
-        description: 'Create eye-catching typewriter animations',
-        gradient: 'from-orange-500 to-red-500'
+        description: 'Create eye-catching animations'
     },
     {
         icon: Download,
         title: 'Export Anywhere',
-        description: 'PNG and GIF formats for all platforms',
-        gradient: 'from-green-500 to-emerald-500'
-    },
-    {
-        icon: Layout,
-        title: 'Perfect Sizes',
-        description: 'Optimized for Instagram, LinkedIn, Twitter',
-        gradient: 'from-indigo-500 to-purple-500'
-    },
-    {
-        icon: Type,
-        title: 'Typography Control',
-        description: 'Custom fonts, weights, and spacing',
-        gradient: 'from-pink-500 to-rose-500'
+        description: 'PNG and GIF formats'
     }
 ]
 
@@ -130,22 +86,6 @@ const testimonials = [
         content: 'Our engagement rates increased by 40% after switching to Postloom. The professional designs help our content stand out. Highly recommend!',
         rating: 5,
         avatar: 'EJ'
-    },
-    {
-        name: 'David Kim',
-        role: 'Brand Manager',
-        company: 'Creative Agency',
-        content: 'No watermarks, no credit card required, and it works perfectly. This is exactly what we needed for our client projects. Thank you!',
-        rating: 5,
-        avatar: 'DK'
-    },
-    {
-        name: 'Lisa Wang',
-        role: 'Digital Marketer',
-        company: 'E-commerce Brand',
-        content: 'I love how easy it is to create different sizes for Instagram, LinkedIn, and Twitter. The templates are beautiful and customization is a breeze.',
-        rating: 5,
-        avatar: 'LW'
     }
 ]
 
@@ -173,14 +113,6 @@ const faqs = [
     {
         question: 'What platforms are supported?',
         answer: 'Postloom supports all major social media platforms including Instagram (posts and stories), LinkedIn, Twitter/X, and custom sizes. Each platform has optimized dimensions built-in.'
-    },
-    {
-        question: 'Are there any limitations?',
-        answer: 'No limitations! Unlike other tools, Postloom doesn\'t restrict exports, add watermarks, or limit features. Everything is available in the free version.'
-    },
-    {
-        question: 'Can I customize colors and fonts?',
-        answer: 'Yes! Postloom gives you full control over colors, fonts, typography, backgrounds, and more. You can also choose from multiple templates or create your own custom design.'
     }
 ]
 
@@ -212,414 +144,235 @@ const competitors = [
         canva: 'General templates',
         adobeExpress: 'General templates',
         bannerbear: 'API-based'
-    },
-    {
-        feature: 'No Design Skills Required',
-        postloom: 'Yes',
-        canva: 'Yes',
-        adobeExpress: 'Yes',
-        bannerbear: 'Requires coding'
-    },
-    {
-        feature: 'Real-time Preview',
-        postloom: 'Yes',
-        canva: 'Yes',
-        adobeExpress: 'Yes',
-        bannerbear: 'No'
     }
 ]
 
 function HomePage() {
   return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-white dark:bg-slate-950">
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-md border-b border-slate-800">
-                <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5 }}
-                            className="flex items-center gap-3"
-                        >
-                            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
-                                <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.592 1.25-3.598 1.995-5.77 1.995-.375 0-.745-.022-1.11-.065 2.06 1.32 4.51 2.09 7.14 2.09 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z" />
-                                </svg>
-                            </div>
-                            <span className="text-lg font-semibold text-white">
-          Postloom
-                            </span>
-                        </motion.div>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                            className="flex items-center gap-4"
-                        >
+            <nav className="relative bg-transparent backdrop-blur-md sticky top-0 z-50">
+                <div className="relative max-w-6xl mx-auto px-4 py-3">
+                    <div className="flex items-center justify-between">
+                        <PostloomLogo size="md" />
+                        <div className="flex items-center gap-3">
+                            <ThemeToggle />
                             <Link to="/tweet-studio">
-                                <Button className="bg-white text-black hover:bg-gray-100">
-                                    Get Started
-                                </Button>
+                                <Button size="sm" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100">Get Started</Button>
                             </Link>
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
             </nav>
 
-            {/* Hero Section */}
-            <section className="pt-32 pb-16 px-6 lg:px-8 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto">
-                    {/* Social Proof */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-8"
-                    >
-                        <p className="text-sm text-gray-400 mb-4">Join over 5,000+ creators including</p>
-                        <div className="flex items-center justify-center gap-2 mb-6">
-                            {['SC', 'MR', 'EJ', 'DK', 'LW'].map((avatar, i) => (
-                                <div key={i} className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-xs border-2 border-black -ml-2 first:ml-0">
-                                    {avatar}
+            {/* Hero Section with Animated Dotted Background */}
+            <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 -mt-16 pt-16 pb-12">
+                {/* Animated Dotted Background - Full Section */}
+                <div className="absolute inset-0 opacity-40 dark:opacity-20">
+                    <div className="absolute inset-0" style={{
+                        backgroundImage: 'radial-gradient(circle, rgb(148 163 184) 1px, transparent 1px)',
+                        backgroundSize: '24px 24px',
+                        animation: 'move-dots 20s linear infinite'
+                    }}></div>
                                 </div>
-                            ))}
-                            <span className="text-sm text-gray-400 ml-2">+4,995 more</span>
-                        </div>
-                    </motion.div>
+                <style>{`
+                    @keyframes move-dots {
+                        0% { transform: translate(0, 0); }
+                        100% { transform: translate(24px, 24px); }
+                    }
+                `}</style>
 
-                    {/* Main Hero Content */}
-                    <div className="text-center mb-12">
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-                        >
-                            Create Professional
-                            <br />
-                            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                                Social Media Content
-                            </span>
-                            <br />
-                            <span className="text-4xl sm:text-5xl lg:text-6xl text-gray-300">
-                                in Seconds
-                            </span>
-                        </motion.h1>
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
-                            className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto"
-                        >
-                            Design stunning tweet cards for Instagram, LinkedIn, Twitter, and more. Export as PNG or animated GIF. 100% free forever.
-                        </motion.p>
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className="flex items-center justify-center gap-4"
-                        >
+                <div className="relative max-w-7xl mx-auto px-4 py-12">
+                    {/* Headline & CTA Section - Centered */}
+                    <div className="text-center max-w-4xl mx-auto mb-8">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 mb-4">
+                            <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                            <span className="text-sm font-medium text-blue-900 dark:text-blue-100">100% Free Forever</span>
+                        </div>
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
+                            Create Professional <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-[shimmer_3s_linear_infinite]">Tweet Cards</span> in Seconds
+                        </h1>
+                        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto leading-relaxed">
+                            Design stunning tweet cards for Instagram, LinkedIn, Twitter, and more. Export as PNG or animated GIF.
+                        </p>
+                        <div className="flex items-center justify-center gap-4">
                             <Link to="/tweet-studio">
-                                <Button size="lg" className="bg-white text-black hover:bg-gray-100 text-base px-8 py-6 h-auto">
-                                    Get started for free
-                                    <ArrowRight className="h-4 w-4 ml-2" />
+                                <Button size="lg" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 text-base px-8 py-6">
+                                    Get Started Free
+                                    <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
                             </Link>
-                            <Button 
-                                size="lg" 
-                                variant="outline" 
-                                className="border-2 border-gray-700 text-white hover:bg-gray-900 text-base px-8 py-6 h-auto"
-                                onClick={() => {
-                                    document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })
-                                }}
-                            >
-                                <PlayCircle className="h-4 w-4 mr-2" />
-                                Watch demo
-                            </Button>
-                        </motion.div>
+                        </div>
                     </div>
 
-                    {/* Screenshot/Video Section */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.5 }}
-                        className="relative max-w-6xl mx-auto mt-16"
-                    >
-                        <div className="relative rounded-2xl overflow-hidden border border-gray-800 shadow-2xl">
-                            {/* Browser Chrome */}
-                            <div className="bg-gray-900 border-b border-gray-800 px-4 py-3 flex items-center gap-2">
-                                <div className="flex gap-2">
-                                    <div className="h-3 w-3 rounded-full bg-red-500"></div>
-                                    <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
-                                </div>
-                                <div className="flex-1 h-8 rounded bg-gray-800 mx-4"></div>
-                            </div>
-                            
-                            {/* Tool Screenshot/Video */}
-                            <div className="bg-gray-950 aspect-video flex items-center justify-center relative">
-                                <Link to="/tweet-studio" className="absolute inset-0 flex items-center justify-center group cursor-pointer">
-                                    <div className="relative w-full h-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
-                                        {/* Mock Tool Interface */}
-                                        <div className="w-full h-full p-8 grid grid-cols-12 gap-4">
-                                            {/* Left Panel */}
-                                            <div className="col-span-3 bg-gray-900 rounded-lg p-4 border border-gray-800">
-                                                <div className="space-y-3">
-                                                    <div className="h-4 bg-gray-800 rounded w-3/4"></div>
-                                                    <div className="h-20 bg-gray-800 rounded"></div>
-                                                    <div className="h-4 bg-gray-800 rounded w-1/2"></div>
-                                                </div>
-                                            </div>
-                                            {/* Center Canvas */}
-                                            <div className="col-span-6 bg-gray-900 rounded-lg p-6 border border-gray-800 flex items-center justify-center">
-                                                <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-6 w-full max-w-md">
-                                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
-                                                        <div className="flex items-center gap-3 mb-3">
-                                                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500"></div>
-                                                            <div>
-                                                                <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-1"></div>
-                                                                <div className="h-2 w-16 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="space-y-2">
-                                                            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-                                                            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {/* Right Panel */}
-                                            <div className="col-span-3 bg-gray-900 rounded-lg p-4 border border-gray-800">
-                                                <div className="space-y-3">
-                                                    <div className="h-4 bg-gray-800 rounded w-full"></div>
-                                                    <div className="h-4 bg-gray-800 rounded w-3/4"></div>
-                                                    <div className="h-20 bg-gray-800 rounded"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        {/* Play Button Overlay */}
-                                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                                            <div className="h-20 w-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <PlayCircle className="h-12 w-12 text-white" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
+                    {/* Tool Screenshot - Full Width, Prominent Display */}
+                    <div className="relative max-w-6xl mx-auto mt-8">
+                        <div className="relative rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]">
+                            {/* Light Mode Screenshot */}
+                            <img 
+                                src="/postloom_light.png" 
+                                alt="Postloom Tool - Light Mode" 
+                                className="w-full h-auto dark:hidden block"
+                            />
+                            {/* Dark Mode Screenshot */}
+                            <img 
+                                src="/postloom_dark.png" 
+                                alt="Postloom Tool - Dark Mode" 
+                                className="w-full h-auto hidden dark:block"
+                            />
                         </div>
-                        
-                        {/* Decorative Elements */}
-                        <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-3xl -z-10"></div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Features Grid */}
-            <section id="features" className="py-24 px-6 lg:px-8 bg-black">
-                <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-16"
-                    >
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-white">
-                            Everything you need
-                        </h2>
-                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                            Powerful features to create professional social media content
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                    >
-                        {features.map((feature, index) => (
-                            <motion.div
-                                key={index}
-                                variants={itemVariants}
-                                whileHover={{ y: -4 }}
-                                className="group p-6 rounded-xl bg-gray-900 border border-gray-800 hover:border-gray-700 transition-all"
-                            >
-                                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br ${feature.gradient} mb-4 group-hover:scale-110 transition-transform`}>
-                                    <feature.icon className="h-5 w-5 text-white" />
-                                </div>
-                                <h3 className="text-lg font-semibold mb-2 text-white">
-                                    {feature.title}
-                                </h3>
-                                <p className="text-gray-400 text-sm leading-relaxed">
-                                    {feature.description}
-                                </p>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-
-                    {/* CTA after features */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.3 }}
-                        className="text-center mt-12"
-                    >
-                        <Link to="/tweet-studio">
-                            <Button size="lg" className="bg-white text-black hover:bg-gray-100 text-base px-8 py-6 h-auto">
-                                Start Creating Free
-                                <ArrowRight className="h-4 w-4 ml-2" />
-                            </Button>
-                        </Link>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Comparison Table */}
-            <section className="py-24 px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-12"
-                    >
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-                            Postloom vs Alternatives
-                        </h2>
-                        <p className="text-xl text-slate-600 dark:text-slate-400">
-                            See why thousands choose Postloom over paid alternatives
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="overflow-x-auto"
-                    >
-                        <div className="inline-block min-w-full align-middle">
-                            <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-                                <thead className="bg-slate-50 dark:bg-slate-900">
-                                    <tr>
-                                        <th className="px-6 py-4 text-left text-sm font-semibold text-slate-900 dark:text-white">Feature</th>
-                                        <th className="px-6 py-4 text-center text-sm font-semibold text-slate-900 dark:text-white bg-blue-50 dark:bg-blue-950/30">Postloom</th>
-                                        <th className="px-6 py-4 text-center text-sm font-semibold text-slate-600 dark:text-slate-400">Canva</th>
-                                        <th className="px-6 py-4 text-center text-sm font-semibold text-slate-600 dark:text-slate-400">Adobe Express</th>
-                                        <th className="px-6 py-4 text-center text-sm font-semibold text-slate-600 dark:text-slate-400">Bannerbear</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                                    {competitors.map((row, index) => (
-                                        <tr key={index} className="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                            <td className="px-6 py-4 text-sm font-medium text-slate-900 dark:text-white">{row.feature}</td>
-                                            <td className="px-6 py-4 text-center text-sm text-slate-900 dark:text-white bg-blue-50 dark:bg-blue-950/30 font-semibold">{row.postloom}</td>
-                                            <td className="px-6 py-4 text-center text-sm text-slate-600 dark:text-slate-400">{row.canva}</td>
-                                            <td className="px-6 py-4 text-center text-sm text-slate-600 dark:text-slate-400">{row.adobeExpress}</td>
-                                            <td className="px-6 py-4 text-center text-sm text-slate-600 dark:text-slate-400">{row.bannerbear}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Testimonials Section */}
-            <section className="py-24 px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
-                <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-16"
-                    >
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-                            Loved by Creators
-                        </h2>
-                        <p className="text-xl text-slate-600 dark:text-slate-400">
-                            See what our users are saying
-                        </p>
-                    </motion.div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {testimonials.map((testimonial, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1, duration: 0.6 }}
-                                className="p-6 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm"
-                            >
-                                <div className="flex gap-1 mb-4">
-                                    {[...Array(testimonial.rating)].map((_, i) => (
-                                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                    ))}
-                                </div>
-                                <p className="text-slate-700 dark:text-slate-300 mb-6 text-sm leading-relaxed">
-                                    "{testimonial.content}"
-                                </p>
-                                <div className="flex items-center gap-3">
-                                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
-                                        {testimonial.avatar}
-                                    </div>
-                                    <div>
-                                        <div className="font-semibold text-slate-900 dark:text-white text-sm">
-                                            {testimonial.name}
-                                        </div>
-                                        <div className="text-xs text-slate-600 dark:text-slate-400">
-                                            {testimonial.role} at {testimonial.company}
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* Before/After Examples */}
-            <section className="py-24 px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-16"
-                    >
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-                            Transform Your Tweets
-                        </h2>
-                        <p className="text-xl text-slate-600 dark:text-slate-400">
-                            See the difference professional design makes
-                        </p>
-                    </motion.div>
+            {/* Tweet Card Examples Section */}
+            <section className="max-w-6xl mx-auto px-4 py-16">
+                <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-6 text-center">Tweet Card Styles</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Light Theme Card */}
+                    <div className="relative">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-20"></div>
+                        <Card className="relative bg-white border-2 border-slate-200 shadow-xl">
+                            <CardHeader className="pb-3">
+                                <div className="flex items-center justify-between">
+                                    <Badge variant="outline" className="text-xs">Light Theme</Badge>
+                                    <div className="text-xs text-slate-500">1080 × 1080</div>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="p-6">
+                                <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-lg">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold">
+                                            J
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-semibold text-slate-900">John Doe</span>
+                                                <CheckCircle2 className="h-4 w-4 text-blue-500" />
+                </div>
+                                            <span className="text-sm text-slate-500">@johndoe</span>
+                        </div>
+                </div>
+                                    <p className="text-slate-900 mb-4 leading-relaxed">
+                                        Ah, the new feature is finally here! 🚀 #LaunchDay
+                                    </p>
+                                    <div className="flex items-center gap-4 text-sm text-slate-500">
+                                        <span>1:57 PM · Dec 29, 2025</span>
+                                        <span>·</span>
+                                        <span className="font-semibold">1.3K Views</span>
+                                </div>
+                                    <div className="flex items-center gap-6 mt-4 text-slate-500">
+                                        <span className="text-sm">12</span>
+                                        <span className="text-sm">45</span>
+                                        <span className="text-sm">234</span>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
 
+                    {/* Dark Theme Card */}
+                    <div className="relative">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-slate-700 to-slate-900 rounded-2xl blur opacity-20"></div>
+                        <Card className="relative bg-slate-900 border-2 border-slate-700 shadow-xl">
+                            <CardHeader className="pb-3">
+                                <div className="flex items-center justify-between">
+                                    <Badge variant="outline" className="text-xs bg-slate-800 border-slate-700 text-slate-200">Dark Theme</Badge>
+                                    <div className="text-xs text-slate-400">1080 × 1080</div>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="p-6">
+                                <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-lg">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold">
+                                            J
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-semibold text-white">John Doe</span>
+                                                <CheckCircle2 className="h-4 w-4 text-blue-400" />
+                                            </div>
+                                            <span className="text-sm text-slate-400">@johndoe</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-white mb-4 leading-relaxed">
+                                        Ah, the new feature is finally here! 🚀 #LaunchDay
+                                    </p>
+                                    <div className="flex items-center gap-4 text-sm text-slate-400">
+                                        <span>1:57 PM · Dec 29, 2025</span>
+                                        <span>·</span>
+                                        <span className="font-semibold text-white">1.3K Views</span>
+                                    </div>
+                                    <div className="flex items-center gap-6 mt-4 text-slate-400">
+                                        <span className="text-sm">12</span>
+                                        <span className="text-sm">45</span>
+                                        <span className="text-sm">234</span>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </section>
+
+            {/* Features */}
+            <section className="max-w-7xl mx-auto px-4 py-16">
+                <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-8 text-center">Features</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {features.map((feature, i) => {
+                        const Icon = feature.icon
+                        return (
+                            <Card key={i} className="text-center border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                                <CardHeader>
+                                    <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-blue-50 dark:bg-blue-950 flex items-center justify-center">
+                                        <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                                    </div>
+                                    <CardTitle className="text-base dark:text-white">{feature.title}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <CardDescription className="text-sm dark:text-slate-400">{feature.description}</CardDescription>
+                                </CardContent>
+                            </Card>
+                        )
+                    })}
+                </div>
+            </section>
+
+            {/* Use Cases */}
+            <section className="max-w-7xl mx-auto px-4 py-16">
+                <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-8 text-center">Perfect For</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {useCases.map((useCase, i) => {
+                        const Icon = useCase.icon
+                        return (
+                            <Card key={i} className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                                <CardHeader>
+                                    <div className="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-4">
+                                        <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                                    </div>
+                                    <CardTitle className="dark:text-white">{useCase.title}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <CardDescription className="dark:text-slate-400">{useCase.description}</CardDescription>
+                                </CardContent>
+                            </Card>
+                        )
+                    })}
+                </div>
+            </section>
+
+            {/* Before/After Section */}
+            <section className="max-w-7xl mx-auto px-4 py-16">
+                <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-4 text-center">Transform Your Tweets</h2>
+                <p className="text-lg text-slate-600 dark:text-slate-400 mb-12 text-center">See the difference professional design makes</p>
                     <div className="grid md:grid-cols-2 gap-8">
-                        <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                            className="space-y-4"
-                        >
-                            <div className="text-center">
-                                <span className="inline-block px-4 py-2 rounded-lg bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 text-sm font-semibold mb-4">
-                                    Before
-                                </span>
-                            </div>
-                            <div className="bg-slate-100 dark:bg-slate-800 rounded-xl p-6 border-2 border-dashed border-slate-300 dark:border-slate-700">
+                    <Card className="border-2 border-red-200 dark:border-red-900 bg-white dark:bg-slate-900">
+                        <CardHeader>
+                            <Badge variant="destructive" className="w-fit">Before</Badge>
+                            <CardTitle className="mt-2 dark:text-white">Plain Text Tweet</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-6 border-2 border-dashed border-slate-300 dark:border-slate-700">
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-2">
                                         <div className="h-8 w-8 rounded-full bg-slate-300 dark:bg-slate-600"></div>
@@ -632,33 +385,22 @@ function HomePage() {
                                         <div className="h-4 bg-slate-300 dark:bg-slate-600 rounded w-full"></div>
                                         <div className="h-4 bg-slate-300 dark:bg-slate-600 rounded w-3/4"></div>
                                     </div>
-                                    <div className="flex gap-4">
-                                        <div className="h-3 w-12 bg-slate-300 dark:bg-slate-600 rounded"></div>
-                                        <div className="h-3 w-12 bg-slate-300 dark:bg-slate-600 rounded"></div>
-                                    </div>
                                 </div>
                             </div>
-                            <p className="text-sm text-slate-600 dark:text-slate-400 text-center">
-                                Plain text tweet - gets lost in the feed
-                            </p>
-                        </motion.div>
+                            <p className="text-sm text-slate-600 dark:text-slate-400 text-center mt-4">Gets lost in the feed</p>
+                        </CardContent>
+                    </Card>
 
-                        <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                            className="space-y-4"
-                        >
-                            <div className="text-center">
-                                <span className="inline-block px-4 py-2 rounded-lg bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 text-sm font-semibold mb-4">
-                                    After
-                                </span>
-                            </div>
-                            <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-6 shadow-xl border border-slate-200 dark:border-slate-700">
+                    <Card className="border-2 border-green-500 dark:border-green-600 bg-white dark:bg-slate-900">
+                        <CardHeader>
+                            <Badge className="w-fit bg-green-600">After</Badge>
+                            <CardTitle className="mt-2 dark:text-white">Professional Design</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg p-6 shadow-lg">
                                 <div className="bg-white dark:bg-slate-800 rounded-lg p-4 space-y-3">
                                     <div className="flex items-center gap-3">
-                                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500"></div>
+                                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500"></div>
                                         <div>
                                             <div className="flex items-center gap-2">
                                                 <div className="h-4 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
@@ -671,332 +413,169 @@ function HomePage() {
                                         <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full"></div>
                                         <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-2/3"></div>
                                     </div>
-                                    <div className="flex gap-4">
-                                        <div className="h-3 w-12 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                                        <div className="h-3 w-12 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                                    </div>
                                 </div>
                             </div>
-                            <p className="text-sm text-slate-600 dark:text-slate-400 text-center">
-                                Professional design - stands out and engages
-                            </p>
-                        </motion.div>
-                    </div>
+                            <p className="text-sm text-slate-600 dark:text-slate-400 text-center mt-4">Stands out and engages</p>
+                        </CardContent>
+                    </Card>
                 </div>
             </section>
 
-            {/* Demo/Showcase Section */}
-            <section id="demo" className="py-24 px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                            className="space-y-6"
-                        >
-                            <div className="space-y-4">
-                                <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white">
-                                    Design in minutes,
-                                    <br />
-                                    not hours
-                                </h2>
-                                <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
-                                    No design skills required. Our intuitive interface makes it easy to create professional tweet cards that stand out.
-                                </p>
-                            </div>
-                            <div className="space-y-4">
-                                {[
-                                    'Drag-and-drop interface',
-                                    'Real-time preview',
-                                    'Export in multiple formats',
-                                    'No watermarks or limitations'
-                                ].map((item, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.1, duration: 0.5 }}
-                                        className="flex items-center gap-3"
-                                    >
-                                        <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
-                                        <span className="text-slate-700 dark:text-slate-300">{item}</span>
-                                    </motion.div>
-                                ))}
-                            </div>
-                            <Link to="/tweet-studio">
-                                <Button size="lg" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 text-base px-8 py-6 h-auto mt-6">
-                                    Try It Now
-                                    <ArrowRight className="h-4 w-4 ml-2" />
-                                </Button>
-                            </Link>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                            className="relative"
-                        >
-                            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-                                <div className="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center">
-                                    <div className="text-center p-8">
-                                        <Link to="/tweet-studio">
-                                            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white dark:bg-slate-800 shadow-lg mb-4 cursor-pointer hover:scale-110 transition-transform">
-                                                <PlayCircle className="h-10 w-10 text-blue-600" />
-                                            </div>
-                                        </Link>
-                                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">Interactive Demo</p>
-                                        <p className="text-xs text-slate-500 dark:text-slate-500">Click to try it yourself</p>
+            {/* Testimonials */}
+            <section className="max-w-7xl mx-auto px-4 py-16">
+                <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-8 text-center">What People Say</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {testimonials.map((testimonial, i) => (
+                        <Card key={i} className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                            <CardHeader>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <Avatar>
+                                        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white">
+                                            {testimonial.avatar}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <CardTitle className="text-base dark:text-white">{testimonial.name}</CardTitle>
+                                        <CardDescription className="text-xs dark:text-slate-400">{testimonial.role} · {testimonial.company}</CardDescription>
                                     </div>
                                 </div>
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Pricing Section */}
-            <section className="py-24 px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-16"
-                    >
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-                            Simple, Transparent Pricing
-                        </h2>
-                        <p className="text-xl text-slate-600 dark:text-slate-400">
-                            Everything you need, completely free
-                        </p>
-                    </motion.div>
-
-                    <div className="max-w-4xl mx-auto">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            className="relative p-8 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 text-white border-4 border-blue-400 shadow-2xl"
-                        >
-                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-yellow-400 text-slate-900 rounded-full text-sm font-bold">
-                                FREE FOREVER
-                            </div>
-                            <div className="text-center space-y-6">
-                                <div>
-                                    <div className="text-6xl font-bold mb-2">$0</div>
-                                    <div className="text-blue-100">Forever</div>
-                                </div>
-                                <div className="space-y-4 pt-6">
-                                    {[
-                                        'Unlimited tweet cards',
-                                        'All templates included',
-                                        'Animated GIF export',
-                                        'No watermarks',
-                                        'All platform sizes',
-                                        'Commercial use allowed',
-                                        'No credit card required',
-                                        'Priority support'
-                                    ].map((feature, index) => (
-                                        <div key={index} className="flex items-center gap-3">
-                                            <CheckCircle2 className="h-5 w-5 shrink-0" />
-                                            <span>{feature}</span>
-                                        </div>
+                                <div className="flex gap-1">
+                                    {[...Array(testimonial.rating)].map((_, j) => (
+                                        <Star key={j} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                                     ))}
-                                </div>
-                                <div className="pt-6">
-                                    <Link to="/tweet-studio">
-                                        <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 text-base px-8 py-6 h-auto shadow-xl">
-                                            Get Started Free
-                                            <ArrowRight className="h-4 w-4 ml-2" />
-                                        </Button>
-                                    </Link>
-                                </div>
-                                <div className="pt-4 text-sm text-blue-100">
-                                    <p>While competitors charge $10-30/month, we believe design tools should be accessible to everyone.</p>
-                                </div>
                             </div>
-                        </motion.div>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 italic">"{testimonial.content}"</p>
+                            </CardContent>
+                        </Card>
+                    ))}
                     </div>
+            </section>
 
-                    {/* Trust Badges */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                        className="flex flex-wrap items-center justify-center gap-6 mt-12"
-                    >
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900">
-                            <Shield className="h-5 w-5 text-green-600 dark:text-green-400" />
-                            <span className="text-sm font-medium text-green-900 dark:text-green-100">100% Free Forever</span>
-                        </div>
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900">
-                            <CreditCard className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                            <span className="text-sm font-medium text-blue-900 dark:text-blue-100">No Credit Card Required</span>
-                        </div>
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-900">
-                            <ImageIcon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                            <span className="text-sm font-medium text-purple-900 dark:text-purple-100">No Watermarks</span>
-                        </div>
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
-                            <Shield className="h-5 w-5 text-slate-600 dark:text-slate-400" />
-                            <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Secure & Private</span>
-                        </div>
-                    </motion.div>
+            {/* Comparison Table */}
+            <section className="max-w-7xl mx-auto px-4 py-16">
+                <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-4 text-center">Postloom vs Alternatives</h2>
+                <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 text-center">See why thousands choose Postloom</p>
+                <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                        <thead>
+                            <tr className="bg-slate-50 dark:bg-slate-900">
+                                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800">Feature</th>
+                                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-900 dark:text-white bg-blue-50 dark:bg-blue-950 border-b border-slate-200 dark:border-slate-800">Postloom</th>
+                                <th className="px-6 py-4 text-center text-sm text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">Canva</th>
+                                <th className="px-6 py-4 text-center text-sm text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">Adobe Express</th>
+                                <th className="px-6 py-4 text-center text-sm text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">Bannerbear</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {competitors.map((row, i) => (
+                                <tr key={i} className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900">
+                                    <td className="px-6 py-4 text-sm font-medium text-slate-900 dark:text-white">{row.feature}</td>
+                                    <td className="px-6 py-4 text-center text-sm font-semibold text-slate-900 dark:text-white bg-blue-50 dark:bg-blue-950">{row.postloom}</td>
+                                    <td className="px-6 py-4 text-center text-sm text-slate-600 dark:text-slate-400">{row.canva}</td>
+                                    <td className="px-6 py-4 text-center text-sm text-slate-600 dark:text-slate-400">{row.adobeExpress}</td>
+                                    <td className="px-6 py-4 text-center text-sm text-slate-600 dark:text-slate-400">{row.bannerbear}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </section>
 
-            {/* Use Cases */}
-            <section className="py-24 px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
-                <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-16"
-                    >
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-                            Perfect for everyone
-                        </h2>
-                        <p className="text-xl text-slate-600 dark:text-slate-400">
-                            Whether you're a creator, marketer, or business owner
-                        </p>
-                    </motion.div>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {useCases.map((useCase, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1, duration: 0.6 }}
-                                className="p-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
-                            >
-                                <div className="inline-flex p-3 rounded-lg bg-slate-100 dark:bg-slate-700 mb-4">
-                                    <useCase.icon className="h-6 w-6 text-slate-900 dark:text-white" />
+            {/* Pricing */}
+            <section className="max-w-7xl mx-auto px-4 py-16">
+                <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-8 text-center">Pricing</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                    <Card className="border-2 border-blue-500 dark:border-blue-600 shadow-lg bg-white dark:bg-slate-950">
+                        <CardHeader>
+                            <Badge className="w-fit mb-2 bg-blue-600">Free</Badge>
+                            <CardTitle className="text-2xl dark:text-white">Free Forever</CardTitle>
+                            <CardDescription className="dark:text-slate-400">Everything you need to create beautiful tweet cards</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-2 text-sm dark:text-slate-300">
+                                    <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-500" />
+                                    <span>Unlimited exports</span>
+                            </div>
+                                <div className="flex items-center gap-2 text-sm dark:text-slate-300">
+                                    <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-500" />
+                                    <span>No watermarks</span>
                                 </div>
-                                <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
-                                    {useCase.title}
-                                </h3>
-                                <p className="text-slate-600 dark:text-slate-400">
-                                    {useCase.description}
-                                </p>
-                            </motion.div>
-                        ))}
+                                <div className="flex items-center gap-2 text-sm dark:text-slate-300">
+                                    <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-500" />
+                                    <span>All features included</span>
+                                </div>
+                                    <Link to="/tweet-studio">
+                                    <Button className="w-full mt-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100">Get Started</Button>
+                                    </Link>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                        <CardHeader>
+                            <Badge variant="outline" className="w-fit mb-2 dark:border-slate-700">Coming Soon</Badge>
+                            <CardTitle className="text-2xl dark:text-white">Pro</CardTitle>
+                            <CardDescription className="dark:text-slate-400">Advanced features for power users</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                                    <CheckCircle2 className="h-4 w-4" />
+                                    <span>Priority support</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                                    <CheckCircle2 className="h-4 w-4" />
+                                    <span>Advanced templates</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                                    <CheckCircle2 className="h-4 w-4" />
+                                    <span>API access</span>
+                                </div>
+                                <Button variant="outline" className="w-full mt-4 dark:border-slate-700" disabled>
+                                    Coming Soon
+                                </Button>
                     </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </section>
 
-            {/* FAQ Section */}
-            <section className="py-24 px-6 lg:px-8">
-                <div className="max-w-4xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-16"
-                    >
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-                            Frequently Asked Questions
-                        </h2>
-                        <p className="text-xl text-slate-600 dark:text-slate-400">
-                            Everything you need to know about Postloom
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        <Accordion type="single" collapsible className="space-y-4">
-                            {faqs.map((faq, index) => (
-                                <AccordionItem key={index} value={`item-${index}`} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-6">
-                                    <AccordionTrigger className="text-left font-semibold text-slate-900 dark:text-white hover:no-underline">
-                                        {faq.question}
-                                    </AccordionTrigger>
-                                    <AccordionContent className="text-slate-600 dark:text-slate-400 leading-relaxed">
+            {/* FAQs */}
+            <section className="max-w-4xl mx-auto px-4 py-16">
+                <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-4 text-center">Frequently Asked Questions</h2>
+                <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 text-center">Everything you need to know about Postloom</p>
+                <Accordion type="single" collapsible className="w-full">
+                    {faqs.map((faq, i) => (
+                        <AccordionItem key={i} value={`item-${i}`} className="border-slate-200 dark:border-slate-800">
+                            <AccordionTrigger className="text-left dark:text-slate-300">{faq.question}</AccordionTrigger>
+                            <AccordionContent className="text-slate-600 dark:text-slate-400">
                                         {faq.answer}
                                     </AccordionContent>
                                 </AccordionItem>
                             ))}
                         </Accordion>
-                    </motion.div>
-                </div>
             </section>
 
-            {/* CTA Section */}
-            <section className="py-24 px-6 lg:px-8">
-                <div className="max-w-4xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center p-12 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white"
-                    >
-                        <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-                            Ready to get started?
-                        </h2>
-                        <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-                            Join thousands of creators and start designing professional tweet cards today. It's free forever.
-                        </p>
-                        <Link to="/tweet-studio">
-                            <Button 
-                                size="lg" 
-                                className="bg-white text-slate-900 hover:bg-slate-100 text-base px-8 py-6 h-auto shadow-xl"
-                            >
-                                Start Creating Free
-                                <ArrowRight className="h-4 w-4 ml-2" />
-                            </Button>
-                        </Link>
-                        <p className="mt-6 text-sm text-slate-400">
-                            No credit card required • No watermarks • Free forever
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Floating CTA */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 1 }}
-                className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden md:block"
-            >
+            {/* CTA */}
+            <section className="max-w-6xl mx-auto px-4 py-16 text-center bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 rounded-2xl my-16">
+                <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-4">Ready to get started?</h2>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 text-lg">Create your first tweet card in seconds</p>
                 <Link to="/tweet-studio">
-                    <Button size="lg" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 shadow-2xl px-6 py-4">
-                        Start Creating Free
-                        <ArrowRight className="h-4 w-4 ml-2" />
+                    <Button size="lg" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100">
+                        Start Creating
+                        <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                 </Link>
-            </motion.div>
+            </section>
 
             {/* Footer */}
-            <footer className="py-12 px-6 lg:px-8 border-t border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-950">
-                <div className="max-w-7xl mx-auto">
+            <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
+                <div className="max-w-6xl mx-auto px-4 py-6">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                                <svg viewBox="0 0 24 24" className="h-5 w-5 fill-white" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.592 1.25-3.598 1.995-5.77 1.995-.375 0-.745-.022-1.11-.065 2.06 1.32 4.51 2.09 7.14 2.09 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z" />
-                                </svg>
-                            </div>
-                            <span className="text-base font-semibold text-slate-900 dark:text-white">
-                                Postloom
-                            </span>
-                        </div>
+                        <PostloomLogo size="md" />
                         <p className="text-sm text-slate-600 dark:text-slate-400">
                             © 2024 Postloom. All rights reserved.
         </p>

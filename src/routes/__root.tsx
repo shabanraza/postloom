@@ -7,7 +7,6 @@ import {
 import { useEffect } from 'react'
 
 import appCss from '../styles.css?url'
-import { env } from '@/env'
 import { PrivacyNotice } from '@/components/PrivacyNotice'
 
 import type { QueryClient } from '@tanstack/react-query'
@@ -43,6 +42,22 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         rel: 'stylesheet',
         href: appCss,
       },
+      {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        href: '/favicon.svg',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '192x192',
+        href: '/logo192.png',
+      },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '192x192',
+        href: '/logo192.png',
+      },
     ],
   }),
 
@@ -54,8 +69,8 @@ function RootComponent() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const ga4Id = env.VITE_GA4_MEASUREMENT_ID
-    const cfToken = env.VITE_CF_BEACON_TOKEN
+    const ga4Id = import.meta.env.VITE_GA4_MEASUREMENT_ID
+    const cfToken = import.meta.env.VITE_CF_BEACON_TOKEN
 
     // Load Google Analytics 4
     if (ga4Id) {

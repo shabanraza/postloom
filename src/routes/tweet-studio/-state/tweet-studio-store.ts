@@ -67,7 +67,9 @@ interface TweetStudioState {
     setPadding: (padding: number) => void
     setScale: (scale: number) => void
     setShadow: (shadow: DesignSettings['shadow']) => void
+    setShadowIntensity: (intensity: number) => void
     setCardScale: (scale: number) => void
+    setFontSizeMultiplier: (multiplier: number) => void
 
     // Actions - Animation
     setAnimationType: (type: AnimationSettings['type']) => void
@@ -148,11 +150,13 @@ const initialDesign: DesignSettings = {
     padding: PADDING_RANGE.default,
     scale: 1,
     shadow: 'soft',
+    shadowIntensity: 50, // Default shadow intensity (0-100)
     // Card-level styling defaults (from minimal template)
     cardScale: 1,
     borderRadius: 16,
     fontWeight: 400,
     fontFamily: 'system-ui, sans-serif',
+    fontSizeMultiplier: 1.0, // Default font size multiplier
 }
 
 const initialAnimation: AnimationSettings = {
@@ -400,9 +404,19 @@ export const useTweetStudioStore = create<TweetStudioState>()(
                     design: { ...state.design, shadow },
                 })),
 
+            setShadowIntensity: (intensity) =>
+                set((state) => ({
+                    design: { ...state.design, shadowIntensity: intensity },
+                })),
+
             setCardScale: (cardScale) =>
                 set((state) => ({
                     design: { ...state.design, cardScale },
+                })),
+
+            setFontSizeMultiplier: (multiplier) =>
+                set((state) => ({
+                    design: { ...state.design, fontSizeMultiplier: multiplier },
                 })),
 
             // Animation Actions

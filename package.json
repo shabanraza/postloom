@@ -58,7 +58,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.26",
-    "gif.js": "^0.2.0",
+    "gifenc": "^1.0.3",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.562.0",
     "modern-screenshot": "^4.6.7",

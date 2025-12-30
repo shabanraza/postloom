@@ -140,43 +140,30 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 })
 
 function RootComponent() {
-  // Initialize analytics on client side
+  // Initialize Google Analytics 4 on client side
   useEffect(() => {
     if (typeof window === 'undefined') return
 
     const ga4Id = import.meta.env.VITE_GA4_MEASUREMENT_ID
-    const cfToken = import.meta.env.VITE_CF_BEACON_TOKEN
 
-    // Load Google Analytics 4
+    // Load Google Analytics 4 - Standard Google format (exact match)
     if (ga4Id) {
-      // Initialize dataLayer first
+      // Initialize dataLayer first (before script loads)
       window.dataLayer = window.dataLayer || []
       function gtag(...args: unknown[]) {
         window.dataLayer?.push(args)
       }
       window.gtag = gtag as typeof window.gtag
-      
-      // Configure GA4 immediately
+
+      // Load gtag.js script (async)
+      const script = document.createElement('script')
+      script.async = true
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${ga4Id}`
+      document.head.appendChild(script)
+
+      // Configure GA4 immediately (matches Google's exact format)
       gtag('js', new Date())
-      gtag('config', ga4Id, {
-        page_path: window.location.pathname,
-        send_page_view: true,
-      })
-
-      // Load gtag script
-      const script1 = document.createElement('script')
-      script1.src = `https://www.googletagmanager.com/gtag/js?id=${ga4Id}`
-      script1.async = true
-      document.head.appendChild(script1)
-    }
-
-    // Load Cloudflare Web Analytics
-    if (cfToken) {
-      const script2 = document.createElement('script')
-      script2.src = 'https://static.cloudflareinsights.com/beacon.min.js'
-      script2.setAttribute('data-cf-beacon', JSON.stringify({ token: cfToken }))
-      script2.defer = true
-      document.head.appendChild(script2)
+      gtag('config', ga4Id)
     }
   }, [])
 

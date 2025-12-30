@@ -74,22 +74,40 @@ function RootComponent() {
 
     // Load Google Analytics 4
     if (ga4Id) {
-      // Load gtag script
-      const script1 = document.createElement('script')
-      script1.src = `https://www.googletagmanager.com/gtag/js?id=${ga4Id}`
-      script1.async = true
-      document.head.appendChild(script1)
-
-      // Initialize gtag
+      // Initialize dataLayer first
       window.dataLayer = window.dataLayer || []
       function gtag(...args: unknown[]) {
         window.dataLayer?.push(args)
       }
       window.gtag = gtag as typeof window.gtag
+      
+      // Configure GA4 immediately
       gtag('js', new Date())
       gtag('config', ga4Id, {
         page_path: window.location.pathname,
+        send_page_view: true,
       })
+
+      // Load gtag script
+      const script1 = document.createElement('script')
+      script1.src = `https://www.googletagmanager.com/gtag/js?id=${ga4Id}`
+      script1.async = true
+      script1.onload = () => {
+        console.log('[GA4] Script loaded successfully for:', ga4Id)
+      }
+      script1.onerror = () => {
+        console.error('[GA4] Failed to load script for:', ga4Id)
+      }
+      document.head.appendChild(script1)
+
+      // Debug log
+      if (import.meta.env.DEV) {
+        console.log('[GA4] Initialized with Measurement ID:', ga4Id)
+      }
+    } else {
+      if (import.meta.env.DEV) {
+        console.warn('[GA4] Measurement ID not found in environment variables')
+      }
     }
 
     // Load Cloudflare Web Analytics

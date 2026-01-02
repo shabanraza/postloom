@@ -4,7 +4,6 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
-import { useEffect } from 'react'
 
 import appCss from '../styles.css?url'
 import { PrivacyNotice } from '@/components/PrivacyNotice'
@@ -140,37 +139,28 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 })
 
 function RootComponent() {
-  // Initialize Google Analytics 4 on client side
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    const ga4Id = import.meta.env.VITE_GA4_MEASUREMENT_ID
-
-    // Load Google Analytics 4 - Standard Google format (exact match)
-    if (ga4Id) {
-      // Initialize dataLayer first (before script loads)
-      window.dataLayer = window.dataLayer || []
-      function gtag(...args: unknown[]) {
-        window.dataLayer?.push(args)
-      }
-      window.gtag = gtag as typeof window.gtag
-
-      // Load gtag.js script (async)
-      const script = document.createElement('script')
-      script.async = true
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${ga4Id}`
-      document.head.appendChild(script)
-
-      // Configure GA4 immediately (matches Google's exact format)
-      gtag('js', new Date())
-      gtag('config', ga4Id)
-    }
-  }, [])
+  // Google Analytics 4 ID - use env var or fallback to hardcoded value
+  const ga4Id = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-7T3RYZQR2M'
 
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Google Analytics 4 - Standard Google Format */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${ga4Id}');
+            `,
+          }}
+        />
         {/* Structured Data for SEO */}
         <script
           type="application/ld+json"

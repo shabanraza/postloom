@@ -3,7 +3,7 @@ import { useTweetStudioStore } from '../../-state'
 import { TEMPLATES, PADDING_RANGE } from '../../-constants'
 import type { TweetCardTheme, ShadowPreset } from '../../-types'
 import { cn } from '../../-utils'
-import { trackDesignPreset } from '@/lib/analytics'
+import { trackDesignPreset, trackCanvasSizeChange, trackCardThemeChange } from '@/lib/analytics'
 
 // Theme options
 const THEMES: { value: TweetCardTheme; label: string; bg: string; border: string }[] = [
@@ -78,6 +78,8 @@ export function QuickPresetsTab() {
         }
         setCustomSize(template.width, template.height)
         setScale(scale)
+        // Track canvas size change
+        trackCanvasSizeChange(template.label, template.width, template.height)
     }
 
     const activeCanvasTemplate = CANVAS_TEMPLATES.find(
@@ -94,7 +96,10 @@ export function QuickPresetsTab() {
                         <button
                             key={theme.value}
                             type="button"
-                            onClick={() => setTweetTheme(theme.value)}
+                            onClick={() => {
+                                setTweetTheme(theme.value)
+                                trackCardThemeChange(theme.value)
+                            }}
                             className={`
                                 flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-[10px] font-medium transition-all
                                 ${tweet.theme === theme.value

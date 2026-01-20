@@ -16,7 +16,7 @@ import { useTweetStudioStore } from '../-state'
 import { EXPORT_SIZES } from '../-constants'
 import { exportAsPng, exportAsGif, estimateFileSize } from '../-export'
 import { fetchTweetFromUrl } from '../-utils/fetch-tweet'
-import { trackTweetImport, trackExport } from '@/lib/analytics'
+import { trackTweetImport, trackExport, trackExportStart, trackExportError, trackExportSizeChange } from '@/lib/analytics'
 import { PostloomLogo } from '@/components/PostloomLogo'
 import type { ExportPreset } from '../-types'
 
@@ -92,6 +92,9 @@ export function TopBar() {
 
         setIsExporting(true)
         setExportProgress(0)
+        
+        // Track export start
+        trackExportStart('png', exportSettings.width, exportSettings.height)
 
         try {
             // Use actual width/height from exportSettings (set by QuickPresetsTab or preset selection)
@@ -99,9 +102,12 @@ export function TopBar() {
                 width: exportSettings.width,
                 height: exportSettings.height,
             })
+            // Track successful export
             trackExport('png', exportSettings.width, exportSettings.height)
         } catch (error) {
             console.error('Export failed:', error)
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+            trackExportError('png', errorMessage)
         } finally {
             setIsExporting(false)
             setExportProgress(0)
@@ -124,6 +130,9 @@ export function TopBar() {
 
         setIsExporting(true)
         setExportProgress(0)
+        
+        // Track export start
+        trackExportStart('gif', exportSettings.width, exportSettings.height)
 
         try {
             // Use actual width/height from exportSettings
@@ -136,10 +145,13 @@ export function TopBar() {
                 loop: animation.loop,
                 onProgress: (progress) => setExportProgress(progress * 100),
             })
+            // Track successful export
             trackExport('gif', exportSettings.width, exportSettings.height)
         } catch (error) {
             console.error('GIF export failed:', error)
             const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+            // Track export error
+            trackExportError('gif', errorMessage)
             alert(`GIF export failed: ${errorMessage}\n\nIf this persists, try:\n- Reducing the text length\n- Using a smaller export size\n- Refreshing the page`)
         } finally {
             setIsExporting(false)
@@ -275,6 +287,7 @@ export function TopBar() {
                                             onSelect={(e) => {
                                                 e.preventDefault() // Prevent dropdown from closing
                                                 setExportPreset(preset)
+                                                trackExportSizeChange(preset, EXPORT_SIZES[preset].width, EXPORT_SIZES[preset].height)
                                             }}
                                         >
                                             <span className="flex-1 font-medium">{EXPORT_SIZES[preset].label}</span>

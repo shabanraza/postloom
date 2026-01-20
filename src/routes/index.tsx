@@ -18,6 +18,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { PostloomLogo } from '@/components/PostloomLogo'
 import { ThemeToggle } from '@/routes/tweet-studio/-components/ThemeToggle'
+import { trackCtaClick } from '@/lib/analytics'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
@@ -157,7 +158,7 @@ function HomePage() {
                         <PostloomLogo size="md" />
                         <div className="flex items-center gap-3">
                             <ThemeToggle />
-                            <Link to="/tweet-studio">
+                            <Link to="/tweet-studio" onClick={() => trackCtaClick('get_started', 'nav')}>
                                 <Button size="sm" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100">Get Started</Button>
                             </Link>
                         </div>
@@ -191,12 +192,12 @@ function HomePage() {
                         </div>
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
                             Free <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-[shimmer_3s_linear_infinite]">Tweet Card Generator</span> & Social Media Card Creator
-                        </h1>
+        </h1>
                         <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto leading-relaxed">
                             Create professional tweet cards, Instagram posts, LinkedIn graphics, and Twitter designs in seconds. Free social media card maker with animated GIF export. No design skills required - 100% free forever.
                         </p>
                         <div className="flex items-center justify-center gap-4">
-                            <Link to="/tweet-studio">
+                            <Link to="/tweet-studio" onClick={() => trackCtaClick('get_started_free', 'hero')}>
                                 <Button size="lg" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 text-base px-8 py-6">
                                     Get Started Free
                                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -509,7 +510,7 @@ function HomePage() {
                                     <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-500" />
                                     <span>All features included</span>
                                 </div>
-                                    <Link to="/tweet-studio">
+                                    <Link to="/tweet-studio" onClick={() => trackCtaClick('get_started', 'pricing_free')}>
                                     <Button className="w-full mt-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100">Get Started</Button>
                                     </Link>
                             </div>
@@ -565,7 +566,7 @@ function HomePage() {
             <section className="max-w-6xl mx-auto px-4 py-16 text-center bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 rounded-2xl my-16">
                 <h2 className="text-3xl font-semibold text-slate-900 dark:text-white mb-4">Ready to get started?</h2>
                 <p className="text-slate-600 dark:text-slate-400 mb-6 text-lg">Create your first tweet card in seconds</p>
-                <Link to="/tweet-studio">
+                <Link to="/tweet-studio" onClick={() => trackCtaClick('start_creating', 'footer_cta')}>
                     <Button size="lg" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100">
                         Start Creating
                         <ArrowRight className="ml-2 h-4 w-4" />

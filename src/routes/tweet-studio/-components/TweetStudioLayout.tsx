@@ -1,8 +1,10 @@
+import { useEffect } from 'react'
 import { TopBar } from './TopBar'
 import { LeftPanel } from './LeftPanel'
 import { CenterCanvas } from './CenterCanvas'
 import { RightPanel } from './RightPanel'
 import { ThemeToggle } from './ThemeToggle'
+import { trackToolOpen, trackToolClose } from '@/lib/analytics'
 
 /**
  * Main Layout for Postloom
@@ -12,6 +14,20 @@ import { ThemeToggle } from './ThemeToggle'
  * - Clean separation of concerns
  */
 export function TweetStudioLayout() {
+    // Track tool open/close for session analytics
+    useEffect(() => {
+        trackToolOpen()
+        
+        // Track tool close on unmount or page unload
+        const handleUnload = () => trackToolClose()
+        window.addEventListener('beforeunload', handleUnload)
+        
+        return () => {
+            window.removeEventListener('beforeunload', handleUnload)
+            trackToolClose()
+        }
+    }, [])
+
     return (
         <div className="flex h-screen w-full flex-col bg-slate-50 dark:bg-[#0f1117] overflow-hidden text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300">
             {/* Top Bar - Floating header with glassmorphism effect */}

@@ -10,53 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TweetStudioIndexRouteImport } from './routes/tweet-studio/index'
-import { Route as ApiTrpcSplatRouteImport } from './routes/api.trpc.$'
+import { Route as TweetCardGeneratorIndexRouteImport } from './routes/tweet-card-generator/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TweetStudioIndexRoute = TweetStudioIndexRouteImport.update({
-  id: '/tweet-studio/',
-  path: '/tweet-studio/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiTrpcSplatRoute = ApiTrpcSplatRouteImport.update({
-  id: '/api/trpc/$',
-  path: '/api/trpc/$',
+const TweetCardGeneratorIndexRoute = TweetCardGeneratorIndexRouteImport.update({
+  id: '/tweet-card-generator/',
+  path: '/tweet-card-generator/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/tweet-studio': typeof TweetStudioIndexRoute
-  '/api/trpc/$': typeof ApiTrpcSplatRoute
+  '/tweet-card-generator': typeof TweetCardGeneratorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/tweet-studio': typeof TweetStudioIndexRoute
-  '/api/trpc/$': typeof ApiTrpcSplatRoute
+  '/tweet-card-generator': typeof TweetCardGeneratorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/tweet-studio/': typeof TweetStudioIndexRoute
-  '/api/trpc/$': typeof ApiTrpcSplatRoute
+  '/tweet-card-generator/': typeof TweetCardGeneratorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tweet-studio' | '/api/trpc/$'
+  fullPaths: '/' | '/tweet-card-generator'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tweet-studio' | '/api/trpc/$'
-  id: '__root__' | '/' | '/tweet-studio/' | '/api/trpc/$'
+  to: '/' | '/tweet-card-generator'
+  id: '__root__' | '/' | '/tweet-card-generator/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TweetStudioIndexRoute: typeof TweetStudioIndexRoute
-  ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
+  TweetCardGeneratorIndexRoute: typeof TweetCardGeneratorIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -68,18 +58,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tweet-studio/': {
-      id: '/tweet-studio/'
-      path: '/tweet-studio'
-      fullPath: '/tweet-studio'
-      preLoaderRoute: typeof TweetStudioIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/trpc/$': {
-      id: '/api/trpc/$'
-      path: '/api/trpc/$'
-      fullPath: '/api/trpc/$'
-      preLoaderRoute: typeof ApiTrpcSplatRouteImport
+    '/tweet-card-generator/': {
+      id: '/tweet-card-generator/'
+      path: '/tweet-card-generator'
+      fullPath: '/tweet-card-generator'
+      preLoaderRoute: typeof TweetCardGeneratorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -87,8 +70,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TweetStudioIndexRoute: TweetStudioIndexRoute,
-  ApiTrpcSplatRoute: ApiTrpcSplatRoute,
+  TweetCardGeneratorIndexRoute: TweetCardGeneratorIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

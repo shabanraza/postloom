@@ -1,21 +1,20 @@
+import React from 'react'
 import {
   HeadContent,
   Outlet,
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
+import { Provider as QueryProviderWrapper } from '@/integrations/tanstack-query/root-provider'
 
 import appCss from '../styles.css?url'
 import { PrivacyNotice } from '@/components/PrivacyNotice'
+import { Toaster } from '@/components/ui/sonner'
 
 import type { QueryClient } from '@tanstack/react-query'
 
-import type { TRPCRouter } from '@/integrations/trpc/router'
-import type { TRPCOptionsProxy } from '@trpc/tanstack-react-query'
-
 interface MyRouterContext {
   queryClient: QueryClient
-  trpc: TRPCOptionsProxy<TRPCRouter>
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
@@ -142,6 +141,24 @@ function RootComponent() {
   // Google Analytics 4 ID - use env var or fallback to hardcoded value
   const ga4Id = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-7T3RYZQR2M'
 
+  // Suppress AbortError from unhandled promise rejections
+  // These are normal when requests are cancelled during navigation/component unmount
+  React.useEffect(() => {
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      const error = event.reason
+      // Suppress AbortError - these are expected during navigation/component unmount
+      if (error?.name === 'AbortError' || error?.message?.includes('aborted')) {
+        event.preventDefault()
+        return
+      }
+    }
+
+    window.addEventListener('unhandledrejection', handleUnhandledRejection)
+    return () => {
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection)
+    }
+  }, [])
+
   return (
     <html lang="en">
       <head>
@@ -224,7 +241,10 @@ function RootComponent() {
         />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <Outlet />
+        <QueryProviderWrapper>
+          <Outlet />
+        </QueryProviderWrapper>
+        <Toaster />
         <Scripts />
         <PrivacyNotice />
       </body>

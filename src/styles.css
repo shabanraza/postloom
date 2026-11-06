@@ -183,6 +183,23 @@ code {
     radial-gradient(circle at 85% 5%, color-mix(in oklab, var(--chart-2) 14%, transparent), transparent 32%);
 }
 
+/* Landing page marquee: each row holds two copies of its list and slides one copy's width */
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 45s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
 /* Hide scrollbar but keep functionality */
 .scrollbar-hide {
   -ms-overflow-style: none;

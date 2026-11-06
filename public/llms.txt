@@ -1,6 +1,6 @@
 # Postloom
 
-> Postloom is a free online tweet card generator. It turns a tweet (pasted by URL or written from scratch) into a polished image or animated GIF for sharing on Instagram, LinkedIn, X/Twitter and Threads. No sign-up, no watermark, unlimited downloads.
+> Postloom is a set of free online tools for social media visuals: a tweet card generator, a carousel maker and a testimonial generator. It turns a tweet (pasted by URL or written from scratch) into a polished image or animated GIF for sharing on Instagram, LinkedIn, X/Twitter and Threads. No sign-up, no watermark, unlimited downloads.
 
 ## What you can do
 
@@ -15,3 +15,4 @@
 - [Home](https://postloom.studio/): overview and FAQ
 - [Tweet Card Generator](https://postloom.studio/tweet-card-generator): the free editor, runs in the browser
 - [Carousel Maker](https://postloom.studio/carousel-maker): turn a tweet thread or any text into 1080x1350 Instagram carousel slides (PNG) or a LinkedIn PDF carousel; free, no sign-up
+- [Testimonial Generator](https://postloom.studio/testimonial-generator): turn tweets (pasted by link) and customer quotes into branded testimonial images (PNG, square, portrait or landscape) and copy a free "wall of love" HTML embed for your website; free, no sign-up, no watermark

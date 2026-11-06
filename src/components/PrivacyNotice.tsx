@@ -1,38 +1,48 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { GA4_MEASUREMENT_ID } from '@/lib/analytics'
+
+function saveConsent(value: 'accepted' | 'declined') {
+  try {
+    localStorage.setItem('analytics-consent', value)
+  } catch {
+    // ignore: storage blocked
+  }
+  // __root.tsx reads this value on every load to set the consent default
+  window.gtag?.('consent', 'update', {
+    analytics_storage: value === 'accepted' ? 'granted' : 'denied',
+  })
+}
 
 export function PrivacyNotice() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    // Only show if GA4 is enabled (requires cookie consent)
-    const ga4Id = import.meta.env.VITE_GA4_MEASUREMENT_ID
-    if (!ga4Id) {
+    // GA4 always loads (see __root.tsx), so always ask once
+    if (!GA4_MEASUREMENT_ID) {
       return
     }
 
-    // Check if user has already accepted
-    const consent = localStorage.getItem('analytics-consent')
+    let consent: string | null = null
+    try {
+      consent = localStorage.getItem('analytics-consent')
+    } catch {
+      // storage blocked: show the notice
+    }
     if (!consent) {
       setShow(true)
     }
   }, [])
 
   const handleAccept = () => {
-    localStorage.setItem('analytics-consent', 'accepted')
+    saveConsent('accepted')
     setShow(false)
   }
 
   const handleDecline = () => {
-    localStorage.setItem('analytics-consent', 'declined')
+    saveConsent('declined')
     setShow(false)
-    // Disable GA4 if declined
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('consent', 'update', {
-        analytics_storage: 'denied',
-      })
-    }
   }
 
   if (!show) return null

@@ -17,7 +17,12 @@ import { PostloomLogo } from '@/components/PostloomLogo'
 import { trackCtaClick } from '@/lib/analytics'
 import { ThemeToggle } from '@/routes/tweet-card-generator/-components/ThemeToggle'
 
-export const Route = createFileRoute('/')({ component: HomePage })
+export const Route = createFileRoute('/')({
+  head: () => ({
+    links: [{ rel: 'canonical', href: 'https://postloom.studio/' }],
+  }),
+  component: HomePage,
+})
 
 const features = [
   {

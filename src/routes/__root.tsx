@@ -8,6 +8,7 @@ import {
 import { Provider as QueryProviderWrapper } from '@/integrations/tanstack-query/root-provider'
 
 import appCss from '../styles.css?url'
+import { NotFound } from '@/components/layout/NotFound'
 import { PrivacyNotice } from '@/components/PrivacyNotice'
 import { Toaster } from '@/components/ui/sonner'
 import { GA4_MEASUREMENT_ID } from '@/lib/analytics'
@@ -133,6 +134,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   },
 
   component: RootComponent,
+  notFoundComponent: NotFound,
 })
 
 function RootComponent() {

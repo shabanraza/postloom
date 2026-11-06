@@ -1,9 +1,9 @@
-import { GalleryHorizontal, MessageSquareQuote } from 'lucide-react'
+import { GalleryHorizontal, MessageSquareHeart, MessageSquareQuote } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 export interface Tool {
   /** Route path, also used in sitemap.xml and llms.txt */
-  path: '/tweet-card-generator' | '/carousel-maker'
+  path: '/tweet-card-generator' | '/carousel-maker' | '/testimonial-generator'
   name: string
   /** One line shown in menus and tool cards */
   description: string
@@ -27,6 +27,12 @@ export const TOOLS: ReadonlyArray<Tool> = [
     name: 'Carousel Maker',
     description: 'Turn a thread into Instagram slides or a LinkedIn PDF.',
     icon: GalleryHorizontal,
+  },
+  {
+    path: '/testimonial-generator',
+    name: 'Testimonial Generator',
+    description: 'Turn tweets and quotes into testimonial images and a wall of love.',
+    icon: MessageSquareHeart,
   },
 ]
 

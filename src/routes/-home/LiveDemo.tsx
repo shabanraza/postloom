@@ -24,7 +24,7 @@ export function LiveDemo() {
   const [text, setText] = useState(SAMPLES[0])
   const [typing, setTyping] = useState(false)
   const [touched, setTouched] = useState(false)
-  const [style, setStyle] = useState<CardStyle>('gradient')
+  const [style, setStyle] = useState<CardStyle>('sky')
   const [busy, setBusy] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
@@ -97,7 +97,7 @@ export function LiveDemo() {
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-3 shadow-2xl shadow-brand/10 sm:p-4">
+    <div className="rounded-2xl border border-border bg-card p-3 shadow-lg sm:p-4">
       <div className="overflow-hidden rounded-xl">
         <DemoCard ref={cardRef} text={text} style={style} caret={typing && !touched} />
       </div>

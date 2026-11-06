@@ -61,9 +61,7 @@ function HomePage() {
             </Badge>
             <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
               Turn tweets into{' '}
-              <span className="bg-gradient-to-r from-brand to-chart-2 bg-clip-text text-transparent">
-                scroll-stopping
-              </span>{' '}
+              <span className="text-brand">scroll-stopping</span>{' '}
               visuals.
             </h1>
             <p className="mt-5 max-w-xl text-lg text-muted-foreground">

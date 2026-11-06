@@ -43,14 +43,14 @@ export const Route = createFileRoute('/carousel-maker/')({
   component: CarouselMakerPage,
 })
 
-type ThemeId = 'light' | 'dark' | 'gradient'
+type ThemeId = 'light' | 'dark' | 'blue'
 
 const THEMES: Record<ThemeId, { label: string; background: string; text: string; muted: string }> = {
   light: { label: 'Light', background: '#ffffff', text: '#0f172a', muted: '#64748b' },
   dark: { label: 'Dark', background: '#0b0f19', text: '#f8fafc', muted: '#94a3b8' },
-  gradient: {
-    label: 'Gradient',
-    background: 'linear-gradient(145deg, #1d4ed8 0%, #7c3aed 100%)',
+  blue: {
+    label: 'Blue',
+    background: '#0c4a6e',
     text: '#ffffff',
     muted: 'rgba(255,255,255,0.75)',
   },
@@ -253,7 +253,7 @@ function CarouselMakerPage() {
       badges={['Free', 'No sign-up', 'No watermark']}
       steps={[
         'Paste a tweet thread, newsletter section or list of tips.',
-        'Add your name and handle, then pick a light, dark or gradient style and an accent color.',
+        'Add your name and handle, then pick a light, dark or blue style and an accent color.',
         'Download one PDF to upload as a LinkedIn document post, or PNG slides for an Instagram carousel.',
       ]}
       faqs={FAQS}

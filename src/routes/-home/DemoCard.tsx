@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
  * Its colors are the card's own design, not app UI, so they are set per style here
  * rather than taken from the theme tokens.
  */
-export type CardStyle = 'light' | 'dark' | 'gradient' | 'sunset'
+export type CardStyle = 'light' | 'dark' | 'sky' | 'sand'
 
 export const CARD_STYLES: Record<
   CardStyle,
@@ -14,7 +14,7 @@ export const CARD_STYLES: Record<
 > = {
   light: {
     label: 'Light',
-    frame: 'linear-gradient(135deg,#e0f2fe,#ede9fe)',
+    frame: '#e2e8f0',
     card: '#ffffff',
     text: '#0f1419',
     muted: '#536471',
@@ -22,27 +22,27 @@ export const CARD_STYLES: Record<
   },
   dark: {
     label: 'Dark',
-    frame: 'linear-gradient(135deg,#0f172a,#1e293b)',
+    frame: '#1e293b',
     card: '#000000',
     text: '#e7e9ea',
     muted: '#71767b',
     border: '#2f3336',
   },
-  gradient: {
-    label: 'Gradient',
-    frame: 'linear-gradient(135deg,#2563eb,#7c3aed)',
-    card: 'rgba(255,255,255,0.96)',
+  sky: {
+    label: 'Sky',
+    frame: '#0284c7',
+    card: '#ffffff',
     text: '#0f1419',
     muted: '#536471',
     border: '#eff3f4',
   },
-  sunset: {
-    label: 'Sunset',
-    frame: 'linear-gradient(135deg,#f97316,#db2777)',
-    card: '#15202b',
-    text: '#f7f9f9',
-    muted: '#8b98a5',
-    border: '#38444d',
+  sand: {
+    label: 'Sand',
+    frame: '#e9e1d4',
+    card: '#fffdf9',
+    text: '#1c1917',
+    muted: '#78716c',
+    border: '#ece6dc',
   },
 }
 
@@ -63,7 +63,7 @@ export function DemoCard({
   text,
   name = 'Alex Rivera',
   handle = 'alexbuilds',
-  style = 'gradient',
+  style = 'sky',
   frame = 32,
   className,
   caret = false,
@@ -87,7 +87,7 @@ export function DemoCard({
         <div className="flex items-center gap-3">
           <div
             className="flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
-            style={{ background: 'linear-gradient(135deg,#38bdf8,#6366f1)' }}
+            style={{ background: '#0284c7' }}
           >
             {initials}
           </div>

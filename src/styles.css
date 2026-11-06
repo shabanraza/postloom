@@ -46,7 +46,7 @@ code {
   --input: #e2e8f0;
   --ring: #0284c7;
   --chart-1: #0284c7;
-  --chart-2: #6366f1;
+  --chart-2: #0d9488;
   --chart-3: #10b981;
   --chart-4: #f59e0b;
   --chart-5: #ef4444;
@@ -84,7 +84,7 @@ code {
   --input: #1c2536;
   --ring: #38bdf8;
   --chart-1: #38bdf8;
-  --chart-2: #818cf8;
+  --chart-2: #2dd4bf;
   --chart-3: #34d399;
   --chart-4: #fbbf24;
   --chart-5: #f87171;
@@ -176,11 +176,9 @@ code {
   }
 }
 
-/* Decorative glow behind marketing heroes, tinted by the brand color */
+/* Quiet top fade behind marketing heroes: one neutral tone, no colored glow */
 .hero-glow {
-  background:
-    radial-gradient(circle at 20% 15%, color-mix(in oklab, var(--brand) 18%, transparent), transparent 35%),
-    radial-gradient(circle at 85% 5%, color-mix(in oklab, var(--chart-2) 14%, transparent), transparent 32%);
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--muted) 70%, transparent), transparent 70%);
 }
 
 /* Landing page marquee: each row holds two copies of its list and slides one copy's width */

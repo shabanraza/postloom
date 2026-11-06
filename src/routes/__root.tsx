@@ -157,9 +157,15 @@ function RootComponent() {
   }, [])
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
+        {/* Apply the theme before first paint: stored choice, else system preference */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d)}catch(e){}`,
+          }}
+        />
         {/* Google Analytics 4 - Standard Google Format */}
         <script
           async

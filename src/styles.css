@@ -21,74 +21,81 @@ code {
 }
 
 :root {
+  /* Brand: one palette for every page. Components use these via Tailwind
+     classes (bg-background, text-muted-foreground, bg-brand ...), never raw colors. */
   --background: #ffffff;
-  --foreground: #1a1a1a;
+  --foreground: #0b1220;
   --card: #ffffff;
-  --card-foreground: #1a1a1a;
+  --card-foreground: #0b1220;
   --popover: #ffffff;
-  --popover-foreground: #1a1a1a;
-  --primary: #1a1a1a;
+  --popover-foreground: #0b1220;
+  --primary: #0b1220;
   --primary-foreground: #ffffff;
-  --secondary: #f5f5f5;
-  --secondary-foreground: #1a1a1a;
-  --muted: #f5f5f5;
-  --muted-foreground: #6b6b6b;
-  --accent: #5e6ad2;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0b1220;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  /* shadcn uses accent for hover/selected backgrounds: keep it subtle */
+  --accent: #f1f5f9;
+  --accent-foreground: #0b1220;
+  --brand: #0284c7;
+  --brand-foreground: #ffffff;
+  --destructive: #dc2626;
   --destructive-foreground: #ffffff;
-  --border: #e8e8e8;
-  --input: #e8e8e8;
-  --ring: #5e6ad2;
-  --chart-1: #5e6ad2;
-  --chart-2: #3b82f6;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #0284c7;
+  --chart-1: #0284c7;
+  --chart-2: #6366f1;
   --chart-3: #10b981;
   --chart-4: #f59e0b;
   --chart-5: #ef4444;
-  --radius: 0.5rem;
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #e5e5e5;
-  --sidebar-primary: #5e6ad2;
+  --radius: 0.625rem;
+  --sidebar: #f8fafc;
+  --sidebar-foreground: #0b1220;
+  --sidebar-primary: #0284c7;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a1a1a;
-  --sidebar-accent-foreground: #e5e5e5;
-  --sidebar-border: #1f1f1f;
-  --sidebar-ring: #5e6ad2;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #0b1220;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #0284c7;
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #e5e5e5;
-  --card: #111111;
-  --card-foreground: #e5e5e5;
-  --popover: #111111;
-  --popover-foreground: #e5e5e5;
-  --primary: #e5e5e5;
-  --primary-foreground: #0a0a0a;
-  --secondary: #1a1a1a;
-  --secondary-foreground: #e5e5e5;
-  --muted: #1a1a1a;
-  --muted-foreground: #888888;
-  --accent: #5e6ad2;
-  --accent-foreground: #ffffff;
+  --background: #060912;
+  --foreground: #e6ebf2;
+  --card: #0c111d;
+  --card-foreground: #e6ebf2;
+  --popover: #0c111d;
+  --popover-foreground: #e6ebf2;
+  --primary: #f8fafc;
+  --primary-foreground: #060912;
+  --secondary: #141b2b;
+  --secondary-foreground: #e6ebf2;
+  --muted: #141b2b;
+  --muted-foreground: #94a3b8;
+  --accent: #172033;
+  --accent-foreground: #e6ebf2;
+  --brand: #38bdf8;
+  --brand-foreground: #060912;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #1f1f1f;
-  --input: #1f1f1f;
-  --ring: #5e6ad2;
-  --chart-1: #6366f1;
-  --chart-2: #3b82f6;
-  --chart-3: #10b981;
-  --chart-4: #f59e0b;
-  --chart-5: #ef4444;
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #e5e5e5;
-  --sidebar-primary: #5e6ad2;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a1a1a;
-  --sidebar-accent-foreground: #e5e5e5;
-  --sidebar-border: #1f1f1f;
-  --sidebar-ring: #5e6ad2;
+  --border: #1c2536;
+  --input: #1c2536;
+  --ring: #38bdf8;
+  --chart-1: #38bdf8;
+  --chart-2: #818cf8;
+  --chart-3: #34d399;
+  --chart-4: #fbbf24;
+  --chart-5: #f87171;
+  --sidebar: #060912;
+  --sidebar-foreground: #e6ebf2;
+  --sidebar-primary: #38bdf8;
+  --sidebar-primary-foreground: #060912;
+  --sidebar-accent: #141b2b;
+  --sidebar-accent-foreground: #e6ebf2;
+  --sidebar-border: #1c2536;
+  --sidebar-ring: #38bdf8;
 }
 
 @theme inline {
@@ -106,6 +113,8 @@ code {
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -165,6 +174,13 @@ code {
   .btn-press:active {
     transform: scale(0.98);
   }
+}
+
+/* Decorative glow behind marketing heroes, tinted by the brand color */
+.hero-glow {
+  background:
+    radial-gradient(circle at 20% 15%, color-mix(in oklab, var(--brand) 18%, transparent), transparent 35%),
+    radial-gradient(circle at 85% 5%, color-mix(in oklab, var(--chart-2) 14%, transparent), transparent 32%);
 }
 
 /* Hide scrollbar but keep functionality */

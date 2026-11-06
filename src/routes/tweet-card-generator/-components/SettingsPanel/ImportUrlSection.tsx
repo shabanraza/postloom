@@ -67,7 +67,7 @@ export function ImportUrlSection() {
 
     return (
         <div className="space-y-2">
-            <Label className="text-xs text-slate-500">Import from URL</Label>
+            <Label className="text-xs text-muted-foreground">Import from URL</Label>
             <div className="flex gap-2">
                 <Input
                     type="url"
@@ -79,7 +79,7 @@ export function ImportUrlSection() {
                     }}
                     onKeyDown={handleKeyDown}
                     disabled={isImporting || isDisabled}
-                    className="h-8 text-sm bg-transparent border-slate-200 dark:border-slate-700 focus-visible:ring-1 focus-visible:ring-blue-500"
+                    className="h-8 text-sm bg-transparent border-border focus-visible:ring-1 focus-visible:ring-brand"
                 />
                 <Button
                     size="sm"
@@ -95,7 +95,7 @@ export function ImportUrlSection() {
                 </Button>
             </div>
             {importError && (
-                <p className="text-xs text-red-500">{importError}</p>
+                <p className="text-xs text-destructive">{importError}</p>
             )}
         </div>
     )

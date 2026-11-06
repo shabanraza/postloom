@@ -88,7 +88,7 @@ export function ContentTab() {
 
             {/* Media/Image Section */}
             <div className="space-y-3">
-                <Label className="text-xs text-slate-500">Media</Label>
+                <Label className="text-xs text-muted-foreground">Media</Label>
                 
                 {/* Hidden file input */}
                 <input
@@ -102,7 +102,7 @@ export function ContentTab() {
 
                 {mediaUrl ? (
                     /* Preview when media is selected */
-                    <div className="relative rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                    <div className="relative rounded-lg overflow-hidden border border-border">
                         <img
                             src={mediaUrl}
                             alt="Preview"
@@ -113,7 +113,7 @@ export function ContentTab() {
                         />
                         <button
                             onClick={handleRemoveMedia}
-                            className="absolute top-2 right-2 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                            className="absolute top-2 right-2 p-1.5 rounded-full bg-black/50 text-white hover:bg-accent/70 transition-colors"
                         >
                             <X className="w-4 h-4" />
                         </button>
@@ -124,26 +124,26 @@ export function ContentTab() {
                         {/* Upload button */}
                         <label
                             htmlFor="media-upload"
-                            className="flex items-center justify-center gap-2 h-20 rounded-lg border-2 border-dashed border-slate-200 dark:border-slate-700 cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all"
+                            className="flex items-center justify-center gap-2 h-20 rounded-lg border-2 border-dashed border-border cursor-pointer hover:border-foreground/20 hover:bg-accent transition-all"
                         >
-                            <Upload className="w-5 h-5 text-slate-400" />
-                            <span className="text-sm text-slate-500">Click to upload image</span>
+                            <Upload className="w-5 h-5 text-muted-foreground" />
+                            <span className="text-sm text-muted-foreground">Click to upload image</span>
                         </label>
                         
                         {/* URL input */}
                         <div className="flex items-center gap-2">
-                            <div className="flex-1 h-px bg-slate-200 dark:bg-slate-700" />
-                            <span className="text-xs text-slate-400">or paste URL</span>
-                            <div className="flex-1 h-px bg-slate-200 dark:bg-slate-700" />
+                            <div className="flex-1 h-px bg-muted" />
+                            <span className="text-xs text-muted-foreground">or paste URL</span>
+                            <div className="flex-1 h-px bg-muted" />
                         </div>
                         
                         <div className="relative">
-                            <Link className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <Link className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                             <Input
                                 placeholder="https://..."
                                 value={mediaUrl || ''}
                                 onChange={(e) => setMediaUrl(e.target.value || undefined)}
-                                className="h-9 pl-9 text-sm bg-transparent border-slate-200 dark:border-slate-700 focus-visible:ring-1 focus-visible:ring-blue-500"
+                                className="h-9 pl-9 text-sm bg-transparent border-border focus-visible:ring-1 focus-visible:ring-brand"
                             />
                         </div>
                     </div>

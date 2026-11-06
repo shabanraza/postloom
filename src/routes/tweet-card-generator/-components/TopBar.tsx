@@ -138,24 +138,24 @@ export function TopBar() {
 
     return (
         <TooltipProvider delayDuration={300}>
-            <header className="flex h-12 sm:h-14 shrink-0 items-center justify-between px-2 sm:px-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800/60 relative z-30">
+            <header className="flex h-12 sm:h-14 shrink-0 items-center justify-between px-2 sm:px-4 bg-card/80 backdrop-blur-md border-b border-border/60 relative z-30">
                 {/* Left Section - Logo */}
                 <div className="flex items-center">
                     <PostloomLogo size="sm" showText={false} className="sm:hidden" />
-                    <PostloomLogo size="md" showText={true} className="hidden sm:flex [&_span]:dark:text-white" />
+                    <PostloomLogo size="md" showText={true} className="hidden sm:flex" />
                 </div>
 
                 {/* Right Section - Actions */}
                 <div className="flex items-center gap-1 sm:gap-3">
                     {/* Desktop action bar */}
-                    <div className="hidden sm:flex items-center gap-1 bg-white dark:bg-slate-900 p-1 rounded-xl border border-slate-100 dark:border-slate-800 shadow-soft-sm">
+                    <div className="hidden sm:flex items-center gap-1 bg-card p-1 rounded-xl border border-border shadow-soft-sm">
                         <ThemeToggle />
 
-                        <div className="w-px h-5 bg-slate-200 dark:bg-slate-800 mx-1" />
+                        <div className="w-px h-5 bg-muted mx-1" />
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500" onClick={undo}>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent rounded-lg text-muted-foreground" onClick={undo}>
                                     <Undo2 className="h-4 w-4" />
                                 </Button>
                             </TooltipTrigger>
@@ -164,18 +164,18 @@ export function TopBar() {
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500" onClick={redo}>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent rounded-lg text-muted-foreground" onClick={redo}>
                                     <Redo2 className="h-4 w-4" />
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>Redo</TooltipContent>
                         </Tooltip>
 
-                        <div className="w-px h-5 bg-slate-200 dark:bg-slate-800 mx-1" />
+                        <div className="w-px h-5 bg-muted mx-1" />
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500" onClick={reset}>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent rounded-lg text-muted-foreground" onClick={reset}>
                                     <RotateCcw className="h-4 w-4" />
                                 </Button>
                             </TooltipTrigger>
@@ -192,7 +192,7 @@ export function TopBar() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button 
-                                className="h-9 sm:h-10 px-3 sm:px-5 gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/20 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 transition-all active:scale-95 text-sm sm:text-base" 
+                                className="h-9 sm:h-10 px-3 sm:px-5 gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-all active:scale-95 text-sm sm:text-base" 
                                 disabled={isExporting}
                             >
                                 {isExporting ? (
@@ -204,23 +204,23 @@ export function TopBar() {
                                 <ChevronDown className="h-3 w-3 sm:h-3.5 sm:w-3.5 opacity-60" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-72 rounded-xl border-slate-100 dark:border-slate-800 shadow-soft-lg p-2">
+                        <DropdownMenuContent align="end" className="w-72 rounded-xl border-border shadow-soft-lg p-2">
                             {/* Export Progress */}
                             {isExporting && (
                                 <div className="px-3 py-2">
-                                    <p className="text-xs font-medium text-slate-500 mb-2">Exporting...</p>
+                                    <p className="text-xs font-medium text-muted-foreground mb-2">Exporting...</p>
                                     <Progress value={exportProgress} className="h-1.5" />
                                 </div>
                             )}
 
                             {/* Size Presets */}
                             <div className="px-2 py-1.5">
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-2">Size</p>
+                                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2 px-2">Size</p>
                                 <div className="space-y-0.5">
                                     {(Object.keys(EXPORT_SIZES) as ExportPreset[]).filter(k => k !== 'custom').map((preset) => (
                                         <DropdownMenuItem
                                             key={preset}
-                                            className="text-sm cursor-pointer rounded-lg px-3 py-2 focus:bg-slate-50 dark:focus:bg-slate-800"
+                                            className="text-sm cursor-pointer rounded-lg px-3 py-2 focus:bg-muted/50"
                                             onSelect={(e) => {
                                                 e.preventDefault()
                                                 setExportPreset(preset)
@@ -228,24 +228,24 @@ export function TopBar() {
                                             }}
                                         >
                                             <span className="flex-1 font-medium">{EXPORT_SIZES[preset].label}</span>
-                                            <span className="text-xs text-slate-400 tabular-nums">
+                                            <span className="text-xs text-muted-foreground tabular-nums">
                                                 {EXPORT_SIZES[preset].width}×{EXPORT_SIZES[preset].height}
                                             </span>
                                             {exportSettings.preset === preset && (
-                                                <span className="ml-2 text-blue-600">✓</span>
+                                                <span className="ml-2 text-brand">✓</span>
                                             )}
                                         </DropdownMenuItem>
                                     ))}
                                 </div>
                             </div>
 
-                            <DropdownMenuSeparator className="bg-slate-100 dark:bg-slate-800 my-1" />
+                            <DropdownMenuSeparator className="bg-muted my-1" />
 
                             {/* Export Buttons */}
                             <div className="p-1 space-y-1">
                                 <Button
                                     variant="ghost"
-                                    className="w-full justify-start gap-3 h-10 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
+                                    className="w-full justify-start gap-3 h-10 rounded-lg hover:bg-accent"
                                     onClick={handleExportPng}
                                     disabled={isExporting}
                                 >
@@ -253,30 +253,30 @@ export function TopBar() {
                                         <Image className="h-3.5 w-3.5" />
                                     </div>
                                     <span className="flex-1 text-left font-medium">Download PNG</span>
-                                    <span className="text-xs text-slate-400">~{estimatedPngSize}</span>
+                                    <span className="text-xs text-muted-foreground">~{estimatedPngSize}</span>
                                 </Button>
                                 <Button
                                     variant="ghost"
-                                    className="w-full justify-start gap-3 h-10 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
+                                    className="w-full justify-start gap-3 h-10 rounded-lg hover:bg-accent"
                                     onClick={handleExportGif}
                                     disabled={isExporting || !tweet.content.text || (tweet.content.text?.trim() ?? '').length === 0}
                                 >
-                                    <div className="w-6 h-6 rounded bg-purple-100 flex items-center justify-center text-purple-600">
+                                    <div className="w-6 h-6 rounded bg-brand/10 flex items-center justify-center text-brand">
                                         <Film className="h-3.5 w-3.5" />
                                     </div>
                                     <span className="flex-1 text-left font-medium">Download GIF</span>
-                                    <span className="text-xs text-slate-400">~{estimatedGifSize}</span>
+                                    <span className="text-xs text-muted-foreground">~{estimatedGifSize}</span>
                                 </Button>
 
-                                <DropdownMenuSeparator className="bg-slate-100 dark:bg-slate-800 my-1" />
+                                <DropdownMenuSeparator className="bg-muted my-1" />
 
                                 <Button
                                     variant="ghost"
-                                    className="w-full justify-start gap-3 h-10 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
+                                    className="w-full justify-start gap-3 h-10 rounded-lg hover:bg-accent"
                                     onClick={handleCopyToClipboard}
                                     disabled={isExporting}
                                 >
-                                    <div className="w-6 h-6 rounded bg-blue-100 flex items-center justify-center text-blue-600">
+                                    <div className="w-6 h-6 rounded bg-brand/10 flex items-center justify-center text-brand">
                                         {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                                     </div>
                                     <span className="flex-1 text-left font-medium">

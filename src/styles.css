@@ -21,74 +21,82 @@ code {
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #1a1a1a;
+  /* Palette: warm stone neutrals + deep sage accent. Calm, premium, no blue/purple.
+     Components use these via Tailwind classes (bg-background, text-muted-foreground,
+     bg-brand ...), never raw colors. */
+  --background: #faf9f6;
+  --foreground: #1c1b18;
   --card: #ffffff;
-  --card-foreground: #1a1a1a;
+  --card-foreground: #1c1b18;
   --popover: #ffffff;
-  --popover-foreground: #1a1a1a;
-  --primary: #1a1a1a;
-  --primary-foreground: #ffffff;
-  --secondary: #f5f5f5;
-  --secondary-foreground: #1a1a1a;
-  --muted: #f5f5f5;
-  --muted-foreground: #6b6b6b;
-  --accent: #5e6ad2;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
+  --popover-foreground: #1c1b18;
+  --primary: #1c1b18;
+  --primary-foreground: #faf9f6;
+  --secondary: #f1efea;
+  --secondary-foreground: #1c1b18;
+  --muted: #f1efea;
+  --muted-foreground: #6f6b63;
+  /* shadcn uses accent for hover/selected backgrounds: keep it subtle */
+  --accent: #ece9e2;
+  --accent-foreground: #1c1b18;
+  --brand: #4a6b57;
+  --brand-foreground: #ffffff;
+  --destructive: #b42318;
   --destructive-foreground: #ffffff;
-  --border: #e8e8e8;
-  --input: #e8e8e8;
-  --ring: #5e6ad2;
-  --chart-1: #5e6ad2;
-  --chart-2: #3b82f6;
-  --chart-3: #10b981;
-  --chart-4: #f59e0b;
-  --chart-5: #ef4444;
-  --radius: 0.5rem;
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #e5e5e5;
-  --sidebar-primary: #5e6ad2;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a1a1a;
-  --sidebar-accent-foreground: #e5e5e5;
-  --sidebar-border: #1f1f1f;
-  --sidebar-ring: #5e6ad2;
+  --border: #e5e1d8;
+  --input: #e5e1d8;
+  --ring: #4a6b57;
+  --chart-1: #4a6b57;
+  --chart-2: #b08a4f;
+  --chart-3: #7d8f69;
+  --chart-4: #c08457;
+  --chart-5: #a3a097;
+  --radius: 0.625rem;
+  --sidebar: #f5f3ee;
+  --sidebar-foreground: #1c1b18;
+  --sidebar-primary: #1c1b18;
+  --sidebar-primary-foreground: #faf9f6;
+  --sidebar-accent: #ece9e2;
+  --sidebar-accent-foreground: #1c1b18;
+  --sidebar-border: #e5e1d8;
+  --sidebar-ring: #4a6b57;
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #e5e5e5;
-  --card: #111111;
-  --card-foreground: #e5e5e5;
-  --popover: #111111;
-  --popover-foreground: #e5e5e5;
-  --primary: #e5e5e5;
-  --primary-foreground: #0a0a0a;
-  --secondary: #1a1a1a;
-  --secondary-foreground: #e5e5e5;
-  --muted: #1a1a1a;
-  --muted-foreground: #888888;
-  --accent: #5e6ad2;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #1f1f1f;
-  --input: #1f1f1f;
-  --ring: #5e6ad2;
-  --chart-1: #6366f1;
-  --chart-2: #3b82f6;
-  --chart-3: #10b981;
-  --chart-4: #f59e0b;
-  --chart-5: #ef4444;
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #e5e5e5;
-  --sidebar-primary: #5e6ad2;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a1a1a;
-  --sidebar-accent-foreground: #e5e5e5;
-  --sidebar-border: #1f1f1f;
-  --sidebar-ring: #5e6ad2;
+  --background: #12110f;
+  --foreground: #ecebe6;
+  --card: #1a1916;
+  --card-foreground: #ecebe6;
+  --popover: #1a1916;
+  --popover-foreground: #ecebe6;
+  --primary: #ecebe6;
+  --primary-foreground: #12110f;
+  --secondary: #23221e;
+  --secondary-foreground: #ecebe6;
+  --muted: #23221e;
+  --muted-foreground: #a09c92;
+  --accent: #2a2925;
+  --accent-foreground: #ecebe6;
+  --brand: #9dbfa6;
+  --brand-foreground: #12110f;
+  --destructive: #f0645a;
+  --destructive-foreground: #12110f;
+  --border: #2c2b27;
+  --input: #2c2b27;
+  --ring: #9dbfa6;
+  --chart-1: #9dbfa6;
+  --chart-2: #d4b483;
+  --chart-3: #b5c39f;
+  --chart-4: #e0a77e;
+  --chart-5: #77746c;
+  --sidebar: #12110f;
+  --sidebar-foreground: #ecebe6;
+  --sidebar-primary: #ecebe6;
+  --sidebar-primary-foreground: #12110f;
+  --sidebar-accent: #23221e;
+  --sidebar-accent-foreground: #ecebe6;
+  --sidebar-border: #2c2b27;
+  --sidebar-ring: #9dbfa6;
 }
 
 @theme inline {
@@ -106,6 +114,8 @@ code {
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -164,6 +174,28 @@ code {
 
   .btn-press:active {
     transform: scale(0.98);
+  }
+}
+
+/* Quiet top fade behind marketing heroes: one neutral tone, no colored glow */
+.hero-glow {
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--muted) 70%, transparent), transparent 70%);
+}
+
+/* Landing page marquee: each row holds two copies of its list and slides one copy's width */
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 45s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
   }
 }
 

@@ -37,7 +37,7 @@ export function TweetTextSection() {
     return (
         <div className="space-y-2">
             <div className="flex items-center justify-between">
-                <Label className="text-xs text-slate-500">Text</Label>
+                <Label className="text-xs text-muted-foreground">Text</Label>
                 <EmojiPicker onEmojiSelect={handleEmojiSelect} />
             </div>
             <div className="relative">
@@ -49,9 +49,9 @@ export function TweetTextSection() {
                     maxLength={maxChars}
                     className={cn(
                         "min-h-[100px] resize-y text-sm leading-relaxed p-2.5",
-                        "bg-transparent border-slate-200 dark:border-slate-700",
-                        "text-slate-900 dark:text-slate-100 placeholder:text-slate-400",
-                        "rounded-md focus-visible:ring-1 focus-visible:ring-blue-500",
+                        "bg-transparent border-border",
+                        "text-foreground placeholder:text-muted-foreground",
+                        "rounded-md focus-visible:ring-1 focus-visible:ring-brand",
                         "break-words"
                     )}
                     style={{
@@ -61,7 +61,7 @@ export function TweetTextSection() {
                 />
                 <span className={cn(
                     'absolute bottom-2 right-2 text-[10px] tabular-nums pointer-events-none',
-                    remaining <= 20 ? 'text-red-500 font-medium' : 'text-slate-400'
+                    remaining <= 20 ? 'text-destructive font-medium' : 'text-muted-foreground'
                 )}>
                     {remaining}
                 </span>

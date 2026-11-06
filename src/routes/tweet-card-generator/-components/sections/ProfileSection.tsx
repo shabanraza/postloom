@@ -62,25 +62,25 @@ export function ProfileSection() {
                 {/* Inputs */}
                 <div className="flex-1 space-y-2">
                     <div className="space-y-1">
-                        <Label className="text-xs text-slate-500">Name</Label>
+                        <Label className="text-xs text-muted-foreground">Name</Label>
                         <Input
                             placeholder="Name"
                             value={tweet.profile.displayName}
                             onChange={(e) => setDisplayName(e.target.value)}
                             maxLength={LIMITS.displayName}
-                            className="h-8 text-sm bg-transparent border-slate-200 dark:border-slate-700 rounded-md focus-visible:ring-1 focus-visible:ring-blue-500"
+                            className="h-8 text-sm bg-transparent border-border rounded-md focus-visible:ring-1 focus-visible:ring-brand"
                         />
                     </div>
                     <div className="space-y-1">
-                        <Label className="text-xs text-slate-500">Handle</Label>
+                        <Label className="text-xs text-muted-foreground">Handle</Label>
                         <div className="relative">
-                            <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-slate-400">@</span>
+                            <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">@</span>
                             <Input
                                 placeholder="username"
                                 value={tweet.profile.username}
                                 onChange={handleUsernameChange}
                                 maxLength={LIMITS.username}
-                                className="h-8 pl-6 text-sm bg-transparent border-slate-200 dark:border-slate-700 rounded-md focus-visible:ring-1 focus-visible:ring-blue-500"
+                                className="h-8 pl-6 text-sm bg-transparent border-border rounded-md focus-visible:ring-1 focus-visible:ring-brand"
                             />
                         </div>
                     </div>
@@ -89,15 +89,15 @@ export function ProfileSection() {
 
             {/* Verified Badge Row */}
             <div className="space-y-2">
-                <Label className="text-xs text-slate-500">Badge</Label>
+                <Label className="text-xs text-muted-foreground">Badge</Label>
                 <div className="grid grid-cols-4 gap-2">
                     <button
                         onClick={() => setBadgeType('none')}
                         className={cn(
                             "h-9 px-3 text-xs font-medium rounded-lg border transition-all",
                             tweet.profile.badgeType === 'none' || !tweet.profile.badgeType
-                                ? "bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
-                                : "bg-transparent border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                ? "bg-muted border-border text-foreground"
+                                : "bg-transparent border-border text-muted-foreground hover:bg-accent"
                         )}
                     >
                         None
@@ -107,8 +107,8 @@ export function ProfileSection() {
                         className={cn(
                             "h-9 px-3 rounded-lg border flex items-center justify-center transition-all",
                             tweet.profile.badgeType === 'blue'
-                                ? "bg-blue-50 dark:bg-blue-950/50 border-blue-300 dark:border-blue-700"
-                                : "bg-transparent border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                ? "bg-brand/10 border-brand/50"
+                                : "bg-transparent border-border hover:bg-accent"
                         )}
                     >
                         <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#1D9BF0] fill-current">
@@ -121,7 +121,7 @@ export function ProfileSection() {
                             "h-9 px-3 rounded-lg border flex items-center justify-center transition-all",
                             tweet.profile.badgeType === 'gold'
                                 ? "bg-yellow-50 dark:bg-yellow-950/50 border-yellow-300 dark:border-yellow-700"
-                                : "bg-transparent border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                : "bg-transparent border-border hover:bg-accent"
                         )}
                     >
                         <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#F4AF16] fill-current">
@@ -133,8 +133,8 @@ export function ProfileSection() {
                         className={cn(
                             "h-9 px-3 rounded-lg border flex items-center justify-center transition-all",
                             tweet.profile.badgeType === 'gray'
-                                ? "bg-slate-100 dark:bg-slate-800 border-slate-400 dark:border-slate-500"
-                                : "bg-transparent border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                ? "bg-muted border-foreground/40"
+                                : "bg-transparent border-border hover:bg-accent"
                         )}
                     >
                         <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#6B7280] fill-current">

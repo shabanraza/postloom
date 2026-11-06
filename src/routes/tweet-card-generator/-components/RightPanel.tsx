@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Sparkles, Image, Wand2 } from 'lucide-react'
+import { Brush, Image, Film } from 'lucide-react'
 import { useTweetStudioStore } from '../-state'
 import {
     QuickPresetsTab,
@@ -22,28 +22,28 @@ export function RightPanel() {
     }, [studioMode])
 
     return (
-        <aside className="flex w-80 shrink-0 flex-col overflow-hidden border-l border-slate-200/60 dark:border-slate-800/60 bg-transparent z-20">
+        <aside className="flex w-80 shrink-0 flex-col overflow-hidden border-l border-border/60 bg-transparent z-20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-1 flex-col overflow-hidden">
-                <TabsList className="mx-3 mt-3 mb-2 shrink-0 grid w-auto grid-cols-3 h-10 p-1 bg-white dark:bg-slate-900 rounded-xl shadow-soft-sm border border-slate-100 dark:border-slate-800">
+                <TabsList className="mx-3 mt-3 mb-2 shrink-0 grid w-auto grid-cols-3 h-10 p-1 bg-card rounded-xl shadow-soft-sm border border-border">
                     <TabsTrigger
                         value="design"
-                        className="rounded-lg text-xs gap-1.5 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-200"
+                        className="rounded-lg text-xs gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-200"
                     >
-                        <Sparkles className="h-3.5 w-3.5" />
+                        <Brush className="h-3.5 w-3.5" />
                         <span>Design</span>
                     </TabsTrigger>
                     <TabsTrigger
                         value="background"
-                        className="rounded-lg text-xs gap-1.5 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-200"
+                        className="rounded-lg text-xs gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-200"
                     >
                         <Image className="h-3.5 w-3.5" />
                         <span>BG</span>
                     </TabsTrigger>
                     <TabsTrigger
                         value="animation"
-                        className="rounded-lg text-xs gap-1.5 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-200"
+                        className="rounded-lg text-xs gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-200"
                     >
-                        <Wand2 className="h-3.5 w-3.5" />
+                        <Film className="h-3.5 w-3.5" />
                         <span>Anim</span>
                     </TabsTrigger>
                 </TabsList>

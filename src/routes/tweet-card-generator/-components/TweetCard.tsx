@@ -284,7 +284,7 @@ export function TweetCard() {
                             marginBottom: smallGap,
                         }}
                     >
-                        {formatDate(content.timestamp)}
+                        <span suppressHydrationWarning>{formatDate(content.timestamp)}</span>
                         {metrics.showMetrics && (
                             <> · <span className={themeStyles.text + " font-bold"}>{formatNumber(metrics.views)}</span> <span className="font-normal">Views</span></>
                         )}

@@ -127,7 +127,7 @@ export function MobilePreview() {
     ]
 
     return (
-        <div className="h-full flex flex-col bg-slate-100/50 dark:bg-[#0a0a0f] relative overflow-hidden">
+        <div className="h-full flex flex-col bg-muted/50 dark:bg-[#0a0a0f] relative overflow-hidden">
             {/* Subtle dot pattern background */}
             <div 
                 className="absolute inset-0 z-0 pointer-events-none opacity-20"
@@ -140,14 +140,14 @@ export function MobilePreview() {
             {/* Top Controls Row */}
             <div className="relative z-10 flex items-center justify-between px-2 py-1.5 shrink-0">
                 {/* Mode Toggle */}
-                <div className="flex items-center gap-0.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-0.5 rounded-full border border-slate-200 dark:border-slate-700">
+                <div className="flex items-center gap-0.5 bg-card/90 backdrop-blur-sm p-0.5 rounded-full border border-border">
                     <button
                         onClick={() => setStudioMode('static')}
                         className={cn(
                             "flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold transition-all",
                             studioMode === 'static'
-                                ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                                : "text-slate-500"
+                                ? "bg-primary text-primary-foreground"
+                                : "text-muted-foreground"
                         )}
                     >
                         <ImageIcon className="w-3 h-3" />
@@ -158,8 +158,8 @@ export function MobilePreview() {
                         className={cn(
                             "flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold transition-all",
                             studioMode === 'gif'
-                                ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                                : "text-slate-500"
+                                ? "bg-primary text-primary-foreground"
+                                : "text-muted-foreground"
                         )}
                     >
                         <Film className="w-3 h-3" />
@@ -168,7 +168,7 @@ export function MobilePreview() {
                 </div>
 
                 {/* Platform Selector */}
-                <div className="flex items-center gap-0.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-0.5 rounded-full border border-slate-200 dark:border-slate-700">
+                <div className="flex items-center gap-0.5 bg-card/90 backdrop-blur-sm p-0.5 rounded-full border border-border">
                     {platforms.map((p) => {
                         const Icon = p.icon
                         const isActive = platform === p.id
@@ -179,8 +179,8 @@ export function MobilePreview() {
                                 className={cn(
                                     "flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium transition-all",
                                     isActive
-                                        ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                                        : "text-slate-500"
+                                        ? "bg-primary text-primary-foreground"
+                                        : "text-muted-foreground"
                                 )}
                             >
                                 <Icon className="w-3 h-3" />
@@ -210,7 +210,7 @@ export function MobilePreview() {
                     >
                         <div
                             id="tweet-canvas"
-                            className="shadow-xl ring-1 ring-slate-900/5 dark:ring-white/10 overflow-hidden"
+                            className="shadow-xl ring-1 ring-primary/5 overflow-hidden"
                             style={{
                                 width: canvasWidth,
                                 height: canvasHeight,

@@ -52,7 +52,7 @@ export function BrandKit() {
         <div className="space-y-6">
             {/* Brand Colors */}
             <div className="space-y-3">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Brand Colors</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Brand Colors</p>
                 <div className="flex flex-wrap gap-2">
                     {activeKit.colors.map((color) => (
                         <Popover key={color.id}>
@@ -61,8 +61,8 @@ export function BrandKit() {
                                     className={cn(
                                         "relative group h-9 w-9 rounded-lg border-2 transition-all hover:scale-105 shadow-sm",
                                         design.backgroundColor === color.color
-                                            ? "border-slate-900 dark:border-white ring-2 ring-slate-900/10 dark:ring-white/20"
-                                            : "border-transparent hover:border-slate-300 dark:hover:border-slate-600"
+                                            ? "border-primary ring-2 ring-primary/10"
+                                            : "border-transparent hover:border-foreground/20"
                                     )}
                                     style={{ backgroundColor: color.color }}
                                     title={color.name}
@@ -93,8 +93,8 @@ export function BrandKit() {
                     {/* Add Color */}
                     <Popover>
                         <PopoverTrigger asChild>
-                            <button className="h-9 w-9 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex items-center justify-center hover:border-slate-400 dark:hover:border-slate-500 transition-colors">
-                                <Plus className="h-4 w-4 text-slate-400" />
+                            <button className="h-9 w-9 rounded-lg border-2 border-dashed border-border flex items-center justify-center hover:border-foreground/20 transition-colors">
+                                <Plus className="h-4 w-4 text-muted-foreground" />
                             </button>
                         </PopoverTrigger>
                         <PopoverContent className="w-60" align="start">
@@ -137,7 +137,7 @@ export function BrandKit() {
 
             {/* Brand Fonts */}
             <div className="space-y-3">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Brand Fonts</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Brand Fonts</p>
                 <div className="space-y-2">
                     {activeKit.fonts.map((font) => (
                         <div
@@ -145,13 +145,13 @@ export function BrandKit() {
                             className={cn(
                                 "group flex items-center justify-between p-2.5 rounded-lg border cursor-pointer transition-all",
                                 design.fontFamily === font.fontFamily && design.fontWeight === font.fontWeight
-                                    ? "border-slate-900 dark:border-white bg-slate-50 dark:bg-slate-800"
-                                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+                                    ? "border-primary bg-muted/50"
+                                    : "border-border hover:border-foreground/20"
                             )}
                             onClick={() => applyBrandFont(font.fontFamily, font.fontWeight)}
                         >
                             <div className="flex items-center gap-2">
-                                <Type className="h-4 w-4 text-slate-400" />
+                                <Type className="h-4 w-4 text-muted-foreground" />
                                 <span
                                     className="text-sm"
                                     style={{ fontFamily: font.fontFamily, fontWeight: font.fontWeight }}
@@ -176,7 +176,7 @@ export function BrandKit() {
                     {/* Add Font */}
                     <Popover>
                         <PopoverTrigger asChild>
-                            <button className="w-full p-2.5 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex items-center justify-center gap-2 hover:border-slate-400 dark:hover:border-slate-500 transition-colors text-sm text-slate-400">
+                            <button className="w-full p-2.5 rounded-lg border-2 border-dashed border-border flex items-center justify-center gap-2 hover:border-foreground/20 transition-colors text-sm text-muted-foreground">
                                 <Plus className="h-4 w-4" />
                                 Add Font
                             </button>

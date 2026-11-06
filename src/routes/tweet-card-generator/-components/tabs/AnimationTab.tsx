@@ -36,7 +36,7 @@ export function AnimationTab() {
         <div className="space-y-5">
             {/* Animation Type */}
             <div className="space-y-2">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Effect</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Effect</p>
                 <div className="grid grid-cols-4 gap-1.5">
                     {ANIMATION_TYPES.map((type) => (
                         <button
@@ -45,8 +45,8 @@ export function AnimationTab() {
                             className={cn(
                                 "flex flex-col items-center gap-0.5 p-2 rounded-md transition-all",
                                 animation.type === type.value
-                                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'bg-muted text-muted-foreground hover:bg-accent'
                             )}
                         >
                             <span className="text-sm">{type.icon}</span>
@@ -64,8 +64,8 @@ export function AnimationTab() {
                     {/* Speed */}
                     <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
-                            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Speed</p>
-                            <span className="text-[10px] font-mono text-slate-400">{animation.speed} c/s</span>
+                            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Speed</p>
+                            <span className="text-[10px] font-mono text-muted-foreground">{animation.speed} c/s</span>
                         </div>
                         <Slider
                             value={[animation.speed]}
@@ -79,7 +79,7 @@ export function AnimationTab() {
 
                     {/* Delay */}
                     <div className="space-y-1.5">
-                        <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Delay</p>
+                        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Delay</p>
                         <div className="flex gap-1">
                             {DELAY_OPTIONS.map((delay) => (
                                 <button
@@ -88,8 +88,8 @@ export function AnimationTab() {
                                     className={cn(
                                         "flex-1 h-7 rounded-md text-[10px] font-medium transition-all",
                                         animation.delay === delay
-                                            ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                                            : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                            ? 'bg-primary text-primary-foreground'
+                                            : 'bg-muted text-muted-foreground hover:bg-accent'
                                     )}
                                 >
                                     {delay}s
@@ -103,7 +103,7 @@ export function AnimationTab() {
                     {/* Toggles */}
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                            <p className="text-[10px] font-medium text-slate-500">Loop</p>
+                            <p className="text-[10px] font-medium text-muted-foreground">Loop</p>
                             <Switch
                                 checked={animation.loop}
                                 onCheckedChange={setAnimationLoop}
@@ -111,7 +111,7 @@ export function AnimationTab() {
                             />
                         </div>
                         <div className="flex items-center justify-between">
-                            <p className="text-[10px] font-medium text-slate-500">Cursor</p>
+                            <p className="text-[10px] font-medium text-muted-foreground">Cursor</p>
                             <Switch
                                 checked={animation.showCursor}
                                 onCheckedChange={setShowCursor}
@@ -127,16 +127,16 @@ export function AnimationTab() {
             {/* Estimate */}
             <div className="flex justify-between text-[10px]">
                 <div>
-                    <p className="text-slate-400">Duration</p>
-                    <p className="font-medium text-slate-600 dark:text-slate-300">{estimatedDuration.toFixed(1)}s</p>
+                    <p className="text-muted-foreground">Duration</p>
+                    <p className="font-medium text-muted-foreground">{estimatedDuration.toFixed(1)}s</p>
                 </div>
                 <div className="text-center">
-                    <p className="text-slate-400">Frames</p>
-                    <p className="font-medium text-slate-600 dark:text-slate-300">{estimatedFrames}</p>
+                    <p className="text-muted-foreground">Frames</p>
+                    <p className="font-medium text-muted-foreground">{estimatedFrames}</p>
                 </div>
                 <div className="text-right">
-                    <p className="text-slate-400">Est. Size</p>
-                    <p className="font-medium text-slate-600 dark:text-slate-300">~2MB</p>
+                    <p className="text-muted-foreground">Est. Size</p>
+                    <p className="font-medium text-muted-foreground">~2MB</p>
                 </div>
             </div>
         </div>

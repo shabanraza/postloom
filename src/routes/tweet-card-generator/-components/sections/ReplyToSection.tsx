@@ -23,7 +23,7 @@ export function ReplyToSection() {
     return (
         <div className="space-y-2">
             <div className="flex items-center justify-between">
-                <Label className="text-xs text-slate-500">Reply To</Label>
+                <Label className="text-xs text-muted-foreground">Reply To</Label>
                 <Switch
                     checked={isEnabled}
                     onCheckedChange={handleToggle}
@@ -32,12 +32,12 @@ export function ReplyToSection() {
 
             {isEnabled && (
                 <div className="relative">
-                    <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-slate-400">@</span>
+                    <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">@</span>
                     <Input
                         placeholder="username"
                         value={tweet.content.replyTo || ''}
                         onChange={handleUsernameChange}
-                        className="h-8 pl-6 text-sm bg-transparent border-slate-200 dark:border-slate-700 rounded-md focus-visible:ring-1 focus-visible:ring-blue-500"
+                        className="h-8 pl-6 text-sm bg-transparent border-border rounded-md focus-visible:ring-1 focus-visible:ring-brand"
                     />
                 </div>
             )}

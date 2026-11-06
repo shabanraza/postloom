@@ -14,3 +14,4 @@
 
 - [Home](https://postloom.studio/): overview and FAQ
 - [Tweet Card Generator](https://postloom.studio/tweet-card-generator): the free editor, runs in the browser
+- [Carousel Maker](https://postloom.studio/carousel-maker): turn a tweet thread or any text into 1080x1350 Instagram carousel slides (PNG) or a LinkedIn PDF carousel; free, no sign-up

@@ -1,0 +1,16 @@
+# Postloom
+
+> Postloom is a free online tweet card generator. It turns a tweet (pasted by URL or written from scratch) into a polished image or animated GIF for sharing on Instagram, LinkedIn, X/Twitter and Threads. No sign-up, no watermark, unlimited downloads.
+
+## What you can do
+
+- Import a tweet by URL, or write the text, name, handle and metrics yourself
+- Choose a card style for X/Twitter, Threads or LinkedIn, plus light, dim or dark themes
+- Customise background (solid, gradient, image), padding, canvas size and brand kit
+- Build threads, polls, quote tweets and replies
+- Export as PNG or animated GIF in sizes for Instagram posts and stories, LinkedIn and X
+
+## Links
+
+- [Home](https://postloom.studio/): overview and FAQ
+- [Tweet Card Generator](https://postloom.studio/tweet-card-generator): the free editor, runs in the browser

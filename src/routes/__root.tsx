@@ -10,6 +10,7 @@ import { Provider as QueryProviderWrapper } from '@/integrations/tanstack-query/
 import appCss from '../styles.css?url'
 import { PrivacyNotice } from '@/components/PrivacyNotice'
 import { Toaster } from '@/components/ui/sonner'
+import { GA4_MEASUREMENT_ID } from '@/lib/analytics'
 
 import type { QueryClient } from '@tanstack/react-query'
 
@@ -126,10 +127,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
           sizes: '192x192',
           href: '/logo192.png',
         },
-        {
-          rel: 'canonical',
-          href: siteUrl,
-        },
+        // Canonical URLs are set per route so each page can be indexed on its own
       ],
     }
   },
@@ -138,8 +136,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 })
 
 function RootComponent() {
-  // Google Analytics 4 ID - use env var or fallback to hardcoded value
-  const ga4Id = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-7T3RYZQR2M'
+  const ga4Id = GA4_MEASUREMENT_ID
 
   // Suppress AbortError from unhandled promise rejections
   // These are normal when requests are cancelled during navigation/component unmount
@@ -173,6 +170,14 @@ function RootComponent() {
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
+              var consent = null;
+              try { consent = localStorage.getItem('analytics-consent'); } catch (e) {}
+              gtag('consent', 'default', {
+                analytics_storage: consent === 'declined' ? 'denied' : 'granted',
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied'
+              });
               gtag('js', new Date());
               gtag('config', '${ga4Id}');
             `,
@@ -196,11 +201,6 @@ function RootComponent() {
               description: 'Free tweet card generator and social media card creator. Design professional Instagram posts, Twitter cards, LinkedIn graphics, and animated GIFs. No design skills needed. 100% free forever.',
               url: 'https://postloom.studio',
               image: 'https://postloom.studio/postloom_light.png',
-              aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: '5',
-                ratingCount: '100',
-              },
               featureList: [
                 'Tweet Card Generator',
                 'Social Media Card Creator',
@@ -213,29 +213,6 @@ function RootComponent() {
                 'No Watermarks',
                 'No Design Skills Required',
               ],
-            }),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'SoftwareApplication',
-              name: 'Postloom',
-              description: 'Free tweet card generator and social media card creator tool',
-              applicationCategory: 'DesignApplication',
-              operatingSystem: 'Web Browser',
-              offers: {
-                '@type': 'Offer',
-                price: '0',
-                priceCurrency: 'USD',
-              },
-              aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: '5',
-                bestRating: '5',
-              },
             }),
           }}
         />

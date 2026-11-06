@@ -18,7 +18,7 @@ declare global {
     }
     // Google Analytics 4
     gtag?: (
-      command: 'config' | 'event' | 'set' | 'js',
+      command: 'config' | 'event' | 'set' | 'js' | 'consent',
       targetId: string | Date,
       config?: Record<string, unknown>
     ) => void
@@ -27,6 +27,10 @@ declare global {
     _postloom_session_start?: number
   }
 }
+
+/** GA4 measurement ID: env var, falling back to the production property */
+export const GA4_MEASUREMENT_ID: string =
+  import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-7T3RYZQR2M'
 
 // Track session start for duration calculation
 let sessionStartTime: number | null = null
@@ -61,7 +65,7 @@ export function trackEvent(
  */
 export function trackPageView(path: string): void {
   if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('config', import.meta.env.VITE_GA4_MEASUREMENT_ID || '', {
+    window.gtag('config', GA4_MEASUREMENT_ID, {
       page_path: path,
     })
   }

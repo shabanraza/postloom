@@ -36,4 +36,26 @@ export const TOOLS: ReadonlyArray<Tool> = [
   },
 ]
 
+export interface LandingPage {
+  /** Route path, also used in sitemap.xml and llms.txt */
+  path: '/tweet-to-image' | '/thread-to-carousel' | '/linkedin-carousel-maker' | '/instagram-carousel-maker' | '/wall-of-love-generator'
+  /** Short link text for the footer */
+  name: string
+  /** The tool the page runs on */
+  tool: Tool['path']
+}
+
+/**
+ * Single-purpose landing pages: each targets one search phrase and runs an
+ * existing tool with its own copy and defaults. Linked from the footer, not the
+ * header menu. Also add each URL to public/sitemap.xml and public/llms.txt.
+ */
+export const LANDING_PAGES: ReadonlyArray<LandingPage> = [
+  { path: '/tweet-to-image', name: 'Tweet to image', tool: '/tweet-card-generator' },
+  { path: '/thread-to-carousel', name: 'Thread to carousel', tool: '/carousel-maker' },
+  { path: '/linkedin-carousel-maker', name: 'LinkedIn carousel maker', tool: '/carousel-maker' },
+  { path: '/instagram-carousel-maker', name: 'Instagram carousel maker', tool: '/carousel-maker' },
+  { path: '/wall-of-love-generator', name: 'Wall of love generator', tool: '/testimonial-generator' },
+]
+
 export const SITE_URL = 'https://postloom.studio'

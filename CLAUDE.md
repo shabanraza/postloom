@@ -77,10 +77,15 @@ public/
 ## Adding a new tool
 
 1. Create `src/routes/<tool-slug>/index.tsx` using `ToolPage` + `ToolWorkspace` from `@/components/layout/ToolPage` (hero, settings | preview, How it works, FAQ with FAQPage JSON-LD).
-2. Give the route its own `head()`: unique title, description, OG/Twitter tags and `canonical` (copy the pattern in `carousel-maker/index.tsx`).
+2. Give the route its own `head()` with `pageHead({ path, title, description })` from `@/lib/seo` (unique title, description, OG/Twitter tags and canonical).
 3. Register it in `src/lib/tools.ts`, and add its URL to `public/sitemap.xml` and `public/llms.txt` (`src/lib/tools.test.ts` fails if they drift).
 4. Track `export_start`, `export_complete`, `export_error` via `trackEvent` with a `format` param (e.g. `carousel_pdf`).
 5. Keep heavy work in the browser; put pure logic in `-lib/` with unit tests.
+6. Put the tool UI in `-components/` as a configurable component (copy, FAQs, defaults as props) so landing pages can reuse it.
+
+## Adding a landing page
+
+Landing pages target one search phrase (e.g. `/linkedin-carousel-maker`) and run an existing tool with their own h1, intro, steps, FAQs and defaults. Create `src/routes/<slug>/index.tsx` with `pageHead`, register it in `LANDING_PAGES` in `src/lib/tools.ts` (footer "Popular" column), and add it to `sitemap.xml` and `llms.txt`. Copy must be unique per page and honest about what the tool does.
 
 ## Design rules (follow for every UI change)
 

@@ -16,3 +16,11 @@
 - [Tweet Card Generator](https://postloom.studio/tweet-card-generator): the free editor, runs in the browser
 - [Carousel Maker](https://postloom.studio/carousel-maker): turn a tweet thread or any text into 1080x1350 Instagram carousel slides (PNG) or a LinkedIn PDF carousel; free, no sign-up
 - [Testimonial Generator](https://postloom.studio/testimonial-generator): turn tweets (pasted by link) and customer quotes into branded testimonial images (PNG, square, portrait or landscape) and copy a free "wall of love" HTML embed for your website; free, no sign-up, no watermark
+
+## Use-case pages
+
+- [Tweet to image](https://postloom.studio/tweet-to-image): convert tweet text into a clean PNG card instead of a screenshot; free, no watermark
+- [Thread to carousel](https://postloom.studio/thread-to-carousel): repurpose an X/Twitter thread into a LinkedIn PDF carousel or Instagram slides; thread numbering removed automatically
+- [LinkedIn carousel maker](https://postloom.studio/linkedin-carousel-maker): turn text into a LinkedIn PDF document carousel (1080x1350 slides); free, no watermark
+- [Instagram carousel maker](https://postloom.studio/instagram-carousel-maker): turn text into 1080x1350 Instagram carousel PNG slides; free, no sign-up
+- [Wall of love generator](https://postloom.studio/wall-of-love-generator): build a testimonial wall from tweets and quotes and embed it with plain HTML (no script, no subscription)

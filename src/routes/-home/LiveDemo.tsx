@@ -19,7 +19,7 @@ const SAMPLES = [
 const MAX_CHARS = 280
 
 /** Hero demo: types sample tweets until the visitor edits, then renders their text live. */
-export function LiveDemo() {
+export function LiveDemo({ source = 'home' }: { source?: string } = {}) {
   const reduce = useReducedMotion()
   const [text, setText] = useState(SAMPLES[0])
   const [typing, setTyping] = useState(false)
@@ -75,7 +75,7 @@ export function LiveDemo() {
     if (!cardRef.current || busy) return
     setBusy(true)
     takeOver()
-    trackEvent('export_start', { format: 'home_demo_png', theme: style })
+    trackEvent('export_start', { format: `${source}_demo_png`, theme: style })
     try {
       const { domToBlob } = await import('modern-screenshot')
       const blob = await domToBlob(cardRef.current, { scale: 2, type: 'image/png' })
@@ -87,10 +87,10 @@ export function LiveDemo() {
       a.click()
       a.remove()
       setTimeout(() => URL.revokeObjectURL(url), 1000)
-      trackEvent('export_complete', { format: 'home_demo_png', theme: style })
+      trackEvent('export_complete', { format: `${source}_demo_png`, theme: style })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
-      trackEvent('export_error', { format: 'home_demo_png', error_message: message.slice(0, 100) })
+      trackEvent('export_error', { format: `${source}_demo_png`, error_message: message.slice(0, 100) })
     } finally {
       setBusy(false)
     }
@@ -147,7 +147,7 @@ export function LiveDemo() {
             <Button size="sm" variant="ghost" asChild>
               <Link
                 to="/tweet-card-generator"
-                onClick={() => trackCtaClick('demo_open_editor', 'hero_demo')}
+                onClick={() => trackCtaClick('demo_open_editor', `${source}_demo`)}
               >
                 Full editor
                 <ArrowRight />

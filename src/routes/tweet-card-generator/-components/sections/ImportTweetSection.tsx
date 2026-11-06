@@ -54,18 +54,18 @@ export function ImportTweetSection() {
 
     return (
         <div className="space-y-3">
-            <p className="text-xs font-bold text-slate-900 dark:text-white">Import Tweet</p>
+            <p className="text-xs font-bold text-foreground">Import Tweet</p>
 
             <div className="flex gap-2">
                 <div className="relative flex-1">
-                    <Link2 className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                    <Link2 className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                     <Input
                         type="url"
                         placeholder="Paste Twitter/X URL here..."
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        className="pl-8 h-8 text-xs bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus-visible:ring-1 focus-visible:ring-blue-500 rounded-lg"
+                        className="pl-8 h-8 text-xs bg-muted/50 border-border focus-visible:ring-1 focus-visible:ring-brand rounded-lg"
                     />
                 </div>
                 <Button
@@ -73,7 +73,7 @@ export function ImportTweetSection() {
                     size="sm"
                     onClick={handleImport}
                     disabled={isLoading || !url.trim()}
-                    className="h-8 px-3 bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 rounded-lg"
+                    className="h-8 px-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg"
                 >
                     {isLoading ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -84,7 +84,7 @@ export function ImportTweetSection() {
             </div>
 
             {error && (
-                <div className="flex items-start gap-1.5 text-[10px] text-red-500">
+                <div className="flex items-start gap-1.5 text-[10px] text-destructive">
                     <AlertCircle className="h-3 w-3 mt-0.5 shrink-0" />
                     <span>{error}</span>
                 </div>

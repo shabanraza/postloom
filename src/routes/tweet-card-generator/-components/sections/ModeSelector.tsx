@@ -13,7 +13,7 @@ export function ModeSelector() {
     ]
 
     return (
-        <RadioGroup value={mode} className="flex w-full bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+        <RadioGroup value={mode} className="flex w-full bg-muted p-1 rounded-xl">
             {modes.map((m) => (
                 <Label
                     key={m.value}
@@ -21,8 +21,8 @@ export function ModeSelector() {
                     className={cn(
                         'flex flex-1 items-center justify-center gap-2 px-4 py-2.5 rounded-lg cursor-pointer transition-all',
                         mode === m.value
-                            ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white font-medium'
-                            : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-700/50',
+                            ? 'bg-card shadow-sm text-foreground font-medium'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-accent/50',
                         m.value === 'url' && 'opacity-60 cursor-not-allowed'
                     )}
                 >

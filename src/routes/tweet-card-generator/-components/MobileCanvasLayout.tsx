@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Upload, Link, X, FileText, Sparkles, Image, Wand2, Palette } from 'lucide-react'
+import { Upload, Link, X, FileText, Brush, Image, Film, Palette } from 'lucide-react'
 import { MobilePreview } from './MobilePreview'
 import { ImportUrlSection } from './SettingsPanel/ImportUrlSection'
 import { ProfileSection, TweetTextSection, MetricsAndTimeSection, ReplyToSection, PollSection, CardTypeSelector } from './sections'
@@ -19,9 +19,9 @@ type TabType = 'content' | 'design' | 'background' | 'animation' | 'brandkit'
 
 const tabs: { id: TabType; label: string; icon: typeof FileText }[] = [
     { id: 'content', label: 'Content', icon: FileText },
-    { id: 'design', label: 'Design', icon: Sparkles },
+    { id: 'design', label: 'Design', icon: Brush },
     { id: 'background', label: 'Background', icon: Image },
-    { id: 'animation', label: 'Animation', icon: Wand2 },
+    { id: 'animation', label: 'Animation', icon: Film },
     { id: 'brandkit', label: 'Brand Kit', icon: Palette },
 ]
 
@@ -79,7 +79,7 @@ function ContentTabContent() {
             {/* Media Upload */}
             <div className="h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent" />
             <div className="space-y-2">
-                <Label className="text-xs text-slate-500">Media</Label>
+                <Label className="text-xs text-muted-foreground">Media</Label>
                 <input
                     ref={fileInputRef}
                     type="file"
@@ -90,7 +90,7 @@ function ContentTabContent() {
                 />
 
                 {mediaUrl ? (
-                    <div className="relative rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                    <div className="relative rounded-lg overflow-hidden border border-border">
                         <img
                             src={mediaUrl}
                             alt="Preview"
@@ -107,13 +107,13 @@ function ContentTabContent() {
                     <div className="space-y-1.5">
                         <label
                             htmlFor="mobile-canvas-media-upload"
-                            className="flex items-center justify-center gap-2 h-10 rounded-lg border-2 border-dashed border-slate-200 dark:border-slate-700 cursor-pointer"
+                            className="flex items-center justify-center gap-2 h-10 rounded-lg border-2 border-dashed border-border cursor-pointer"
                         >
-                            <Upload className="w-4 h-4 text-slate-400" />
-                            <span className="text-xs text-slate-500">Upload image</span>
+                            <Upload className="w-4 h-4 text-muted-foreground" />
+                            <span className="text-xs text-muted-foreground">Upload image</span>
                         </label>
                         <div className="relative">
-                            <Link className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                            <Link className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                             <Input
                                 placeholder="Or paste URL..."
                                 value={mediaUrl || ''}
@@ -154,16 +154,16 @@ export function MobileCanvasLayout() {
     const [activeTab, setActiveTab] = useState<TabType>('content')
 
     return (
-        <div className="flex flex-col h-full bg-white dark:bg-slate-950">
+        <div className="flex flex-col h-full bg-card">
             {/* Canvas Section - Fixed height */}
-            <div className="h-[40%] shrink-0 border-b border-slate-200 dark:border-slate-800">
+            <div className="h-[40%] shrink-0 border-b border-border">
                 <MobilePreview />
             </div>
             
             {/* Controls Section */}
-            <div className="flex-1 flex flex-col min-h-0 bg-slate-50 dark:bg-slate-900">
+            <div className="flex-1 flex flex-col min-h-0 bg-muted/50">
                 {/* Horizontal Scrolling Tabs - Canva Style */}
-                <div className="shrink-0 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                <div className="shrink-0 border-b border-border bg-card">
                     <div className="flex overflow-x-auto scrollbar-hide px-2 py-2 gap-1">
                         {tabs.map((tab) => {
                             const Icon = tab.icon
@@ -176,8 +176,8 @@ export function MobileCanvasLayout() {
                                     className={cn(
                                         "flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all shrink-0",
                                         isActive 
-                                            ? "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300" 
-                                            : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                                            ? "bg-brand/10 text-brand" 
+                                            : "bg-muted text-muted-foreground hover:bg-accent"
                                     )}
                                 >
                                     <Icon className="h-4 w-4" />

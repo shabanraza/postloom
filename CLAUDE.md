@@ -87,14 +87,15 @@ public/
 Modern, clean and product-first: neutral surfaces, one brand accent, real product visuals. Avoid generic "AI-generated" styling.
 
 **Never use**
-- Purple, violet, indigo or fuchsia in the app UI, and no blue-to-purple (or any multi-color) gradients
+- Purple, violet, indigo or fuchsia in the app UI, blue/sky backgrounds, and no blue-to-purple (or any multi-color) gradients
 - Gradient text (`bg-clip-text text-transparent`)
 - Glowing blobs, neon or colored glow shadows (`shadow-brand/..`), heavy glassmorphism
 - Decorative sparkle/magic icons (`Sparkles`, `Wand2`) and emoji in UI copy or headings
 - Hardcoded colors in components (`slate-900`, `bg-white`, `bg-[#...]`, `text-white`)
 
 **Always**
-- Theme tokens only: `bg-background`, `bg-card`, `bg-muted`, `text-foreground`, `text-muted-foreground`, `border-border`, `bg-primary`, and `bg-brand` / `text-brand` (sky blue) for accents. Light and dark must both work.
+- Theme tokens only: `bg-background`, `bg-card`, `bg-muted`, `text-foreground`, `text-muted-foreground`, `border-border`, `bg-primary`, and `bg-brand` / `text-brand` for accents. Light and dark must both work.
+- Palette (defined in `src/styles.css`): warm stone neutrals (paper `#faf9f6`, ink `#1c1b18`; dark `#12110f` / `#ecebe6`) with one deep sage accent (`#4a6b57` light, `#9dbfa6` dark). Premium and calm: no blue or saturated backgrounds, no new hues without updating the tokens.
 - Solid, flat surfaces with subtle borders; neutral shadows `shadow-sm` to `shadow-lg` only.
 - shadcn components (`Button`, `ToggleGroup`, `Card`, `Sheet`, `Accordion`, `Collapsible`, `ScrollArea`) instead of raw `<button>` or custom look-alikes.
 - Marketing and tool pages use `MarketingLayout` / `ToolPage`, the `Container` width (`max-w-6xl px-4 sm:px-6`); the editor is a full-screen app shell.

@@ -7,14 +7,14 @@ export function ModeToggle() {
     const setStudioMode = useTweetStudioStore((state) => state.setStudioMode)
 
     return (
-        <div className="flex items-center gap-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-1 rounded-full shadow-soft-sm border border-slate-200 dark:border-slate-700">
+        <div className="flex items-center gap-1 bg-card/90 backdrop-blur-md p-1 rounded-full shadow-soft-sm border border-border">
             <button
                 onClick={() => setStudioMode('static')}
                 className={cn(
                     "flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all",
                     studioMode === 'static'
-                        ? "bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900"
-                        : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-accent"
                 )}
             >
                 <ImageIcon className="w-3.5 h-3.5" />
@@ -25,8 +25,8 @@ export function ModeToggle() {
                 className={cn(
                     "flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all",
                     studioMode === 'gif'
-                        ? "bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900"
-                        : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-accent"
                 )}
             >
                 <Film className="w-3.5 h-3.5" />

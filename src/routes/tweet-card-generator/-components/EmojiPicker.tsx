@@ -90,7 +90,7 @@ export function EmojiPicker({ onEmojiSelect, className }: EmojiPickerProps) {
                         <button
                             key={`${emoji}-${index}`}
                             type="button"
-                            className="h-8 w-8 flex items-center justify-center text-xl hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors"
+                            className="h-8 w-8 flex items-center justify-center text-xl hover:bg-accent rounded transition-colors"
                             onClick={() => handleEmojiClick(emoji)}
                         >
                             {emoji}

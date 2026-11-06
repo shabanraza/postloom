@@ -93,7 +93,7 @@ export function CenterCanvas() {
     const finalScale = fitScale > 0 ? fitScale : 0.4
 
     return (
-        <div className="flex-1 h-full overflow-hidden relative flex flex-col bg-slate-50/50 dark:bg-[#0f1117] backdrop-blur-3xl">
+        <div className="flex-1 h-full overflow-hidden relative flex flex-col bg-muted/50 dark:bg-[#0f1117] backdrop-blur-3xl">
             {/* Matrix/Dot Pattern Background for Workspace Area */}
             <div className="absolute inset-0 z-0 pointer-events-none"
                 style={{
@@ -104,14 +104,14 @@ export function CenterCanvas() {
             />
 
             {/* Top Center Bar - Studio Mode Toggle */}
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-1 rounded-full shadow-soft-sm border border-slate-200 dark:border-slate-700">
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 bg-card/80 backdrop-blur-md p-1 rounded-full shadow-soft-sm border border-border">
                 <button
                     onClick={() => setStudioMode('static')}
                     className={cn(
                         "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition-all",
                         studioMode === 'static'
-                            ? "bg-slate-900 text-white shadow-sm"
-                            : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                            ? "bg-primary text-primary-foreground shadow-sm"
+                            : "text-muted-foreground hover:bg-accent"
                     )}
                 >
                     <ImageIcon className="w-3.5 h-3.5" />
@@ -122,8 +122,8 @@ export function CenterCanvas() {
                     className={cn(
                         "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition-all",
                         studioMode === 'gif'
-                            ? "bg-slate-900 text-white shadow-sm"
-                            : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                            ? "bg-primary text-primary-foreground shadow-sm"
+                            : "text-muted-foreground hover:bg-accent"
                     )}
                 >
                     <Film className="w-3.5 h-3.5" />
@@ -136,7 +136,7 @@ export function CenterCanvas() {
                 {/* Canvas Wrapper */}
                 <div
                     id="tweet-canvas"
-                    className="relative shrink-0 transition-transform duration-300 ease-out shadow-2xl flex items-center justify-center overflow-hidden ring-1 ring-slate-900/5 dark:ring-white/10"
+                    className="relative shrink-0 transition-transform duration-300 ease-out shadow-2xl flex items-center justify-center overflow-hidden ring-1 ring-primary/5"
                     style={{
                         width: width,
                         height: height,
@@ -152,7 +152,7 @@ export function CenterCanvas() {
                 </div>
 
                 {/* Dimensions Badge */}
-                <div className="fixed bottom-6 right-[380px] z-50 bg-slate-800/80 text-white text-[10px] font-mono px-2 py-1 rounded-md backdrop-blur-sm pointer-events-none border border-white/10">
+                <div className="fixed bottom-6 right-[380px] z-50 bg-primary/80 text-primary-foreground text-[10px] font-mono px-2 py-1 rounded-md backdrop-blur-sm pointer-events-none border border-white/10">
                     {width} x {height} · {Math.round(finalScale * 100)}%
                 </div>
             </div>

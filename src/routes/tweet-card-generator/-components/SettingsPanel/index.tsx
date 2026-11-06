@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { FileText, Sparkles, Image, Wand2 } from 'lucide-react'
+import { FileText, Brush, Image, Film } from 'lucide-react'
 import { useTweetStudioStore } from '../../-state'
 import { ContentTab } from './ContentTab'
 import { DesignTab } from './DesignTab'
-import { BackgroundTab } from './BackgroundTab'
-import { AnimationTab } from './AnimationTab'
+import { BackgroundTab } from '../tabs/BackgroundTab'
+import { AnimationTab } from '../tabs/AnimationTab'
 
 export function SettingsPanel() {
     const studioMode = useTweetStudioStore((state) => state.studioMode)
@@ -21,35 +21,35 @@ export function SettingsPanel() {
     }, [studioMode, activeTab])
 
     return (
-        <aside className="flex w-[340px] shrink-0 flex-col overflow-hidden border-r border-slate-200/60 dark:border-slate-800/60 bg-transparent z-20">
+        <aside className="flex w-[340px] shrink-0 flex-col overflow-hidden border-r border-border/60 bg-transparent z-20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-1 flex-col overflow-hidden">
-                <TabsList className="mx-3 mt-3 mb-2 shrink-0 grid w-auto grid-cols-4 h-10 p-1 bg-white dark:bg-slate-900 rounded-xl shadow-soft-sm border border-slate-100 dark:border-slate-800">
+                <TabsList className="mx-3 mt-3 mb-2 shrink-0 grid w-auto grid-cols-4 h-10 p-1 bg-card rounded-xl shadow-soft-sm border border-border">
                     <TabsTrigger
                         value="content"
-                        className="rounded-lg text-[10px] gap-1 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-200"
+                        className="rounded-lg text-[10px] gap-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-200"
                     >
                         <FileText className="h-3 w-3" />
                         <span>Content</span>
                     </TabsTrigger>
                     <TabsTrigger
                         value="design"
-                        className="rounded-lg text-[10px] gap-1 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-200"
+                        className="rounded-lg text-[10px] gap-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-200"
                     >
-                        <Sparkles className="h-3 w-3" />
+                        <Brush className="h-3 w-3" />
                         <span>Design</span>
                     </TabsTrigger>
                     <TabsTrigger
                         value="background"
-                        className="rounded-lg text-[10px] gap-1 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-200"
+                        className="rounded-lg text-[10px] gap-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-200"
                     >
                         <Image className="h-3 w-3" />
                         <span>Background</span>
                     </TabsTrigger>
                     <TabsTrigger
                         value="animation"
-                        className="rounded-lg text-[10px] gap-1 data-[state=active]:bg-slate-900 data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-200"
+                        className="rounded-lg text-[10px] gap-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-200"
                     >
-                        <Wand2 className="h-3 w-3" />
+                        <Film className="h-3 w-3" />
                         <span>Animation</span>
                     </TabsTrigger>
                 </TabsList>

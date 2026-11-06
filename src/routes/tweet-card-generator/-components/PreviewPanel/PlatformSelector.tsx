@@ -36,25 +36,25 @@ export function PlatformSelector() {
             type="single"
             value={platform}
             onValueChange={(value) => value && setPlatform(value as Platform)}
-            className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-0.5 sm:p-1 rounded-lg sm:rounded-xl shadow-soft-sm border border-slate-200 dark:border-slate-700"
+            className="bg-card/90 backdrop-blur-md p-0.5 sm:p-1 rounded-lg sm:rounded-xl shadow-soft-sm border border-border"
         >
             <ToggleGroupItem
                 value="twitter"
-                className="rounded-md sm:rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium gap-1.5 sm:gap-2 data-[state=on]:bg-slate-900 data-[state=on]:text-white data-[state=on]:shadow-md transition-all duration-200"
+                className="rounded-md sm:rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium gap-1.5 sm:gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:shadow-md transition-all duration-200"
             >
                 <TwitterIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                 <span>X</span>
             </ToggleGroupItem>
             <ToggleGroupItem
                 value="threads"
-                className="rounded-md sm:rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium gap-1.5 sm:gap-2 data-[state=on]:bg-slate-900 data-[state=on]:text-white data-[state=on]:shadow-md transition-all duration-200"
+                className="rounded-md sm:rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium gap-1.5 sm:gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:shadow-md transition-all duration-200"
             >
                 <ThreadsIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                 <span>Threads</span>
             </ToggleGroupItem>
             <ToggleGroupItem
                 value="linkedin"
-                className="rounded-md sm:rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium gap-1.5 sm:gap-2 data-[state=on]:bg-slate-900 data-[state=on]:text-white data-[state=on]:shadow-md transition-all duration-200"
+                className="rounded-md sm:rounded-lg px-2.5 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium gap-1.5 sm:gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:shadow-md transition-all duration-200"
             >
                 <LinkedInIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                 <span>LinkedIn</span>

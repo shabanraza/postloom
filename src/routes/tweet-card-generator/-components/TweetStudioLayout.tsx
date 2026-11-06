@@ -81,7 +81,7 @@ export function TweetStudioLayout() {
     }, [])
 
     return (
-        <div className="flex h-screen w-full flex-col bg-slate-50 dark:bg-[#0a0a0f] overflow-hidden text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300">
+        <div className="flex h-screen w-full flex-col bg-muted/50 dark:bg-[#0a0a0f] overflow-hidden text-foreground font-sans transition-colors duration-300">
             {/* Onboarding Overlay for new users */}
             <OnboardingOverlay />
 

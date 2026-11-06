@@ -3,13 +3,13 @@ import type { CardStyle } from './DemoCard'
 import { cn } from '@/lib/utils'
 
 const EXAMPLES: Array<{ text: string; name: string; handle: string; style: CardStyle }> = [
-  { text: 'Consistency beats intensity. Post a little, every day.', name: 'Maya Chen', handle: 'mayawrites', style: 'light' },
-  { text: 'Hot take: your landing page is too long.', name: 'Dev Patel', handle: 'devships', style: 'dark' },
-  { text: 'We just crossed 1,000 customers. Thank you all.', name: 'Northwind', handle: 'northwindhq', style: 'sky' },
+  { text: 'Consistency beats intensity. Post a little, every day.', name: 'Maya Chen', handle: 'mayawrites', style: 'paper' },
+  { text: 'Hot take: your landing page is too long.', name: 'Dev Patel', handle: 'devships', style: 'charcoal' },
+  { text: 'We just crossed 1,000 customers. Thank you all.', name: 'Northwind', handle: 'northwindhq', style: 'sage' },
   { text: 'Read more books than tweets this year.', name: 'Sam Ortiz', handle: 'samreads', style: 'sand' },
-  { text: 'The fastest way to learn is to teach in public.', name: 'Lena Kim', handle: 'lenacodes', style: 'dark' },
-  { text: 'New feature: export your cards as animated GIFs.', name: 'Postloom', handle: 'postloom', style: 'sky' },
-  { text: 'Design is how it works, and how it shares.', name: 'Omar Haddad', handle: 'omardesigns', style: 'light' },
+  { text: 'The fastest way to learn is to teach in public.', name: 'Lena Kim', handle: 'lenacodes', style: 'charcoal' },
+  { text: 'New feature: export your cards as animated GIFs.', name: 'Postloom', handle: 'postloom', style: 'sage' },
+  { text: 'Design is how it works, and how it shares.', name: 'Omar Haddad', handle: 'omardesigns', style: 'paper' },
   { text: 'Small daily wins compound into big launches.', name: 'Ivy Brooks', handle: 'ivybuilds', style: 'sand' },
 ]
 

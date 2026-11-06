@@ -43,14 +43,14 @@ export const Route = createFileRoute('/carousel-maker/')({
   component: CarouselMakerPage,
 })
 
-type ThemeId = 'light' | 'dark' | 'blue'
+type ThemeId = 'light' | 'dark' | 'sage'
 
 const THEMES: Record<ThemeId, { label: string; background: string; text: string; muted: string }> = {
-  light: { label: 'Light', background: '#ffffff', text: '#0f172a', muted: '#64748b' },
-  dark: { label: 'Dark', background: '#0b0f19', text: '#f8fafc', muted: '#94a3b8' },
-  blue: {
-    label: 'Blue',
-    background: '#0c4a6e',
+  light: { label: 'Paper', background: '#faf9f6', text: '#1c1b18', muted: '#6f6b63' },
+  dark: { label: 'Charcoal', background: '#1c1b18', text: '#ecebe6', muted: '#a09c92' },
+  sage: {
+    label: 'Sage',
+    background: '#3f5c4a',
     text: '#ffffff',
     muted: 'rgba(255,255,255,0.75)',
   },
@@ -73,7 +73,7 @@ function CarouselMakerPage() {
   const [name, setName] = useState('Your Name')
   const [handle, setHandle] = useState('yourhandle')
   const [themeId, setThemeId] = useState<ThemeId>('dark')
-  const [accent, setAccent] = useState('#38bdf8')
+  const [accent, setAccent] = useState('#c9a96e')
   const [busy, setBusy] = useState<null | 'png' | 'pdf'>(null)
   const [error, setError] = useState<string | null>(null)
   const slideRefs = useRef<Array<HTMLDivElement | null>>([])
@@ -253,7 +253,7 @@ function CarouselMakerPage() {
       badges={['Free', 'No sign-up', 'No watermark']}
       steps={[
         'Paste a tweet thread, newsletter section or list of tips.',
-        'Add your name and handle, then pick a light, dark or blue style and an accent color.',
+        'Add your name and handle, then pick a paper, charcoal or sage style and an accent color.',
         'Download one PDF to upload as a LinkedIn document post, or PNG slides for an Instagram carousel.',
       ]}
       faqs={FAQS}
@@ -322,7 +322,7 @@ function Slide({ text, index, total, name, handle, theme, accent, ref }: SlidePr
             height: 104,
             borderRadius: '50%',
             background: accent,
-            color: '#0b0f19',
+            color: '#1c1b18',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

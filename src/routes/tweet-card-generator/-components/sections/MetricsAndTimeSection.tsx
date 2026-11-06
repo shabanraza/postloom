@@ -51,7 +51,7 @@ export function MetricsAndTimeSection() {
     return (
         <div className="space-y-3">
             <div className="flex items-center justify-between">
-                <Label className="text-xs text-slate-500">Metrics & Time</Label>
+                <Label className="text-xs text-muted-foreground">Metrics & Time</Label>
                 <Switch
                     checked={metrics.showMetrics}
                     onCheckedChange={setShowMetrics}
@@ -63,33 +63,33 @@ export function MetricsAndTimeSection() {
                     {/* Likes & Retweets */}
                     <div className="grid grid-cols-2 gap-2">
                         <div className="space-y-1">
-                            <Label className="text-xs text-slate-500">Likes</Label>
+                            <Label className="text-xs text-muted-foreground">Likes</Label>
                             <Input
                                 type="text"
                                 value={metrics.likes}
                                 onChange={(e) => setLikes(parseInt(e.target.value) || 0)}
-                                className="h-8 text-sm bg-transparent border-slate-200 dark:border-slate-700 rounded-md tabular-nums focus-visible:ring-1 focus-visible:ring-blue-500"
+                                className="h-8 text-sm bg-transparent border-border rounded-md tabular-nums focus-visible:ring-1 focus-visible:ring-brand"
                             />
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-xs text-slate-500">Retweets</Label>
+                            <Label className="text-xs text-muted-foreground">Retweets</Label>
                             <Input
                                 type="text"
                                 value={metrics.reposts}
                                 onChange={(e) => setReposts(parseInt(e.target.value) || 0)}
-                                className="h-8 text-sm bg-transparent border-slate-200 dark:border-slate-700 rounded-md tabular-nums focus-visible:ring-1 focus-visible:ring-blue-500"
+                                className="h-8 text-sm bg-transparent border-border rounded-md tabular-nums focus-visible:ring-1 focus-visible:ring-brand"
                             />
                         </div>
                     </div>
 
                     {/* Date - Full Width */}
                     <div className="space-y-1">
-                        <Label className="text-xs text-slate-500">Date</Label>
+                        <Label className="text-xs text-muted-foreground">Date</Label>
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
                                     variant="outline"
-                                    className="w-full h-8 px-3 justify-start text-left text-sm font-normal bg-transparent border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-md"
+                                    className="w-full h-8 px-3 justify-start text-left text-sm font-normal bg-transparent border-border hover:bg-accent rounded-md"
                                 >
                                     {format(tweet.content.timestamp, "MMMM d, yyyy")}
                                 </Button>
@@ -107,10 +107,10 @@ export function MetricsAndTimeSection() {
 
                     {/* Time - Full Width with proper sizing */}
                     <div className="space-y-1">
-                        <Label className="text-xs text-slate-500">Time</Label>
+                        <Label className="text-xs text-muted-foreground">Time</Label>
                         <div className="grid grid-cols-3 gap-2">
                             <Select value={displayHour.toString()} onValueChange={handleHourChange}>
-                                <SelectTrigger className="h-8 text-sm bg-transparent border-slate-200 dark:border-slate-700 rounded-md">
+                                <SelectTrigger className="h-8 text-sm bg-transparent border-border rounded-md">
                                     <SelectValue placeholder="Hr" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -120,7 +120,7 @@ export function MetricsAndTimeSection() {
                                 </SelectContent>
                             </Select>
                             <Select value={currentMinute.toString()} onValueChange={handleMinuteChange}>
-                                <SelectTrigger className="h-8 text-sm bg-transparent border-slate-200 dark:border-slate-700 rounded-md">
+                                <SelectTrigger className="h-8 text-sm bg-transparent border-border rounded-md">
                                     <SelectValue placeholder="Min" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -130,7 +130,7 @@ export function MetricsAndTimeSection() {
                                 </SelectContent>
                             </Select>
                             <Select value={isPM ? 'PM' : 'AM'} onValueChange={handlePeriodChange}>
-                                <SelectTrigger className="h-8 text-sm font-medium bg-transparent border-slate-200 dark:border-slate-700 rounded-md">
+                                <SelectTrigger className="h-8 text-sm font-medium bg-transparent border-border rounded-md">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>

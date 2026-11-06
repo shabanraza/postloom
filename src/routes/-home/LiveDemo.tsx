@@ -24,7 +24,7 @@ export function LiveDemo() {
   const [text, setText] = useState(SAMPLES[0])
   const [typing, setTyping] = useState(false)
   const [touched, setTouched] = useState(false)
-  const [style, setStyle] = useState<CardStyle>('sky')
+  const [style, setStyle] = useState<CardStyle>('sage')
   const [busy, setBusy] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 

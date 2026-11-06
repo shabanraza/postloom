@@ -21,81 +21,82 @@ code {
 }
 
 :root {
-  /* Brand: one palette for every page. Components use these via Tailwind
-     classes (bg-background, text-muted-foreground, bg-brand ...), never raw colors. */
-  --background: #ffffff;
-  --foreground: #0b1220;
+  /* Palette: warm stone neutrals + deep sage accent. Calm, premium, no blue/purple.
+     Components use these via Tailwind classes (bg-background, text-muted-foreground,
+     bg-brand ...), never raw colors. */
+  --background: #faf9f6;
+  --foreground: #1c1b18;
   --card: #ffffff;
-  --card-foreground: #0b1220;
+  --card-foreground: #1c1b18;
   --popover: #ffffff;
-  --popover-foreground: #0b1220;
-  --primary: #0b1220;
-  --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0b1220;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  --popover-foreground: #1c1b18;
+  --primary: #1c1b18;
+  --primary-foreground: #faf9f6;
+  --secondary: #f1efea;
+  --secondary-foreground: #1c1b18;
+  --muted: #f1efea;
+  --muted-foreground: #6f6b63;
   /* shadcn uses accent for hover/selected backgrounds: keep it subtle */
-  --accent: #f1f5f9;
-  --accent-foreground: #0b1220;
-  --brand: #0284c7;
+  --accent: #ece9e2;
+  --accent-foreground: #1c1b18;
+  --brand: #4a6b57;
   --brand-foreground: #ffffff;
-  --destructive: #dc2626;
+  --destructive: #b42318;
   --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #0284c7;
-  --chart-1: #0284c7;
-  --chart-2: #0d9488;
-  --chart-3: #10b981;
-  --chart-4: #f59e0b;
-  --chart-5: #ef4444;
+  --border: #e5e1d8;
+  --input: #e5e1d8;
+  --ring: #4a6b57;
+  --chart-1: #4a6b57;
+  --chart-2: #b08a4f;
+  --chart-3: #7d8f69;
+  --chart-4: #c08457;
+  --chart-5: #a3a097;
   --radius: 0.625rem;
-  --sidebar: #f8fafc;
-  --sidebar-foreground: #0b1220;
-  --sidebar-primary: #0284c7;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1f5f9;
-  --sidebar-accent-foreground: #0b1220;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #0284c7;
+  --sidebar: #f5f3ee;
+  --sidebar-foreground: #1c1b18;
+  --sidebar-primary: #1c1b18;
+  --sidebar-primary-foreground: #faf9f6;
+  --sidebar-accent: #ece9e2;
+  --sidebar-accent-foreground: #1c1b18;
+  --sidebar-border: #e5e1d8;
+  --sidebar-ring: #4a6b57;
 }
 
 .dark {
-  --background: #060912;
-  --foreground: #e6ebf2;
-  --card: #0c111d;
-  --card-foreground: #e6ebf2;
-  --popover: #0c111d;
-  --popover-foreground: #e6ebf2;
-  --primary: #f8fafc;
-  --primary-foreground: #060912;
-  --secondary: #141b2b;
-  --secondary-foreground: #e6ebf2;
-  --muted: #141b2b;
-  --muted-foreground: #94a3b8;
-  --accent: #172033;
-  --accent-foreground: #e6ebf2;
-  --brand: #38bdf8;
-  --brand-foreground: #060912;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #1c2536;
-  --input: #1c2536;
-  --ring: #38bdf8;
-  --chart-1: #38bdf8;
-  --chart-2: #2dd4bf;
-  --chart-3: #34d399;
-  --chart-4: #fbbf24;
-  --chart-5: #f87171;
-  --sidebar: #060912;
-  --sidebar-foreground: #e6ebf2;
-  --sidebar-primary: #38bdf8;
-  --sidebar-primary-foreground: #060912;
-  --sidebar-accent: #141b2b;
-  --sidebar-accent-foreground: #e6ebf2;
-  --sidebar-border: #1c2536;
-  --sidebar-ring: #38bdf8;
+  --background: #12110f;
+  --foreground: #ecebe6;
+  --card: #1a1916;
+  --card-foreground: #ecebe6;
+  --popover: #1a1916;
+  --popover-foreground: #ecebe6;
+  --primary: #ecebe6;
+  --primary-foreground: #12110f;
+  --secondary: #23221e;
+  --secondary-foreground: #ecebe6;
+  --muted: #23221e;
+  --muted-foreground: #a09c92;
+  --accent: #2a2925;
+  --accent-foreground: #ecebe6;
+  --brand: #9dbfa6;
+  --brand-foreground: #12110f;
+  --destructive: #f0645a;
+  --destructive-foreground: #12110f;
+  --border: #2c2b27;
+  --input: #2c2b27;
+  --ring: #9dbfa6;
+  --chart-1: #9dbfa6;
+  --chart-2: #d4b483;
+  --chart-3: #b5c39f;
+  --chart-4: #e0a77e;
+  --chart-5: #77746c;
+  --sidebar: #12110f;
+  --sidebar-foreground: #ecebe6;
+  --sidebar-primary: #ecebe6;
+  --sidebar-primary-foreground: #12110f;
+  --sidebar-accent: #23221e;
+  --sidebar-accent-foreground: #ecebe6;
+  --sidebar-border: #2c2b27;
+  --sidebar-ring: #9dbfa6;
 }
 
 @theme inline {

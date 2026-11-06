@@ -100,7 +100,7 @@ export function PreviewPanel() {
     const finalScale = fitScale > 0 ? fitScale : 0.3
 
     return (
-        <div className="flex-1 h-full overflow-hidden relative flex flex-col bg-slate-100/50 dark:bg-[#0a0a0f]">
+        <div className="flex-1 h-full overflow-hidden relative flex flex-col bg-muted/50 dark:bg-[#0a0a0f]">
             {/* Subtle dot pattern background */}
             <div 
                 className="absolute inset-0 z-0 pointer-events-none opacity-30 dark:opacity-20"
@@ -123,7 +123,7 @@ export function PreviewPanel() {
                 {/* Canvas Wrapper */}
                 <div
                     id="tweet-canvas"
-                    className="relative shrink-0 transition-transform duration-300 ease-out shadow-2xl flex items-center justify-center overflow-hidden ring-1 ring-slate-900/5 dark:ring-white/10"
+                    className="relative shrink-0 transition-transform duration-300 ease-out shadow-2xl flex items-center justify-center overflow-hidden ring-1 ring-primary/5"
                     style={{
                         width: width,
                         height: height,
@@ -139,7 +139,7 @@ export function PreviewPanel() {
                 </div>
 
                 {/* Dimensions Badge - Positioned near canvas */}
-                <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-40 bg-slate-800/80 text-white text-[9px] sm:text-[10px] font-mono px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg backdrop-blur-sm pointer-events-none border border-white/10">
+                <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-40 bg-primary/80 text-primary-foreground text-[9px] sm:text-[10px] font-mono px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg backdrop-blur-sm pointer-events-none border border-white/10">
                     {width} × {height} · {Math.round(finalScale * 100)}%
                 </div>
             </div>

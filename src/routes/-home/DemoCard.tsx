@@ -6,35 +6,35 @@ import { cn } from '@/lib/utils'
  * Its colors are the card's own design, not app UI, so they are set per style here
  * rather than taken from the theme tokens.
  */
-export type CardStyle = 'light' | 'dark' | 'sky' | 'sand'
+export type CardStyle = 'paper' | 'charcoal' | 'sage' | 'sand'
 
 export const CARD_STYLES: Record<
   CardStyle,
   { label: string; frame: string; card: string; text: string; muted: string; border: string }
 > = {
-  light: {
-    label: 'Light',
-    frame: '#e2e8f0',
+  paper: {
+    label: 'Paper',
+    frame: '#efece5',
     card: '#ffffff',
-    text: '#0f1419',
-    muted: '#536471',
-    border: '#eff3f4',
+    text: '#1c1b18',
+    muted: '#6f6b63',
+    border: '#ece9e2',
   },
-  dark: {
-    label: 'Dark',
-    frame: '#1e293b',
-    card: '#000000',
-    text: '#e7e9ea',
-    muted: '#71767b',
-    border: '#2f3336',
+  charcoal: {
+    label: 'Charcoal',
+    frame: '#2a2925',
+    card: '#151412',
+    text: '#ecebe6',
+    muted: '#9a968c',
+    border: '#2f2e2a',
   },
-  sky: {
-    label: 'Sky',
-    frame: '#0284c7',
-    card: '#ffffff',
-    text: '#0f1419',
-    muted: '#536471',
-    border: '#eff3f4',
+  sage: {
+    label: 'Sage',
+    frame: '#d9e3d9',
+    card: '#fbfcfa',
+    text: '#1c1b18',
+    muted: '#66705f',
+    border: '#e4ebe3',
   },
   sand: {
     label: 'Sand',
@@ -63,7 +63,7 @@ export function DemoCard({
   text,
   name = 'Alex Rivera',
   handle = 'alexbuilds',
-  style = 'sky',
+  style = 'sage',
   frame = 32,
   className,
   caret = false,
@@ -87,7 +87,7 @@ export function DemoCard({
         <div className="flex items-center gap-3">
           <div
             className="flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
-            style={{ background: '#0284c7' }}
+            style={{ background: '#1c1b18' }}
           >
             {initials}
           </div>
@@ -104,7 +104,7 @@ export function DemoCard({
         <p className="mt-4 min-h-[3.5rem] text-[17px] leading-relaxed break-words whitespace-pre-wrap">
           {text}
           {caret && (
-            <span className="ml-0.5 inline-block h-5 w-0.5 translate-y-1 animate-pulse bg-sky-500" />
+            <span className="ml-0.5 inline-block h-5 w-0.5 translate-y-1 animate-pulse bg-current opacity-60" />
           )}
         </p>
         <div

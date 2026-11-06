@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { X, FileText, Sparkles, Image, Wand2, Palette } from 'lucide-react'
+import { X, FileText, Brush, Image, Film, Palette } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { PanelType } from './IconSidebar'
@@ -17,11 +17,11 @@ interface ExpandablePanelProps {
 }
 
 const PANEL_CONFIG = {
-    content: { icon: FileText, label: 'Content', color: 'text-blue-500' },
-    design: { icon: Sparkles, label: 'Design', color: 'text-purple-500' },
+    content: { icon: FileText, label: 'Content', color: 'text-brand' },
+    design: { icon: Brush, label: 'Design', color: 'text-brand' },
     background: { icon: Image, label: 'Background', color: 'text-green-500' },
-    animation: { icon: Wand2, label: 'Animation', color: 'text-amber-500' },
-    brandkit: { icon: Palette, label: 'Brand Kit', color: 'text-pink-500' },
+    animation: { icon: Film, label: 'Animation', color: 'text-amber-500' },
+    brandkit: { icon: Palette, label: 'Brand Kit', color: 'text-brand' },
 }
 
 export function ExpandablePanel({ activePanel, onClose }: ExpandablePanelProps) {
@@ -53,24 +53,24 @@ export function ExpandablePanel({ activePanel, onClose }: ExpandablePanelProps) 
             <div
                 className={cn(
                     "fixed top-14 left-14 bottom-0 w-80 z-50",
-                    "bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800",
+                    "bg-card border-r border-border",
                     "shadow-2xl shadow-black/10 dark:shadow-black/30",
                     "animate-in slide-in-from-left-5 duration-200",
                     "flex flex-col"
                 )}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-800 shrink-0">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
                     <div className="flex items-center gap-2">
                         <Icon className={cn("h-4 w-4", config.color)} />
-                        <h2 className="font-semibold text-sm text-slate-900 dark:text-white">
+                        <h2 className="font-semibold text-sm text-foreground">
                             {config.label}
                         </h2>
                     </div>
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-7 w-7 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                        className="h-7 w-7 rounded-lg text-muted-foreground hover:text-foreground"
                         onClick={onClose}
                     >
                         <X className="h-4 w-4" />

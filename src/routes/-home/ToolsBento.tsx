@@ -150,12 +150,12 @@ function SlideFlipper() {
             exit={{ x: '-100%', opacity: 0.6 }}
             transition={{ duration: 0.45, ease: 'easeInOut' }}
             className="absolute inset-0 flex flex-col justify-between p-5 text-white"
-            style={{ background: '#0f172a' }}
+            style={{ background: '#1c1b18' }}
           >
             <span className="text-xs font-semibold opacity-80">@alexbuilds</span>
             <p className="text-lg leading-snug font-semibold">{slide.text}</p>
             <span className="text-xs opacity-80">
-              <span className="font-semibold text-sky-400">{slide.n}</span> / {SLIDES.length} {slide.n < SLIDES.length ? '· Swipe →' : ''}
+              <span className="font-semibold text-[#9dbfa6]">{slide.n}</span> / {SLIDES.length} {slide.n < SLIDES.length ? '· Swipe →' : ''}
             </span>
           </motion.div>
         </AnimatePresence>

@@ -6,7 +6,7 @@ import { cn } from '../../-utils'
 import { trackDesignPreset, trackCanvasSizeChange, trackCardThemeChange } from '@/lib/analytics'
 
 const THEMES: { value: TweetCardTheme; label: string; bg: string; border: string }[] = [
-    { value: 'light', label: 'Light', bg: 'bg-white', border: 'border-slate-300' },
+    { value: 'light', label: 'Light', bg: 'bg-card', border: 'border-border' },
     { value: 'dark', label: 'Dark', bg: 'bg-black', border: 'border-slate-700' },
     { value: 'dim', label: 'Dim', bg: 'bg-[#15202B]', border: 'border-slate-600' },
 ]
@@ -61,8 +61,8 @@ export function QuickPresetsTab() {
         <div className="space-y-5">
             {/* Card Theme */}
             <div className="space-y-2">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Theme</p>
-                <div className="flex bg-slate-100 dark:bg-slate-800/60 p-0.5 rounded-lg gap-0.5">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Theme</p>
+                <div className="flex bg-muted p-0.5 rounded-lg gap-0.5">
                     {THEMES.map((theme) => (
                         <button
                             key={theme.value}
@@ -73,8 +73,8 @@ export function QuickPresetsTab() {
                             className={cn(
                                 "flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-[10px] font-medium transition-all",
                                 tweet.theme === theme.value
-                                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
-                                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                                    ? 'bg-card text-foreground shadow-sm'
+                                    : 'text-muted-foreground hover:text-foreground'
                             )}
                         >
                             <div className={cn('w-3 h-3 rounded-sm border', theme.bg, theme.border)} />
@@ -89,12 +89,12 @@ export function QuickPresetsTab() {
             {/* Canvas Size */}
             <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Canvas</p>
-                    <span className="text-[10px] font-mono text-slate-400">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Canvas</p>
+                    <span className="text-[10px] font-mono text-muted-foreground">
                         {exportSettings.width}×{exportSettings.height}
                     </span>
                 </div>
-                <div className="flex bg-slate-100 dark:bg-slate-800/60 p-0.5 rounded-lg gap-0.5">
+                <div className="flex bg-muted p-0.5 rounded-lg gap-0.5">
                     {CANVAS_TEMPLATES.map((template) => (
                         <button
                             key={template.id}
@@ -102,8 +102,8 @@ export function QuickPresetsTab() {
                             className={cn(
                                 "flex-1 flex flex-col items-center px-1 py-1.5 rounded-md text-[10px] transition-all",
                                 template.id === activeCanvasTemplate?.id
-                                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
-                                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                                    ? 'bg-card text-foreground shadow-sm'
+                                    : 'text-muted-foreground hover:text-foreground'
                             )}
                         >
                             <span className="font-medium truncate">{template.label}</span>
@@ -117,7 +117,7 @@ export function QuickPresetsTab() {
 
             {/* Card Style */}
             <div className="space-y-2">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Style</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Style</p>
                 <div className="grid grid-cols-5 gap-1.5">
                     {TEMPLATES.map((template) => {
                         const isActive = design.templateId === template.id
@@ -131,21 +131,21 @@ export function QuickPresetsTab() {
                                 className={cn(
                                     'flex flex-col items-center gap-1 rounded-md p-1.5 transition-all',
                                     isActive
-                                        ? 'bg-slate-100 dark:bg-slate-800'
-                                        : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                                        ? 'bg-muted'
+                                        : 'hover:bg-accent'
                                 )}
                             >
                                 <div
                                     className={cn(
-                                        'w-full aspect-[4/3] rounded bg-white dark:bg-slate-200 transition-all',
+                                        'w-full aspect-[4/3] rounded bg-card transition-all',
                                         SHADOW_PREVIEW[template.shadow] || '',
-                                        isActive && 'ring-2 ring-blue-500'
+                                        isActive && 'ring-2 ring-brand'
                                     )}
                                     style={{ borderRadius: Math.min(template.borderRadius / 4, 6) }}
                                 />
                                 <span className={cn(
                                     'text-[9px] font-medium',
-                                    isActive ? 'text-slate-900 dark:text-white' : 'text-slate-400'
+                                    isActive ? 'text-foreground' : 'text-muted-foreground'
                                 )}>
                                     {template.name}
                                 </span>
@@ -162,8 +162,8 @@ export function QuickPresetsTab() {
                 {/* Card Size */}
                 <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                        <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Card Size</p>
-                        <span className="text-[10px] font-mono text-slate-400">
+                        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Card Size</p>
+                        <span className="text-[10px] font-mono text-muted-foreground">
                             {Math.round((design.cardScale || 1) * 100)}%
                         </span>
                     </div>
@@ -180,8 +180,8 @@ export function QuickPresetsTab() {
                 {/* Padding */}
                 <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                        <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Padding</p>
-                        <span className="text-[10px] font-mono text-slate-400">{design.padding}px</span>
+                        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Padding</p>
+                        <span className="text-[10px] font-mono text-muted-foreground">{design.padding}px</span>
                     </div>
                     <Slider
                         value={[design.padding]}
@@ -196,8 +196,8 @@ export function QuickPresetsTab() {
                 {/* Font Size */}
                 <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                        <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Font Size</p>
-                        <span className="text-[10px] font-mono text-slate-400">
+                        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Font Size</p>
+                        <span className="text-[10px] font-mono text-muted-foreground">
                             {Math.round((design.fontSizeMultiplier || 1.0) * 100)}%
                         </span>
                     </div>
@@ -214,8 +214,8 @@ export function QuickPresetsTab() {
                 {/* Shadow */}
                 <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                        <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Shadow</p>
-                        <span className="text-[10px] font-mono text-slate-400">{design.shadowIntensity || 50}</span>
+                        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Shadow</p>
+                        <span className="text-[10px] font-mono text-muted-foreground">{design.shadowIntensity || 50}</span>
                     </div>
                     <Slider
                         value={[design.shadowIntensity || 50]}

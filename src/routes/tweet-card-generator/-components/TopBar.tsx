@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import { Undo2, Redo2, RotateCcw, ChevronDown, Download, Image, Film, Loader2, Copy, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -140,10 +141,14 @@ export function TopBar() {
         <TooltipProvider delayDuration={300}>
             <header className="flex h-12 sm:h-14 shrink-0 items-center justify-between px-2 sm:px-4 bg-card/80 backdrop-blur-md border-b border-border/60 relative z-30">
                 {/* Left Section - Logo */}
-                <div className="flex items-center">
+                <Link
+                    to="/"
+                    aria-label="Postloom home"
+                    className="flex items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
                     <PostloomLogo size="sm" showText={false} className="sm:hidden" />
                     <PostloomLogo size="md" showText={true} className="hidden sm:flex" />
-                </div>
+                </Link>
 
                 {/* Right Section - Actions */}
                 <div className="flex items-center gap-1 sm:gap-3">

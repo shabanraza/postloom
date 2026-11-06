@@ -7,7 +7,7 @@ type Theme = 'light' | 'dark'
 
 /**
  * The initial theme is applied before first paint by the inline script in
- * __root.tsx (stored choice, else system preference). This button only reads
+ * __root.tsx (light by default, dark only if chosen). This button only reads
  * and flips it.
  */
 export function ThemeToggle() {

@@ -115,7 +115,7 @@ Card designs users export (tweet card backgrounds, carousel slide themes) are co
 - Structured data must be honest: no invented ratings or reviews.
 - `public/llms.txt` describes the tools for AI assistants; keep it current.
 - GA4 (`G-7T3RYZQR2M`, overridable by `VITE_GA4_MEASUREMENT_ID`) loads in `__root.tsx`. Consent default is read from `localStorage['analytics-consent']`, so a decline persists.
-- Theme: an inline script in `__root.tsx` applies `dark` before first paint from `localStorage['theme']`, else system preference.
+- Theme: light by default. An inline script in `__root.tsx` applies `dark` before first paint only when `localStorage['theme'] === 'dark'` (set by the theme toggle).
 
 ## Environment variables
 
@@ -127,7 +127,7 @@ Via `@t3-oss/env-core` in `src/env.ts` (`import { env } from '@/env'`). `VITE_` 
 ## Known leftovers from the earlier product
 
 The repo started as a social media scheduler. These remain and can be removed in a cleanup:
-- `vite-plugin-db` / `neon-vite-plugin.ts`, `db/init.sql`, `@neondatabase/*` packages, the `@neondatabase/neon-js/ui/tailwind` import in `styles.css`
+- `vite-plugin-db` / `neon-vite-plugin.ts`, `db/init.sql`, `@neondatabase/*` packages
 - The `*/5 * * * *` cron trigger in `wrangler.jsonc` (no handler exists)
 - Unused dependencies such as `@tanstack/ai*`, `@tanstack/react-db`
 - Duplicate editor tabs (`-components/tabs/` vs `-components/SettingsPanel/`) and hardcoded colors in the editor (being migrated to tokens)

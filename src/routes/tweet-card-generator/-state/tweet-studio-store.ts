@@ -282,7 +282,7 @@ const initialTweet: Tweet = {
         poll: initialPoll,
     },
     metrics: initialTwitterMetrics,
-    theme: 'dark',
+    theme: 'light',
     cardType: 'single',
     thread: {
         items: initialThread,
@@ -293,15 +293,15 @@ const initialTweet: Tweet = {
 
 const initialDesign: DesignSettings = {
     templateId: 'minimal',
-    backgroundType: 'image',
-    backgroundColor: '#0f172a',
+    // Default: calm sage, matching the brand palette (users can pick any preset)
+    backgroundType: 'solid',
+    backgroundColor: '#d9e3d9',
     gradient: {
-        colors: ['#3b82f6', '#8b5cf6'],
+        colors: ['#e9e1d4', '#d9e3d9'],
         direction: 'to-br',
     },
     patternType: undefined,
-    // Default starry night background
-    backgroundImageUrl: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920&q=80',
+    backgroundImageUrl: undefined,
     padding: PADDING_RANGE.default,
     scale: 1,
     shadow: 'soft',
@@ -336,9 +336,9 @@ const initialBrandKit: BrandKit = {
     id: 'default',
     name: 'My Brand',
     colors: [
-        { id: '1', name: 'Primary', color: '#3b82f6' },
-        { id: '2', name: 'Secondary', color: '#8b5cf6' },
-        { id: '3', name: 'Accent', color: '#ec4899' },
+        { id: '1', name: 'Primary', color: '#1c1b18' },
+        { id: '2', name: 'Secondary', color: '#4a6b57' },
+        { id: '3', name: 'Accent', color: '#c9a96e' },
     ],
     fonts: [
         { id: '1', name: 'Heading', fontFamily: 'system-ui, sans-serif', fontWeight: 700 },

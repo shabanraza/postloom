@@ -30,7 +30,7 @@ interface ToolPageProps {
 export function ToolPage({ title, description, badges = [], children, steps, faqs }: ToolPageProps) {
   return (
     <MarketingLayout>
-      <section className="hero-glow border-b border-border">
+      <section className="hero-glow -mt-14 border-b border-border pt-14">
         <Container className="py-10 sm:py-14">
           {badges.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TweetCardGeneratorIndexRouteImport } from './routes/tweet-card-generator/index'
+import { Route as CarouselMakerIndexRouteImport } from './routes/carousel-maker/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const TweetCardGeneratorIndexRoute = TweetCardGeneratorIndexRouteImport.update({
   path: '/tweet-card-generator/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CarouselMakerIndexRoute = CarouselMakerIndexRouteImport.update({
+  id: '/carousel-maker/',
+  path: '/carousel-maker/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/carousel-maker': typeof CarouselMakerIndexRoute
   '/tweet-card-generator': typeof TweetCardGeneratorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/carousel-maker': typeof CarouselMakerIndexRoute
   '/tweet-card-generator': typeof TweetCardGeneratorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/carousel-maker/': typeof CarouselMakerIndexRoute
   '/tweet-card-generator/': typeof TweetCardGeneratorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tweet-card-generator'
+  fullPaths: '/' | '/carousel-maker' | '/tweet-card-generator'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tweet-card-generator'
-  id: '__root__' | '/' | '/tweet-card-generator/'
+  to: '/' | '/carousel-maker' | '/tweet-card-generator'
+  id: '__root__' | '/' | '/carousel-maker/' | '/tweet-card-generator/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CarouselMakerIndexRoute: typeof CarouselMakerIndexRoute
   TweetCardGeneratorIndexRoute: typeof TweetCardGeneratorIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TweetCardGeneratorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/carousel-maker/': {
+      id: '/carousel-maker/'
+      path: '/carousel-maker'
+      fullPath: '/carousel-maker'
+      preLoaderRoute: typeof CarouselMakerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CarouselMakerIndexRoute: CarouselMakerIndexRoute,
   TweetCardGeneratorIndexRoute: TweetCardGeneratorIndexRoute,
 }
 export const routeTree = rootRouteImport

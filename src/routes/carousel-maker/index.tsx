@@ -16,7 +16,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { trackEvent } from '@/lib/analytics'
@@ -190,32 +189,32 @@ function CarouselMakerPage() {
           </div>
         </div>
 
-        <Separator />
-
-        <div className="flex flex-col gap-2">
-          <Button onClick={() => runExport('pdf')} disabled={!slides.length || !!busy}>
-            {busy === 'pdf' ? <Loader2 className="animate-spin" /> : <FileText />}
-            Download PDF (LinkedIn)
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => runExport('png')}
-            disabled={!slides.length || !!busy}
-          >
-            {busy === 'png' ? <Loader2 className="animate-spin" /> : <Images />}
-            Download PNGs (Instagram)
-          </Button>
-          {error && <p className="text-sm text-destructive">{error}</p>}
-        </div>
       </CardContent>
     </Card>
   )
 
   const preview = (
     <section aria-label="Slide preview">
-      <p className="mb-3 text-sm text-muted-foreground">
-        {slides.length} {slides.length === 1 ? 'slide' : 'slides'} · 1080×1350
-      </p>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">
+          {slides.length} {slides.length === 1 ? 'slide' : 'slides'} · 1080×1350
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            onClick={() => runExport('png')}
+            disabled={!slides.length || !!busy}
+          >
+            {busy === 'png' ? <Loader2 className="animate-spin" /> : <Images />}
+            PNGs (Instagram)
+          </Button>
+          <Button onClick={() => runExport('pdf')} disabled={!slides.length || !!busy}>
+            {busy === 'pdf' ? <Loader2 className="animate-spin" /> : <FileText />}
+            PDF (LinkedIn)
+          </Button>
+        </div>
+      </div>
+      {error && <p className="mb-3 text-sm text-destructive">{error}</p>}
       <div className="flex flex-wrap gap-4">
         {slides.map((slide, i) => (
           <div

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { ArrowRight, Film, ShieldCheck } from 'lucide-react'
+import { ArrowRight, Film, ShieldCheck, Star } from 'lucide-react'
 import { Reveal } from './Reveal'
 import { trackCtaClick } from '@/lib/analytics'
 import { TOOLS } from '@/lib/tools'
@@ -20,10 +20,11 @@ const SLIDES = [
 export function ToolsBento() {
   const tweet = tool('/tweet-card-generator')
   const carousel = tool('/carousel-maker')
+  const testimonial = tool('/testimonial-generator')
 
   return (
-    <div className="grid auto-rows-[minmax(180px,auto)] gap-4 md:grid-cols-4">
-      <Reveal className="md:col-span-2 md:row-span-2">
+    <div className="grid auto-rows-[minmax(180px,auto)] gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <Reveal className="md:col-span-2 lg:row-span-2">
         <ToolTile path={tweet.path} className="h-full">
           <TileHeading icon={<tweet.icon className="size-5 text-brand" />} title={tweet.name}>
             {tweet.description}
@@ -39,7 +40,7 @@ export function ToolsBento() {
         </ToolTile>
       </Reveal>
 
-      <Reveal className="md:row-span-2" delay={0.08}>
+      <Reveal className="lg:row-span-2" delay={0.08}>
         <ToolTile path={carousel.path} className="h-full">
           <TileHeading icon={<carousel.icon className="size-5 text-brand" />} title={carousel.name}>
             {carousel.description}
@@ -48,13 +49,22 @@ export function ToolsBento() {
         </ToolTile>
       </Reveal>
 
-      <Reveal delay={0.16}>
+      <Reveal className="lg:row-span-2" delay={0.16}>
+        <ToolTile path={testimonial.path} className="h-full">
+          <TileHeading icon={<testimonial.icon className="size-5 text-brand" />} title={testimonial.name}>
+            {testimonial.description}
+          </TileHeading>
+          <TestimonialStack />
+        </ToolTile>
+      </Reveal>
+
+      <Reveal className="lg:col-span-2" delay={0.24}>
         <BenefitTile icon={<ShieldCheck className="size-5 text-brand" />} title="No watermark">
           Unlimited exports, no account, nothing to pay.
         </BenefitTile>
       </Reveal>
 
-      <Reveal delay={0.24}>
+      <Reveal className="lg:col-span-2" delay={0.32}>
         <BenefitTile icon={<Film className="size-5 text-brand" />} title="PNG, GIF and PDF">
           Sized for X, Threads, Instagram and LinkedIn.
         </BenefitTile>
@@ -123,6 +133,36 @@ function BenefitTile({
         <h3 className="mt-4 font-semibold">{title}</h3>
         <p className="mt-1 text-sm text-muted-foreground">{children}</p>
       </div>
+    </div>
+  )
+}
+
+const QUOTES = [
+  { text: 'Activation went up 18% in two weeks.', name: 'Maya Chen' },
+  { text: 'The only tool our team opens daily.', name: 'Dev Patel' },
+]
+
+/** Two small testimonial cards, offset like a stack. */
+function TestimonialStack() {
+  return (
+    <div className="mt-6 flex flex-1 flex-col justify-center gap-3" aria-hidden>
+      {QUOTES.map((q, i) => (
+        <div
+          key={q.name}
+          className={cn(
+            'rounded-lg border border-border bg-background p-4 shadow-sm transition-transform duration-300',
+            i === 1 && 'ml-6 group-hover:-translate-y-1',
+          )}
+        >
+          <div className="flex gap-0.5 text-brand">
+            {Array.from({ length: 5 }).map((_, s) => (
+              <Star key={s} className="size-3 fill-current" strokeWidth={0} />
+            ))}
+          </div>
+          <p className="mt-2 text-sm leading-snug font-medium">“{q.text}”</p>
+          <p className="mt-2 text-xs text-muted-foreground">{q.name}</p>
+        </div>
+      ))}
     </div>
   )
 }

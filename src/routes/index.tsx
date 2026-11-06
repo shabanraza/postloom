@@ -11,8 +11,20 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { trackCtaClick } from '@/lib/analytics'
 
+const HOME_TITLE = 'Postloom – Free Tweet Card Generator, Carousel Maker & Testimonial Images'
+const HOME_DESCRIPTION =
+  'Free tools for social media visuals: turn tweets into images and GIFs, threads into Instagram and LinkedIn carousels, and customer quotes into testimonial images. No sign-up, no watermark.'
+
 export const Route = createFileRoute('/')({
   head: () => ({
+    meta: [
+      { title: HOME_TITLE },
+      { name: 'description', content: HOME_DESCRIPTION },
+      { property: 'og:title', content: HOME_TITLE },
+      { property: 'og:description', content: HOME_DESCRIPTION },
+      { name: 'twitter:title', content: HOME_TITLE },
+      { name: 'twitter:description', content: HOME_DESCRIPTION },
+    ],
     links: [{ rel: 'canonical', href: 'https://postloom.studio/' }],
   }),
   component: HomePage,

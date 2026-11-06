@@ -90,6 +90,13 @@ function HomePage() {
           <PostloomLogo size="md" />
           <div className="flex items-center gap-3">
             <ThemeToggle />
+            <Link
+              to="/carousel-maker"
+              onClick={() => trackCtaClick('carousel_maker', 'nav')}
+              className="hidden text-sm text-slate-300 hover:text-white sm:inline"
+            >
+              Carousel Maker
+            </Link>
             <Link to="/tweet-card-generator" onClick={() => trackCtaClick('get_started', 'nav')}>
               <Button className="rounded-full bg-white text-slate-900 hover:bg-slate-200">
                 Open Editor

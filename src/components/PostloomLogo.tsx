@@ -35,7 +35,7 @@ export function PostloomLogo({ className, showText = true, size = 'md' }: Postlo
                     width="38"
                     height="26"
                     rx="6"
-                    className="fill-slate-400 dark:fill-slate-600"
+                    className="fill-muted-foreground/60"
                 />
 
                 {/* Middle card */}
@@ -45,7 +45,7 @@ export function PostloomLogo({ className, showText = true, size = 'md' }: Postlo
                     width="38"
                     height="26"
                     rx="6"
-                    className="fill-slate-500 dark:fill-slate-500"
+                    className="fill-muted-foreground"
                 />
 
                 {/* Top card */}
@@ -55,20 +55,20 @@ export function PostloomLogo({ className, showText = true, size = 'md' }: Postlo
                     width="38"
                     height="26"
                     rx="6"
-                    className="fill-slate-900 dark:fill-white"
+                    className="fill-foreground"
                 />
 
                 {/* Speech bubble cutout */}
                 <path
                     d="M30 20H42C43.1 20 44 20.9 44 22V26C44 27.1 43.1 28 42 28H35L31 31V28H30C28.9 28 28 27.1 28 26V22C28 20.9 28.9 20 30 20Z"
-                    className="fill-white dark:fill-slate-900"
+                    className="fill-background"
                 />
             </svg>
 
 
             {/* Logo Text */}
             {showText && (
-                <span className={cn("font-bold text-slate-900 dark:text-white", textSizes[size])}>
+                <span className={cn("font-bold text-foreground", textSizes[size])}>
                     Postloom
                 </span>
             )}

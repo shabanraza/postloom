@@ -28,7 +28,7 @@ const COOKIES = [
 
 const STORAGE = [
   { name: 'theme', purpose: 'Light or dark mode' },
-  { name: 'tweet-studio-storage', purpose: 'Your editor design and export settings' },
+  { name: 'tweet-studio-storage', purpose: 'Your editor design, export settings and brand kit' },
   { name: 'postloom-onboarding-complete', purpose: 'Whether you have seen the editor intro' },
   { name: 'analytics-consent', purpose: 'Your cookie choice' },
 ]

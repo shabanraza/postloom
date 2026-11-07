@@ -1,88 +1,73 @@
-import { useState, useEffect } from 'react'
-import { X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
-import { GA4_MEASUREMENT_ID } from '@/lib/analytics'
+import { OPEN_COOKIE_SETTINGS, readConsent, saveConsent } from '@/lib/consent'
+import type { ConsentChoice } from '@/lib/consent'
 
-function saveConsent(value: 'accepted' | 'declined') {
-  try {
-    localStorage.setItem('analytics-consent', value)
-  } catch {
-    // ignore: storage blocked
-  }
-  // __root.tsx reads this value on every load to set the consent default
-  window.gtag?.('consent', 'update', {
-    analytics_storage: value === 'accepted' ? 'granted' : 'denied',
-  })
-}
-
-export function PrivacyNotice() {
+/**
+ * Cookie banner. Where the law needs opt-in (EEA, UK, Switzerland) nothing
+ * runs until "Accept", and Accept and Reject are equally easy. Elsewhere it
+ * is a notice with an opt-out. A Global Privacy Control signal is treated as
+ * an opt-out, so those visitors aren't asked. The footer's "Cookie settings"
+ * reopens it so anyone can change their mind.
+ */
+export function PrivacyNotice({ optIn }: { optIn: boolean }) {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    // GA4 always loads (see __root.tsx), so always ask once
-    if (!GA4_MEASUREMENT_ID) {
-      return
-    }
-
-    let consent: string | null = null
-    try {
-      consent = localStorage.getItem('analytics-consent')
-    } catch {
-      // storage blocked: show the notice
-    }
-    if (!consent) {
-      setShow(true)
-    }
+    const gpc = window.__postloomConsent?.gpc === true
+    if (!readConsent() && !gpc) setShow(true)
+    const reopen = () => setShow(true)
+    window.addEventListener(OPEN_COOKIE_SETTINGS, reopen)
+    return () => window.removeEventListener(OPEN_COOKIE_SETTINGS, reopen)
   }, [])
 
-  const handleAccept = () => {
-    saveConsent('accepted')
-    setShow(false)
-  }
-
-  const handleDecline = () => {
-    saveConsent('declined')
+  const choose = (choice: ConsentChoice) => {
+    saveConsent(choice)
     setShow(false)
   }
 
   if (!show) return null
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50 max-w-md mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-lg p-4">
-      <div className="flex items-start gap-3">
-        <div className="flex-1">
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-1">
-            Privacy & Cookies
-          </h3>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
-            We use analytics to improve your experience. By accepting, you agree to our use of cookies for analytics purposes.
-          </p>
-          <div className="flex gap-2">
-            <Button
-              onClick={handleAccept}
-              size="sm"
-              className="h-8 px-3 text-xs bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              Accept
-            </Button>
-            <Button
-              onClick={handleDecline}
-              size="sm"
-              variant="outline"
-              className="h-8 px-3 text-xs"
-            >
-              Decline
-            </Button>
-          </div>
-        </div>
-        <button
-          onClick={handleDecline}
-          className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 shrink-0"
-        >
-          <X className="h-4 w-4" />
-        </button>
+    <div
+      role="dialog"
+      aria-labelledby="cookie-title"
+      aria-describedby="cookie-text"
+      className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-xl border border-border bg-card p-4 text-card-foreground shadow-lg"
+    >
+      <h2 id="cookie-title" className="text-sm font-semibold">
+        {optIn ? 'Can we use analytics cookies?' : 'We use analytics'}
+      </h2>
+      <p id="cookie-text" className="mt-1 text-xs leading-relaxed text-muted-foreground">
+        {optIn
+          ? 'With your OK we use Google Analytics and Microsoft Clarity to see which tools people use and fix what breaks. Nothing runs until you accept. '
+          : 'We use Google Analytics and Microsoft Clarity to see which tools people use and fix what breaks. We never sell your data. '}
+        <Link to="/privacy" className="underline underline-offset-2 hover:text-foreground">
+          Privacy policy
+        </Link>
+      </p>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <Button size="sm" variant="outline" onClick={() => choose('declined')}>
+          {optIn ? 'Reject' : 'Opt out'}
+        </Button>
+        <Button size="sm" onClick={() => choose('accepted')}>
+          {optIn ? 'Accept' : 'OK'}
+        </Button>
       </div>
     </div>
   )
 }
 
+/** Footer link that reopens the cookie banner */
+export function CookieSettingsButton({ className }: { className?: string }) {
+  return (
+    <button
+      type="button"
+      className={className}
+      onClick={() => window.dispatchEvent(new Event(OPEN_COOKIE_SETTINGS))}
+    >
+      Cookie settings
+    </button>
+  )
+}

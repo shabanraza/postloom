@@ -11,7 +11,8 @@ import appCss from '../styles.css?url'
 import { NotFound } from '@/components/layout/NotFound'
 import { PrivacyNotice } from '@/components/PrivacyNotice'
 import { Toaster } from '@/components/ui/sonner'
-import { GA4_MEASUREMENT_ID } from '@/lib/analytics'
+import { CLARITY_PROJECT_ID, GA4_MEASUREMENT_ID } from '@/lib/analytics'
+import { consentBootScript, getConsentRegion } from '@/lib/consent'
 
 import type { QueryClient } from '@tanstack/react-query'
 
@@ -133,12 +134,17 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     }
   },
 
+  // Visitor's country decides whether analytics need opt-in. Read once per page load.
+  loader: () => getConsentRegion(),
+  staleTime: Infinity,
+  shouldReload: false,
+
   component: RootComponent,
   notFoundComponent: NotFound,
 })
 
 function RootComponent() {
-  const ga4Id = GA4_MEASUREMENT_ID
+  const { optIn } = Route.useLoaderData()
 
   // Suppress AbortError from unhandled promise rejections
   // These are normal when requests are cancelled during navigation/component unmount
@@ -168,30 +174,10 @@ function RootComponent() {
             __html: `try{document.documentElement.classList.toggle('dark',localStorage.getItem('theme')==='dark')}catch(e){}`,
           }}
         />
-        {/* Google Analytics 4 - Standard Google Format */}
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
-        />
+        {/* Consent first: analytics only load once allowed (see src/lib/consent.ts) */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              var consent = null;
-              try { consent = localStorage.getItem('analytics-consent'); } catch (e) {}
-              gtag('consent', 'default', {
-                analytics_storage: consent === 'declined' ? 'denied' : 'granted',
-                ad_storage: 'denied',
-                ad_user_data: 'denied',
-                ad_personalization: 'denied'
-              });
-              gtag('js', new Date());
-              // Only the live site reports, so localhost and preview visits stay out of the data
-              if (/(^|\\.)postloom\\.studio$/.test(location.hostname)) {
-                gtag('config', '${ga4Id}');
-              }
-            `,
+            __html: consentBootScript({ optIn, gaId: GA4_MEASUREMENT_ID, clarityId: CLARITY_PROJECT_ID }),
           }}
         />
         {/* Structured Data for SEO */}
@@ -234,7 +220,7 @@ function RootComponent() {
         </QueryProviderWrapper>
         <Toaster />
         <Scripts />
-        <PrivacyNotice />
+        <PrivacyNotice optIn={optIn} />
       </body>
     </html>
   )

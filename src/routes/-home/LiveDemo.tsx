@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { trackCtaClick, trackEvent } from '@/lib/analytics'
+import { trackCtaClick, trackEvent, trackExportComplete, trackExportError, trackExportStart } from '@/lib/analytics'
 
 const SAMPLES = [
   'Shipped my side project today. 3 months of nights and weekends, 1 tiny tool, 0 regrets.',
@@ -75,7 +75,7 @@ export function LiveDemo({ source = 'home' }: { source?: string } = {}) {
     if (!cardRef.current || busy) return
     setBusy(true)
     takeOver()
-    trackEvent('export_start', { format: `${source}_demo_png`, theme: style })
+    trackExportStart('tweet_demo', 'png', { theme: style, location: source })
     try {
       const { domToBlob } = await import('modern-screenshot')
       const blob = await domToBlob(cardRef.current, { scale: 2, type: 'image/png' })
@@ -87,10 +87,10 @@ export function LiveDemo({ source = 'home' }: { source?: string } = {}) {
       a.click()
       a.remove()
       setTimeout(() => URL.revokeObjectURL(url), 1000)
-      trackEvent('export_complete', { format: `${source}_demo_png`, theme: style })
+      trackExportComplete('tweet_demo', 'png', { theme: style, location: source })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
-      trackEvent('export_error', { format: `${source}_demo_png`, error_message: message.slice(0, 100) })
+      trackExportError('tweet_demo', 'png', message, { location: source })
     } finally {
       setBusy(false)
     }

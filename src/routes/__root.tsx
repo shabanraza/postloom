@@ -187,7 +187,10 @@ function RootComponent() {
                 ad_personalization: 'denied'
               });
               gtag('js', new Date());
-              gtag('config', '${ga4Id}');
+              // Only the live site reports, so localhost and preview visits stay out of the data
+              if (/(^|\\.)postloom\\.studio$/.test(location.hostname)) {
+                gtag('config', '${ga4Id}');
+              }
             `,
           }}
         />

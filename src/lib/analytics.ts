@@ -1,29 +1,26 @@
 /**
- * Centralized Analytics Utility
- * Tracks user actions for Postloom Tweet Studio
- * 
- * Event Categories:
- * - export_* : Download/export events (PNG, GIF)
- * - tool_* : Tool interactions (studio opened, session duration)
- * - design_* : Design changes (theme, background, canvas size)
- * - import_* : Content imports (tweet URL)
+ * Analytics helpers for Google Analytics 4.
+ *
+ * Every export event (export_start, export_complete, export_error) carries:
+ * - tool:   which tool made it (tweet_card, carousel, testimonial, tweet_demo)
+ * - format: what was produced (png, gif, pdf, embed, clipboard)
+ * so GA can compare tools side by side. `tool`, `format`, `slides`, `theme`,
+ * `style`, `size`, `cta_name` and `location` are registered as custom
+ * dimensions in GA; a new parameter needs registering there too before it
+ * shows in reports. export_complete is the key event.
+ *
+ * GA only sends hits from postloom.studio (see __root.tsx); in dev, events
+ * are logged to the console instead.
  */
 
-// Declare global analytics functions
 declare global {
   interface Window {
-    // Cloudflare Web Analytics (auto-injected for page views)
-    cfBeacon?: {
-      push: (data: unknown) => void
-    }
-    // Google Analytics 4
     gtag?: (
       command: 'config' | 'event' | 'set' | 'js' | 'consent',
       targetId: string | Date,
       config?: Record<string, unknown>
     ) => void
-    dataLayer?: unknown[]
-    // Session tracking
+    dataLayer?: Array<unknown>
     _postloom_session_start?: number
   }
 }
@@ -32,269 +29,107 @@ declare global {
 export const GA4_MEASUREMENT_ID: string =
   import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-7T3RYZQR2M'
 
-// Track session start for duration calculation
-let sessionStartTime: number | null = null
+export type ToolId = 'tweet_card' | 'carousel' | 'testimonial' | 'tweet_demo'
+export type ExportFormat = 'png' | 'gif' | 'pdf' | 'embed' | 'clipboard'
+type Params = Record<string, string | number | boolean | undefined>
 
-/**
- * Track a custom event to Google Analytics 4
- */
-export function trackEvent(
-  eventName: string,
-  eventParams?: Record<string, string | number | boolean | undefined>
-): void {
-  // Clean undefined values
-  const cleanedParams = eventParams 
-    ? Object.fromEntries(
-        Object.entries(eventParams).filter(([, v]) => v !== undefined)
-      )
+export function trackEvent(eventName: string, eventParams?: Params): void {
+  const cleanedParams = eventParams
+    ? Object.fromEntries(Object.entries(eventParams).filter(([, v]) => v !== undefined))
     : undefined
 
-  // Track in Google Analytics 4
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, cleanedParams)
   }
 
-  // Debug logging in development
   if (import.meta.env.DEV) {
     console.log('📊 Analytics:', eventName, cleanedParams)
   }
 }
 
-/**
- * Track page view
- */
-export function trackPageView(path: string): void {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('config', GA4_MEASUREMENT_ID, {
-      page_path: path,
-    })
-  }
+// ============================================
+// EXPORTS (the main success signal)
+// ============================================
+
+export function trackExportStart(tool: ToolId, format: ExportFormat, params?: Params): void {
+  trackEvent('export_start', { tool, format, ...params })
+}
+
+export function trackExportComplete(tool: ToolId, format: ExportFormat, params?: Params): void {
+  trackEvent('export_complete', { tool, format, ...params })
+}
+
+export function trackExportError(
+  tool: ToolId,
+  format: ExportFormat,
+  error: unknown,
+  params?: Params
+): void {
+  const message = error instanceof Error ? error.message : String(error)
+  trackEvent('export_error', { tool, format, error_message: message.slice(0, 100), ...params })
+}
+
+/** Width/height params for the tweet card editor's exports */
+export function sizeParams(width: number, height: number): Params {
+  return { width, height, dimensions: `${width}x${height}` }
 }
 
 // ============================================
-// TOOL USAGE TRACKING
+// EDITOR SESSION
 // ============================================
 
-/**
- * Track when user opens the Tweet Studio tool
- */
+let sessionStartTime: number | null = null
+
 export function trackToolOpen(): void {
   sessionStartTime = Date.now()
-  if (typeof window !== 'undefined') {
-    window._postloom_session_start = sessionStartTime
-  }
-  trackEvent('tool_open', {
-    timestamp: new Date().toISOString(),
-  })
+  if (typeof window !== 'undefined') window._postloom_session_start = sessionStartTime
+  trackEvent('tool_open', { tool: 'tweet_card' })
 }
 
-/**
- * Track when user leaves the tool (session end)
- */
 export function trackToolClose(): void {
-  const startTime = sessionStartTime || (typeof window !== 'undefined' ? window._postloom_session_start : null)
+  const startTime =
+    sessionStartTime || (typeof window !== 'undefined' ? window._postloom_session_start : null)
   const duration = startTime ? Math.round((Date.now() - startTime) / 1000) : 0
-  
-  trackEvent('tool_close', {
-    session_duration_seconds: duration,
-  })
+  trackEvent('tool_close', { tool: 'tweet_card', session_duration_seconds: duration })
 }
 
-/**
- * Track tab/panel interactions
- */
-export function trackTabView(tabName: string): void {
-  trackEvent('tab_view', {
-    tab_name: tabName,
-  })
-}
-
-// ============================================
-// EXPORT/DOWNLOAD TRACKING
-// ============================================
-
-/**
- * Track export start (user clicked export)
- */
-export function trackExportStart(format: 'png' | 'gif', width: number, height: number): void {
-  trackEvent('export_start', {
-    format,
-    width,
-    height,
-    dimensions: `${width}x${height}`,
-  })
-}
-
-/**
- * Track successful export (download completed)
- */
-export function trackExport(
-  format: 'png' | 'gif',
-  width: number,
-  height: number
-): void {
-  trackEvent('export_complete', {
-    format,
-    width,
-    height,
-    dimensions: `${width}x${height}`,
-  })
-}
-
-/**
- * Track export failure
- */
-export function trackExportError(
-  format: 'png' | 'gif',
-  errorMessage: string
-): void {
-  trackEvent('export_error', {
-    format,
-    error_message: errorMessage.slice(0, 100), // Limit error message length
-  })
-}
-
-/**
- * Track copy to clipboard action
- */
-export function trackCopyToClipboard(success: boolean): void {
-  trackEvent('copy_to_clipboard', {
-    success,
-  })
-}
-
-// ============================================
-// IMPORT TRACKING
-// ============================================
-
-/**
- * Track tweet import attempt
- */
 export function trackTweetImport(success: boolean, error?: string): void {
-  trackEvent('tweet_import', {
-    success,
-    error_message: error?.slice(0, 100),
-  })
+  trackEvent('tweet_import', { success, error_message: error?.slice(0, 100) })
 }
 
 // ============================================
-// DESIGN CHANGES TRACKING
+// EDITOR DESIGN CHANGES
 // ============================================
 
-/**
- * Track design preset selection (card style)
- */
 export function trackDesignPreset(presetId: string): void {
-  trackEvent('design_preset_change', {
-    preset_id: presetId,
-  })
+  trackEvent('design_preset_change', { preset_id: presetId })
 }
 
-/**
- * Track theme change (light/dark/dim)
- */
 export function trackThemeChange(theme: 'light' | 'dark' | 'dim'): void {
-  trackEvent('theme_change', {
-    theme,
-  })
+  trackEvent('theme_change', { theme })
 }
 
-/**
- * Track card theme change
- */
 export function trackCardThemeChange(theme: string): void {
-  trackEvent('card_theme_change', {
-    theme,
-  })
+  trackEvent('card_theme_change', { theme })
 }
 
-/**
- * Track background type change
- */
 export function trackBackgroundChange(backgroundType: string): void {
-  trackEvent('background_change', {
-    background_type: backgroundType,
-  })
+  trackEvent('background_change', { background_type: backgroundType })
 }
 
-/**
- * Track canvas size/template change
- */
-export function trackCanvasSizeChange(
-  templateName: string,
-  width: number,
-  height: number
-): void {
-  trackEvent('canvas_size_change', {
-    template: templateName,
-    width,
-    height,
-    dimensions: `${width}x${height}`,
-  })
+export function trackCanvasSizeChange(templateName: string, width: number, height: number): void {
+  trackEvent('canvas_size_change', { template: templateName, ...sizeParams(width, height) })
 }
 
-/**
- * Track export size preset selection
- */
 export function trackExportSizeChange(preset: string, width: number, height: number): void {
-  trackEvent('export_size_change', {
-    preset,
-    width,
-    height,
-    dimensions: `${width}x${height}`,
-  })
+  trackEvent('export_size_change', { preset, ...sizeParams(width, height) })
 }
 
 // ============================================
-// ANIMATION TRACKING
+// NAVIGATION
 // ============================================
 
-/**
- * Track animation settings change
- */
-export function trackAnimationChange(settings: {
-  type?: string
-  speed?: number
-  fps?: number
-  loop?: boolean
-}): void {
-  trackEvent('animation_change', {
-    type: settings.type,
-    speed: settings.speed,
-    fps: settings.fps,
-    loop: settings.loop,
-  })
-}
-
-// ============================================
-// USER ENGAGEMENT TRACKING
-// ============================================
-
-/**
- * Track when user modifies tweet content
- */
-export function trackContentEdit(field: 'text' | 'name' | 'username' | 'metrics'): void {
-  trackEvent('content_edit', {
-    field,
-  })
-}
-
-/**
- * Track CTA button clicks on landing page
- */
+/** Clicks on buttons and links that lead into a tool */
 export function trackCtaClick(ctaName: string, location: string): void {
-  trackEvent('cta_click', {
-    cta_name: ctaName,
-    location,
-  })
+  trackEvent('cta_click', { cta_name: ctaName, location })
 }
-
-/**
- * Track feature discovery/usage
- */
-export function trackFeatureUsed(featureName: string): void {
-  trackEvent('feature_used', {
-    feature: featureName,
-  })
-}
-

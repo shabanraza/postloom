@@ -23,7 +23,7 @@ import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { trackEvent } from '@/lib/analytics'
+import { trackEvent, trackExportComplete, trackExportError, trackExportStart } from '@/lib/analytics'
 
 type StyleId = 'paper' | 'charcoal' | 'sage'
 
@@ -158,7 +158,7 @@ export function TestimonialGenerator({ title, description, steps, faqs, defaultT
     if (!items.length || busy) return
     setBusy(true)
     setError(null)
-    trackEvent('export_start', { format: 'testimonial_png', cards: items.length, style: styleId, size: sizeId })
+    trackExportStart('testimonial', 'png', { cards: items.length, style: styleId, size: sizeId })
     try {
       for (let i = 0; i < items.length; i++) {
         const el = cardRefs.current[items[i].id]
@@ -167,11 +167,11 @@ export function TestimonialGenerator({ title, description, steps, faqs, defaultT
         const who = (items[i].handle || items[i].name).replace(/[^a-z0-9_-]/gi, '').slice(0, 30) || 'customer'
         downloadBlob(blob, `testimonial-${i + 1}-${who}.png`)
       }
-      trackEvent('export_complete', { format: 'testimonial_png', cards: items.length, style: styleId, size: sizeId })
+      trackExportComplete('testimonial', 'png', { cards: items.length, style: styleId, size: sizeId })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
       setError(`Export failed: ${message}`)
-      trackEvent('export_error', { format: 'testimonial_png', error_message: message.slice(0, 100) })
+      trackExportError('testimonial', 'png', message)
     } finally {
       setBusy(false)
     }
@@ -182,7 +182,7 @@ export function TestimonialGenerator({ title, description, steps, faqs, defaultT
       await navigator.clipboard.writeText(embed)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-      trackEvent('export_complete', { format: 'testimonial_embed', cards: items.length, style: styleId })
+      trackExportComplete('testimonial', 'embed', { cards: items.length, style: styleId })
     } catch {
       setError('Copy failed. Select the code below and copy it manually.')
     }

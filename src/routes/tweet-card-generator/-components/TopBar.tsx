@@ -15,7 +15,7 @@ import { ThemeToggle } from './ThemeToggle'
 import { useTweetStudioStore } from '../-state'
 import { EXPORT_SIZES } from '../-constants'
 import { exportAsPng, exportAsGif, copyToClipboard, estimateFileSize } from '../-export'
-import { trackExport, trackExportStart, trackExportError, trackExportSizeChange } from '@/lib/analytics'
+import { sizeParams, trackExportComplete, trackExportStart, trackExportError, trackExportSizeChange } from '@/lib/analytics'
 import { PostloomLogo } from '@/components/PostloomLogo'
 import type { ExportPreset } from '../-types'
 
@@ -46,18 +46,18 @@ export function TopBar() {
         setIsExporting(true)
         setExportProgress(0)
         
-        trackExportStart('png', exportSettings.width, exportSettings.height)
+        trackExportStart('tweet_card', 'png', sizeParams(exportSettings.width, exportSettings.height))
 
         try {
             await exportAsPng(canvasElement, tweet.profile.username, {
                 width: exportSettings.width,
                 height: exportSettings.height,
             })
-            trackExport('png', exportSettings.width, exportSettings.height)
+            trackExportComplete('tweet_card', 'png', sizeParams(exportSettings.width, exportSettings.height))
         } catch (error) {
             console.error('Export failed:', error)
             const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-            trackExportError('png', errorMessage)
+            trackExportError('tweet_card', 'png', errorMessage)
         } finally {
             setIsExporting(false)
             setExportProgress(0)
@@ -80,7 +80,7 @@ export function TopBar() {
         setIsExporting(true)
         setExportProgress(0)
         
-        trackExportStart('gif', exportSettings.width, exportSettings.height)
+        trackExportStart('tweet_card', 'gif', sizeParams(exportSettings.width, exportSettings.height))
 
         try {
             await exportAsGif(canvasElement, tweet.profile.username, {
@@ -92,11 +92,11 @@ export function TopBar() {
                 loop: animation.loop,
                 onProgress: (progress) => setExportProgress(progress * 100),
             })
-            trackExport('gif', exportSettings.width, exportSettings.height)
+            trackExportComplete('tweet_card', 'gif', sizeParams(exportSettings.width, exportSettings.height))
         } catch (error) {
             console.error('GIF export failed:', error)
             const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
-            trackExportError('gif', errorMessage)
+            trackExportError('tweet_card', 'gif', errorMessage)
             alert(`GIF export failed: ${errorMessage}\n\nIf this persists, try:\n- Reducing the text length\n- Using a smaller export size\n- Refreshing the page`)
         } finally {
             setIsExporting(false)
@@ -119,9 +119,11 @@ export function TopBar() {
                 height: exportSettings.height,
             })
             setCopied(true)
+            trackExportComplete('tweet_card', 'clipboard', sizeParams(exportSettings.width, exportSettings.height))
             setTimeout(() => setCopied(false), 2000)
         } catch (error) {
             console.error('Copy failed:', error)
+            trackExportError('tweet_card', 'clipboard', error)
             alert('Failed to copy to clipboard. Your browser may not support this feature.')
         } finally {
             setIsExporting(false)

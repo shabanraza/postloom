@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { trackEvent } from '@/lib/analytics'
+import { trackExportComplete, trackExportError, trackExportStart } from '@/lib/analytics'
 
 export type ThemeId = 'light' | 'dark' | 'sage'
 
@@ -92,7 +92,7 @@ export function CarouselMaker({
     if (!slides.length || busy) return
     setBusy(format)
     setError(null)
-    trackEvent('export_start', { format: `carousel_${format}`, slides: slides.length, theme: themeId })
+    trackExportStart('carousel', format, { slides: slides.length, theme: themeId })
     try {
       const elements = slideElements()
       const base = (handle || 'postloom').replace(/[^a-z0-9_-]/gi, '') || 'postloom'
@@ -112,15 +112,11 @@ export function CarouselMaker({
         }
         downloadBlob(buildPdfFromJpegs(pages), `${base}-carousel.pdf`)
       }
-      trackEvent('export_complete', {
-        format: `carousel_${format}`,
-        slides: slides.length,
-        theme: themeId,
-      })
+      trackExportComplete('carousel', format, { slides: slides.length, theme: themeId })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
       setError(`Export failed: ${message}`)
-      trackEvent('export_error', { format: `carousel_${format}`, error_message: message.slice(0, 100) })
+      trackExportError('carousel', format, message)
     } finally {
       setBusy(null)
     }

@@ -45,9 +45,30 @@ export function trackEvent(eventName: string, eventParams?: Params): void {
     window.gtag('event', eventName, cleanedParams)
   }
 
+  sendToClarity(eventName, cleanedParams)
+
   if (import.meta.env.DEV) {
     console.log('📊 Analytics:', eventName, cleanedParams)
   }
+}
+
+/** Params that become Clarity tags, so recordings can be filtered by them */
+const CLARITY_TAGS = ['tool', 'format', 'cta_name'] as const
+
+/**
+ * Mirror an event into Microsoft Clarity: a custom event (filter recordings by
+ * "Custom events"), tags for the tool and format, and a priority upgrade for
+ * exports so those sessions are kept and recorded in full. window.clarity only
+ * exists once analytics are allowed (see consentBootScript), so this respects consent.
+ */
+function sendToClarity(eventName: string, params?: Params): void {
+  if (typeof window === 'undefined' || !window.clarity) return
+  window.clarity('event', eventName)
+  for (const key of CLARITY_TAGS) {
+    const value = params?.[key]
+    if (value !== undefined) window.clarity('set', key, String(value))
+  }
+  if (eventName === 'export_complete') window.clarity('upgrade', eventName)
 }
 
 // ============================================

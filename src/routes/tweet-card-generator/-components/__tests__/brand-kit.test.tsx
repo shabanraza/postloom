@@ -69,3 +69,25 @@ describe('BrandKit kits and logo', () => {
     expect(useTweetStudioStore.getState().logoOverlay.position).toBe('top-right')
   })
 })
+
+describe('BrandKit add font', () => {
+  it('picks a font from a list instead of typing a name', () => {
+    const kit = useTweetStudioStore.getState().brandKits[0]
+    useTweetStudioStore.setState({ activeBrandKitId: kit.id })
+    render(<BrandKit />)
+    fireEvent.click(screen.getByRole('button', { name: /add font/i }))
+    expect(screen.queryByPlaceholderText(/font name/i)).toBeNull()
+    expect(screen.getByRole('combobox', { name: 'Font' })).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Add to kit' }))
+    const fonts = useTweetStudioStore.getState().brandKits[0].fonts
+    expect(fonts[fonts.length - 1]).toMatchObject({ name: 'Georgia', fontFamily: 'Georgia, serif', fontWeight: 400 })
+  })
+
+  it('will not add the same font twice', () => {
+    render(<BrandKit />)
+    fireEvent.click(screen.getByRole('button', { name: /add font/i }))
+    const add = screen.getByRole('button', { name: 'Already in your kit' }) as HTMLButtonElement
+    expect(add.disabled).toBe(true)
+  })
+})

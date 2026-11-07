@@ -327,10 +327,21 @@ export function isHexColor(value: string): boolean {
     return /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value)
 }
 
-// Typefaces a brand font can use (all render without loading web fonts)
+// Typefaces a brand font can use. Font stacks that are already on people's
+// devices, so they show in the preview and in exports without loading web fonts.
 export const BRAND_FONT_CHOICES = [
-    { label: 'Sans', fontFamily: 'system-ui, sans-serif' },
-    { label: 'Serif', fontFamily: 'Georgia, serif' },
-    { label: 'Mono', fontFamily: 'ui-monospace, monospace' },
-    { label: 'Handwritten', fontFamily: 'cursive' },
+    { label: 'System Sans', fontFamily: 'system-ui, sans-serif' },
+    { label: 'Helvetica', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' },
+    { label: 'Verdana', fontFamily: 'Verdana, Geneva, sans-serif' },
+    { label: 'Trebuchet', fontFamily: '"Trebuchet MS", "Lucida Grande", sans-serif' },
+    { label: 'Georgia', fontFamily: 'Georgia, serif' },
+    { label: 'Palatino', fontFamily: 'Palatino, "Palatino Linotype", "Book Antiqua", serif' },
+    { label: 'Times', fontFamily: '"Times New Roman", Times, serif' },
+    { label: 'Monospace', fontFamily: 'ui-monospace, "SF Mono", Consolas, monospace' },
+    { label: 'Handwritten', fontFamily: '"Segoe Print", "Bradley Hand", cursive' },
 ] as const
+
+/** "Georgia" or "Georgia Bold": the name a picked brand font gets */
+export function brandFontName(label: string, weight: number): string {
+    return weight >= 700 ? `${label} Bold` : label
+}

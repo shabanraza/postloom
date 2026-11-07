@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { BRAND_FONT_CHOICES, EXPORT_FORMAT_COPY, isHexColor, textLimitFor } from './-constants'
+import { BRAND_FONT_CHOICES, EXPORT_FORMAT_COPY, brandFontName, isHexColor, textLimitFor } from './-constants'
 
 describe('textLimitFor', () => {
   it('matches each platform\'s post length', () => {
@@ -38,5 +38,18 @@ describe('BRAND_FONT_CHOICES', () => {
   it('offers real typeface choices, not only the system font', () => {
     const families = new Set(BRAND_FONT_CHOICES.map((f) => f.fontFamily))
     expect(families.size).toBeGreaterThanOrEqual(4)
+  })
+})
+
+describe('brand font choices', () => {
+  it('offers a proper list to pick from, each name once', () => {
+    expect(BRAND_FONT_CHOICES.length).toBeGreaterThanOrEqual(8)
+    const labels = BRAND_FONT_CHOICES.map((f) => f.label)
+    expect(new Set(labels).size).toBe(labels.length)
+  })
+
+  it('names a font from what was picked, so nobody has to type one', () => {
+    expect(brandFontName('Georgia', 400)).toBe('Georgia')
+    expect(brandFontName('Georgia', 700)).toBe('Georgia Bold')
   })
 })

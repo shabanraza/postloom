@@ -8,7 +8,8 @@ import { Plus, Trash2, Type, Check, X, Pencil, Upload, EyeOff } from 'lucide-rea
 import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
 import { useTweetStudioStore } from '../-state'
-import { BRAND_FONT_CHOICES, isHexColor } from '../-constants'
+import { BRAND_FONT_CHOICES, brandFontName, isHexColor } from '../-constants'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { fitWithin } from '../-utils'
 import type { LogoPosition } from '../-types'
 
@@ -47,8 +48,7 @@ const LOGO_SPOTS: { position: Exclude<LogoPosition, 'none'>; label: string; clas
 export function BrandKit() {
     const [newColorName, setNewColorName] = useState('')
     const [newColorValue, setNewColorValue] = useState('#4a6b57')
-    const [newFontName, setNewFontName] = useState('')
-    const [newFontFamily, setNewFontFamily] = useState<string>(BRAND_FONT_CHOICES[0].fontFamily)
+    const [newFontFamily, setNewFontFamily] = useState<string>('Georgia, serif')
     const [newFontWeight, setNewFontWeight] = useState(400)
     const colorIsValid = isHexColor(newColorValue)
     
@@ -85,15 +85,19 @@ export function BrandKit() {
         setNewColorName('')
     }
 
+    const pickedFont = BRAND_FONT_CHOICES.find((f) => f.fontFamily === newFontFamily) ?? BRAND_FONT_CHOICES[0]
+    const fontAlreadyInKit = !!activeKit?.fonts.some(
+        (f) => f.fontFamily === newFontFamily && f.fontWeight === newFontWeight
+    )
+
     const handleAddFont = () => {
-        if (!activeKit || !newFontName.trim()) return
+        if (!activeKit || fontAlreadyInKit) return
         addBrandFont(activeKit.id, {
             id: String(Date.now()),
-            name: newFontName.trim(),
+            name: brandFontName(pickedFont.label, newFontWeight),
             fontFamily: newFontFamily,
             fontWeight: newFontWeight,
         })
-        setNewFontName('')
     }
 
     if (!activeKit) return null
@@ -463,32 +467,19 @@ export function BrandKit() {
                         </PopoverTrigger>
                         <PopoverContent className="w-60" align="start">
                             <div className="space-y-3">
-                                <Label className="text-xs">Add Brand Font</Label>
-                                <Input
-                                    placeholder="Font name (e.g., Heading)"
-                                    value={newFontName}
-                                    onChange={(e) => setNewFontName(e.target.value)}
-                                    className="h-8 text-sm"
-                                />
-                                <div className="grid grid-cols-2 gap-1.5">
-                                    {BRAND_FONT_CHOICES.map((choice) => (
-                                        <button
-                                            key={choice.label}
-                                            type="button"
-                                            aria-pressed={newFontFamily === choice.fontFamily}
-                                            className={cn(
-                                                "h-8 rounded-md border text-sm transition-colors",
-                                                newFontFamily === choice.fontFamily
-                                                    ? "border-primary bg-muted"
-                                                    : "border-border hover:border-foreground/30"
-                                            )}
-                                            style={{ fontFamily: choice.fontFamily }}
-                                            onClick={() => setNewFontFamily(choice.fontFamily)}
-                                        >
-                                            {choice.label}
-                                        </button>
-                                    ))}
-                                </div>
+                                <Label className="text-xs">Add a brand font</Label>
+                                <Select value={newFontFamily} onValueChange={setNewFontFamily}>
+                                    <SelectTrigger aria-label="Font" className="h-9 w-full text-sm" style={{ fontFamily: newFontFamily }}>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {BRAND_FONT_CHOICES.map((choice) => (
+                                            <SelectItem key={choice.label} value={choice.fontFamily} style={{ fontFamily: choice.fontFamily }}>
+                                                {choice.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                                 <div className="grid grid-cols-2 gap-1.5">
                                     {[{ label: 'Regular', weight: 400 }, { label: 'Bold', weight: 700 }].map((w) => (
                                         <button
@@ -508,13 +499,19 @@ export function BrandKit() {
                                         </button>
                                     ))}
                                 </div>
+                                <p
+                                    className="rounded-md bg-muted/60 px-2.5 py-2 text-base leading-snug text-foreground"
+                                    style={{ fontFamily: newFontFamily, fontWeight: newFontWeight }}
+                                >
+                                    Ship it today
+                                </p>
                                 <Button
                                     size="sm"
                                     className="w-full"
                                     onClick={handleAddFont}
-                                    disabled={!newFontName.trim()}
+                                    disabled={fontAlreadyInKit}
                                 >
-                                    Add Font
+                                    {fontAlreadyInKit ? 'Already in your kit' : 'Add to kit'}
                                 </Button>
                             </div>
                         </PopoverContent>

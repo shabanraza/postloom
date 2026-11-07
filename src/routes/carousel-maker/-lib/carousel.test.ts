@@ -42,3 +42,41 @@ describe('buildPdfFromJpegs', () => {
     expect(text.slice(startxref, startxref + 4)).toBe('xref')
   })
 })
+
+describe('buildZip', () => {
+  const enc = new TextEncoder()
+  const bytesOf = async (blob: Blob) => new Uint8Array(await blob.arrayBuffer())
+  const u32 = (b: Uint8Array, at: number) => new DataView(b.buffer, b.byteOffset).getUint32(at, true)
+  const u16 = (b: Uint8Array, at: number) => new DataView(b.buffer, b.byteOffset).getUint16(at, true)
+
+  it('computes the standard CRC-32', async () => {
+    const { crc32 } = await import('./carousel')
+    expect(crc32(enc.encode('hello'))).toBe(0x3610a686)
+    expect(crc32(new Uint8Array())).toBe(0)
+  })
+
+  it('stores each file with a local header, central directory and end record', async () => {
+    const { buildZip } = await import('./carousel')
+    const zip = await bytesOf(
+      buildZip([
+        { name: 'a-1.png', data: enc.encode('hello') },
+        { name: 'a-2.png', data: enc.encode('world!') },
+      ]),
+    )
+    expect(u32(zip, 0)).toBe(0x04034b50) // first local file header
+    expect(u32(zip, 14)).toBe(0x3610a686) // its CRC
+    const date = u16(zip, 12) // DOS date: day 1-31, month 1-12, so unzip apps show a real date
+    expect(date & 0x1f).toBeGreaterThan(0)
+    expect((date >> 5) & 0x0f).toBeGreaterThan(0)
+    expect(u32(zip, 18)).toBe(5) // compressed size (stored)
+    expect(new TextDecoder().decode(zip.slice(30, 37))).toBe('a-1.png')
+    expect(new TextDecoder().decode(zip.slice(37, 42))).toBe('hello')
+
+    const end = zip.length - 22
+    expect(u32(zip, end)).toBe(0x06054b50)
+    expect(u16(zip, end + 10)).toBe(2) // total entries
+    const cdOffset = u32(zip, end + 16)
+    expect(u32(zip, cdOffset)).toBe(0x02014b50)
+    expect(u32(zip, end + 12)).toBe(end - cdOffset) // central directory size
+  })
+})

@@ -96,3 +96,10 @@ describe('buildWallEmbed', () => {
     expect(escapeHtml(`'"&`)).toBe('&#39;&quot;&amp;')
   })
 })
+
+describe('testimonial defaults', () => {
+  it('does not add a star rating unless the user turns it on', async () => {
+    const { DEFAULT_SHOW_STARS } = await import('./testimonial')
+    expect(DEFAULT_SHOW_STARS).toBe(false)
+  })
+})

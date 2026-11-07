@@ -52,9 +52,10 @@ export function ExpandablePanel({ activePanel, onClose }: ExpandablePanelProps) 
             {/* Panel */}
             <div
                 className={cn(
-                    "fixed top-14 left-14 bottom-0 w-80 z-50",
+                    // In the layout (not fixed), so the preview shrinks and the
+                    // canvas stays centred in the space that is actually visible
+                    "relative h-full w-80 shrink-0 z-20",
                     "bg-card border-r border-border",
-                    "shadow-2xl shadow-black/10 dark:shadow-black/30",
                     "animate-in slide-in-from-left-5 duration-200",
                     "flex flex-col"
                 )}

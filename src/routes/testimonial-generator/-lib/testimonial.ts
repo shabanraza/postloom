@@ -150,3 +150,9 @@ export function buildWallEmbed(
     `\n </div>\n</section>`
   )
 }
+
+/**
+ * Star ratings are off by default: a tweet or quote is not a rating, and showing
+ * stars nobody gave can read as a fake review (FTC rule on consumer reviews, 2024).
+ */
+export const DEFAULT_SHOW_STARS = false

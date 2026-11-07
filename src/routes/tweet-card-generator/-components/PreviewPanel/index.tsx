@@ -75,6 +75,9 @@ export function PreviewPanel() {
     // Auto-Fit Logic
     useEffect(() => {
         if (!containerRef.current) return
+        // Measure right away too, so the first paint is already fitted
+        const el = containerRef.current
+        setContainerSize({ width: el.clientWidth, height: el.clientHeight })
         const observer = new ResizeObserver((entries) => {
             const { width, height } = entries[0].contentRect
             setContainerSize({ width, height })

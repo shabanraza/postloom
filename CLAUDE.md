@@ -26,7 +26,7 @@ bun install
 bun run dev        # dev server on :4000 (see "Local dev" below)
 bun run build      # production build (also regenerates src/routeTree.gen.ts)
 bun run preview    # serve the production build
-bun run test       # vitest (standalone vitest.config.ts, no env vars needed)
+bun run test       # vitest (standalone vitest.config.ts)
 bun run lint       # eslint
 bun run check      # prettier --write + eslint --fix
 bun run deploy     # build + wrangler deploy (Cloudflare Workers)
@@ -35,13 +35,7 @@ bunx shadcn@latest add <component>
 
 ### Local dev
 
-`vite.config.ts` includes `vite-plugin-db` (Neon). With no `VITE_DATABASE_URL`, `dev` and `test` try to **create a new Neon cloud database**. The app does not use a database, so start with a placeholder instead:
-
-```bash
-VITE_DATABASE_URL="postgres://local-dev-placeholder" bun run dev
-```
-
-Tests don't need this: `vitest.config.ts` skips the Vite app plugins.
+`bun run dev` needs no environment variables. (The Neon database plugin from the earlier product was removed; the app has no database.)
 
 ## Architecture
 
@@ -146,12 +140,10 @@ Via `@t3-oss/env-core` in `src/env.ts` (`import { env } from '@/env'`). `VITE_` 
 - `VITE_GA4_MEASUREMENT_ID`: optional GA4 override
 - `VITE_CLARITY_PROJECT_ID`: optional Clarity override
 - `VITE_CF_BEACON_TOKEN`: optional Cloudflare Web Analytics
-- `VITE_DATABASE_URL`: only to satisfy the Neon dev plugin (see Local dev)
 
 ## Known leftovers from the earlier product
 
 The repo started as a social media scheduler. These remain and can be removed in a cleanup:
-- `vite-plugin-db` / `neon-vite-plugin.ts`, `db/init.sql`, `@neondatabase/*` packages
 - The `*/5 * * * *` cron trigger in `wrangler.jsonc` (no handler exists)
 - Unused dependencies such as `@tanstack/ai*`, `@tanstack/react-db`
 - Duplicate editor tabs (`-components/tabs/` vs `-components/SettingsPanel/`) and hardcoded colors in the editor (being migrated to tokens)

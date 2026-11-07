@@ -27,10 +27,10 @@ declare global {
 
 /** GA4 measurement ID: env var, falling back to the production property */
 export const GA4_MEASUREMENT_ID: string =
-  import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-7T3RYZQR2M'
+  (import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-7T3RYZQR2M').trim()
 
 /** Microsoft Clarity project ID (session recordings, heatmaps). Empty means Clarity is off. */
-export const CLARITY_PROJECT_ID: string = import.meta.env.VITE_CLARITY_PROJECT_ID || 'z9sugljr4c'
+export const CLARITY_PROJECT_ID: string = (import.meta.env.VITE_CLARITY_PROJECT_ID || 'z9sugljr4c').trim()
 
 export type ToolId = 'tweet_card' | 'carousel' | 'testimonial' | 'tweet_demo'
 export type ExportFormat = 'png' | 'gif' | 'pdf' | 'embed' | 'clipboard'

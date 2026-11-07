@@ -3,6 +3,7 @@ import { useTweetStudioStore } from '../../-state'
 import { TEMPLATES, PADDING_RANGE } from '../../-constants'
 import type { TweetCardTheme, ShadowPreset } from '../../-types'
 import { cn } from '../../-utils'
+import { SavedStyles } from '../SavedStyles'
 import { trackDesignPreset, trackCanvasSizeChange, trackCardThemeChange } from '@/lib/analytics'
 
 const THEMES: { value: TweetCardTheme; label: string; bg: string; border: string }[] = [
@@ -59,6 +60,8 @@ export function QuickPresetsTab() {
 
     return (
         <div className="space-y-5">
+            <SavedStyles />
+
             {/* Card Theme */}
             <div className="space-y-2">
                 <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Theme</p>

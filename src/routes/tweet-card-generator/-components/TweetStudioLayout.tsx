@@ -4,7 +4,11 @@ import { IconSidebar, type PanelType } from './IconSidebar'
 import { ExpandablePanel } from './ExpandablePanel'
 import { PreviewPanel } from './PreviewPanel'
 import { ThemeToggle } from './ThemeToggle'
-import { OnboardingOverlay } from './OnboardingOverlay'
+import { GuidedTour, useFirstVisitTour } from './GuidedTour'
+import { ShortcutsDialog, isShortcutsKey } from './ShortcutsDialog'
+import { startHistoryRecording, useTweetStudioStore } from '../-state/tweet-studio-store'
+import { useEditorUi } from '../-state/editor-ui'
+import { isTypingTarget } from '../-utils'
 import { MobileCanvasLayout } from './MobileCanvasLayout'
 import { trackToolOpen, trackToolClose } from '@/lib/analytics'
 
@@ -22,6 +26,10 @@ import { trackToolOpen, trackToolClose } from '@/lib/analytics'
 export function TweetStudioLayout() {
     const [isMobile, setIsMobile] = useState(false)
     const [activePanel, setActivePanel] = useState<PanelType>('content')
+    useFirstVisitTour()
+
+    // Undo/Redo history fills itself as the post or design changes
+    useEffect(() => startHistoryRecording(), [])
 
     // Track tool open/close for session analytics
     useEffect(() => {
@@ -47,8 +55,29 @@ export function TweetStudioLayout() {
     // Keyboard shortcuts for panel switching
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            // Don't trigger if user is typing in an input
-            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+            // Leave typing (and the browser's own text undo) alone
+            if (isTypingTarget(e.target)) return
+            // While a dialog or the tour is open, keys belong to it
+            if (document.querySelector('[role="dialog"]')) return
+
+            const mod = e.metaKey || e.ctrlKey
+            if (mod && e.key.toLowerCase() === 'z') {
+                e.preventDefault()
+                const { undo, redo } = useTweetStudioStore.getState()
+                if (e.shiftKey) redo()
+                else undo()
+                return
+            }
+            if (mod && e.key.toLowerCase() === 'y') {
+                e.preventDefault()
+                useTweetStudioStore.getState().redo()
+                return
+            }
+            if (mod || e.altKey) return
+
+            if (isShortcutsKey(e)) {
+                e.preventDefault()
+                useEditorUi.getState().setShortcutsOpen(true)
                 return
             }
 
@@ -82,8 +111,9 @@ export function TweetStudioLayout() {
 
     return (
         <div data-clarity-mask="true" className="flex h-screen w-full flex-col bg-muted/50 dark:bg-[#0a0a0f] overflow-hidden text-foreground font-sans transition-colors duration-300">
-            {/* Onboarding Overlay for new users */}
-            <OnboardingOverlay />
+            {/* First-visit tour (also from Help) and the shortcuts list */}
+            <GuidedTour />
+            <ShortcutsDialog />
 
             {/* Top Bar */}
             <TopBar />

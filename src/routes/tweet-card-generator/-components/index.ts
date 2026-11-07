@@ -20,7 +20,7 @@ export { MobileCanvasLayout } from './MobileCanvasLayout'
 export { MobilePreview } from './MobilePreview'
 
 // Onboarding
-export { OnboardingOverlay, useOnboarding } from './OnboardingOverlay'
+export { GuidedTour, useFirstVisitTour } from './GuidedTour'
 
 // Legacy exports (for backward compatibility)
 export { LeftPanel } from './LeftPanel'

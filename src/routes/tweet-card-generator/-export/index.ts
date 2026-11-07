@@ -1,12 +1,20 @@
 import { domToPng, domToBlob } from 'modern-screenshot'
 import { GIFEncoder, quantize, applyPalette } from 'gifenc'
-import { generateFilename, downloadBlob } from '../-utils'
+import { generateFilename, downloadBlob, waitForPaint } from '../-utils'
 
 interface ExportOptions {
     width: number
     height: number
     scale?: number
     quality?: number
+}
+
+/** What was saved, so the UI can confirm it ("1600×900 · 240 KB") */
+export interface ExportResult {
+    filename: string
+    width: number
+    height: number
+    bytes: number
 }
 
 interface GifOptions extends ExportOptions {
@@ -25,7 +33,7 @@ export async function exportAsPng(
     element: HTMLElement,
     username: string,
     options: ExportOptions
-): Promise<void> {
+): Promise<ExportResult> {
     const { width, height } = options
 
     try {
@@ -54,7 +62,7 @@ export async function exportAsPng(
 
         // Convert data URL to image, then convert to blob (high quality, no watermark)
         const img = new Image()
-        await new Promise<void>((resolve, reject) => {
+        return await new Promise<ExportResult>((resolve, reject) => {
             img.onload = () => {
                 const canvas = document.createElement('canvas')
                 canvas.width = width
@@ -70,7 +78,7 @@ export async function exportAsPng(
                     if (blob) {
                         const filename = generateFilename(username, 'png')
                         downloadBlob(blob, filename)
-                        resolve()
+                        resolve({ filename, width, height, bytes: blob.size })
                     } else {
                         reject(new Error('Failed to create blob'))
                     }
@@ -164,7 +172,7 @@ export async function exportAsGif(
     element: HTMLElement,
     username: string,
     options: GifOptions
-): Promise<void> {
+): Promise<ExportResult> {
     const {
         text,
         width,
@@ -199,8 +207,8 @@ export async function exportAsGif(
             textElement.textContent = displayText
             
             // Wait for render
-            await new Promise(r => requestAnimationFrame(r))
-            await new Promise(r => requestAnimationFrame(r))
+            await waitForPaint()
+            await waitForPaint()
             await new Promise(r => setTimeout(r, 16))
 
             // Capture frame
@@ -249,8 +257,8 @@ export async function exportAsGif(
         // Final frame (complete text)
         textElement.innerHTML = ''
         textElement.textContent = text
-        await new Promise(r => requestAnimationFrame(r))
-        await new Promise(r => requestAnimationFrame(r))
+        await waitForPaint()
+        await waitForPaint()
         await new Promise(r => setTimeout(r, 50))
 
         const endBlob = await domToBlob(element, {
@@ -361,7 +369,9 @@ export async function exportAsGif(
         const view = new Uint8Array(buffer)
         view.set(gifBytes)
         const blob = new Blob([buffer], { type: 'image/gif' })
-        downloadBlob(blob, generateFilename(username, 'gif'))
+        const filename = generateFilename(username, 'gif')
+        downloadBlob(blob, filename)
+        return { filename, width, height, bytes: blob.size }
     } catch (error) {
         // Restore original content on error
         if (textElement) {

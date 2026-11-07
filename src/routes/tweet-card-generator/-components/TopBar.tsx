@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Link } from '@tanstack/react-router'
 import { Undo2, Redo2, RotateCcw, ChevronDown, Download, Image, Film, Loader2, Copy, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -14,10 +15,18 @@ import { Progress } from '@/components/ui/progress'
 import { ThemeToggle } from './ThemeToggle'
 import { useTweetStudioStore } from '../-state'
 import { EXPORT_FORMAT_COPY, EXPORT_SIZES } from '../-constants'
-import { exportAsPng, exportAsGif, copyToClipboard } from '../-export'
+import { exportAsPng, exportAsGif, copyToClipboard, type ExportResult } from '../-export'
+import { formatBytes } from '../-utils'
+import { HelpMenu } from './HelpMenu'
 import { sizeParams, trackExportComplete, trackExportStart, trackExportError, trackExportSizeChange } from '@/lib/analytics'
 import { PostloomLogo } from '@/components/PostloomLogo'
 import type { ExportPreset } from '../-types'
+
+function confirmSaved(result: ExportResult) {
+    toast.success(`Saved ${result.filename}`, {
+        description: `${result.width}×${result.height} · ${formatBytes(result.bytes)} · in your Downloads folder`,
+    })
+}
 
 export function TopBar() {
     const [copied, setCopied] = useState(false)
@@ -34,7 +43,22 @@ export function TopBar() {
         setIsExporting,
         exportProgress,
         setExportProgress,
+        history,
+        historyIndex,
     } = useTweetStudioStore()
+
+    const canUndo = historyIndex > 0
+    const canRedo = historyIndex < history.length - 1
+    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)
+    const mod = isMac ? '⌘' : 'Ctrl+'
+
+    const handleReset = () => {
+        reset()
+        toast('Card reset to the starting design', {
+            duration: 10000,
+            action: { label: 'Undo', onClick: () => useTweetStudioStore.getState().undo() },
+        })
+    }
 
     const handleExportPng = async () => {
         const canvasElement = document.getElementById('tweet-canvas')
@@ -49,15 +73,17 @@ export function TopBar() {
         trackExportStart('tweet_card', 'png', sizeParams(exportSettings.width, exportSettings.height))
 
         try {
-            await exportAsPng(canvasElement, tweet.profile.username, {
+            const result = await exportAsPng(canvasElement, tweet.profile.username, {
                 width: exportSettings.width,
                 height: exportSettings.height,
             })
+            confirmSaved(result)
             trackExportComplete('tweet_card', 'png', sizeParams(exportSettings.width, exportSettings.height))
         } catch (error) {
             console.error('Export failed:', error)
             const errorMessage = error instanceof Error ? error.message : 'Unknown error'
             trackExportError('tweet_card', 'png', errorMessage)
+            toast.error('Could not save the PNG', { description: 'Try again, or pick a smaller size.' })
         } finally {
             setIsExporting(false)
             setExportProgress(0)
@@ -68,12 +94,12 @@ export function TopBar() {
         const canvasElement = document.getElementById('tweet-canvas')
         if (!canvasElement) {
             console.error('Canvas element not found')
-            alert('Canvas element not found. Please refresh the page.')
+            toast.error('Could not find the card. Please refresh the page.')
             return
         }
 
         if (!tweet.content.text || tweet.content.text.trim().length === 0) {
-            alert('Please enter some text before exporting as GIF')
+            toast.error('Add some post text first, so there is something to animate.')
             return
         }
 
@@ -83,7 +109,7 @@ export function TopBar() {
         trackExportStart('tweet_card', 'gif', sizeParams(exportSettings.width, exportSettings.height))
 
         try {
-            await exportAsGif(canvasElement, tweet.profile.username, {
+            const result = await exportAsGif(canvasElement, tweet.profile.username, {
                 width: exportSettings.width,
                 height: exportSettings.height,
                 text: tweet.content.text,
@@ -92,12 +118,15 @@ export function TopBar() {
                 loop: animation.loop,
                 onProgress: (progress) => setExportProgress(progress * 100),
             })
+            confirmSaved(result)
             trackExportComplete('tweet_card', 'gif', sizeParams(exportSettings.width, exportSettings.height))
         } catch (error) {
             console.error('GIF export failed:', error)
             const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
             trackExportError('tweet_card', 'gif', errorMessage)
-            alert(`GIF export failed: ${errorMessage}\n\nIf this persists, try:\n- Reducing the text length\n- Using a smaller export size\n- Refreshing the page`)
+            toast.error('Could not make the GIF', {
+                description: 'Try shorter text or a smaller size, then try again.',
+            })
         } finally {
             setIsExporting(false)
             setExportProgress(0)
@@ -119,12 +148,13 @@ export function TopBar() {
                 height: exportSettings.height,
             })
             setCopied(true)
+            toast.success('Copied. Paste it into your post.')
             trackExportComplete('tweet_card', 'clipboard', sizeParams(exportSettings.width, exportSettings.height))
             setTimeout(() => setCopied(false), 2000)
         } catch (error) {
             console.error('Copy failed:', error)
             trackExportError('tweet_card', 'clipboard', error)
-            alert('Failed to copy to clipboard. Your browser may not support this feature.')
+            toast.error('Your browser blocked copying', { description: 'Use Download PNG instead.' })
         } finally {
             setIsExporting(false)
         }
@@ -148,41 +178,43 @@ export function TopBar() {
                     {/* Desktop action bar */}
                     <div className="hidden sm:flex items-center gap-1 bg-card p-1 rounded-xl border border-border shadow-soft-sm">
                         <ThemeToggle />
+                        <HelpMenu />
 
                         <div className="w-px h-5 bg-muted mx-1" />
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent rounded-lg text-muted-foreground" onClick={undo}>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent rounded-lg text-muted-foreground" onClick={undo} disabled={!canUndo} aria-label="Undo">
                                     <Undo2 className="h-4 w-4" />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Undo</TooltipContent>
+                            <TooltipContent>Undo <kbd className="ml-1 font-mono text-[10px] opacity-70">{mod}Z</kbd></TooltipContent>
                         </Tooltip>
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent rounded-lg text-muted-foreground" onClick={redo}>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent rounded-lg text-muted-foreground" onClick={redo} disabled={!canRedo} aria-label="Redo">
                                     <Redo2 className="h-4 w-4" />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Redo</TooltipContent>
+                            <TooltipContent>Redo <kbd className="ml-1 font-mono text-[10px] opacity-70">{mod}{isMac ? '⇧Z' : 'Y'}</kbd></TooltipContent>
                         </Tooltip>
 
                         <div className="w-px h-5 bg-muted mx-1" />
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent rounded-lg text-muted-foreground" onClick={reset}>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent rounded-lg text-muted-foreground" onClick={handleReset} aria-label="Reset card">
                                     <RotateCcw className="h-4 w-4" />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Reset</TooltipContent>
+                            <TooltipContent>Start over</TooltipContent>
                         </Tooltip>
                     </div>
 
                     {/* Mobile: Theme toggle only */}
-                    <div className="sm:hidden">
+                    <div className="sm:hidden flex items-center">
+                        <HelpMenu />
                         <ThemeToggle />
                     </div>
 
@@ -190,6 +222,7 @@ export function TopBar() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button 
+                                data-tour="export"
                                 className="h-9 sm:h-10 px-3 sm:px-5 gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-all active:scale-95 text-sm sm:text-base" 
                                 disabled={isExporting}
                             >

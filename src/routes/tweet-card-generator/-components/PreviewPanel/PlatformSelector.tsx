@@ -33,6 +33,7 @@ export function PlatformSelector() {
 
     return (
         <ToggleGroup
+            data-tour="platform"
             type="single"
             value={platform}
             onValueChange={(value) => value && setPlatform(value as Platform)}

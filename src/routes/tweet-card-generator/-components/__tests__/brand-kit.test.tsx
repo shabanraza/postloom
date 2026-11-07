@@ -5,6 +5,13 @@ import { useTweetStudioStore } from '../../-state'
 import { BrandKit } from '../BrandKit'
 import { shouldClosePanelOnKey } from '../ExpandablePanel'
 
+// Radix Slider measures itself
+globalThis.ResizeObserver ??= class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+} as unknown as typeof ResizeObserver
+
 afterEach(() => cleanup())
 
 describe('BrandKit swatches', () => {
@@ -36,5 +43,29 @@ describe('shouldClosePanelOnKey', () => {
 
   it('ignores other keys', () => {
     expect(shouldClosePanelOnKey(new KeyboardEvent('keydown', { key: 'a' }))).toBe(false)
+  })
+})
+
+describe('BrandKit kits and logo', () => {
+  it('creates a new kit and switches to it', () => {
+    render(<BrandKit />)
+    fireEvent.click(screen.getByRole('button', { name: 'New brand kit' }))
+    const s = useTweetStudioStore.getState()
+    expect(s.brandKits.length).toBeGreaterThan(1)
+    expect(s.activeBrandKitId).toBe(s.brandKits[s.brandKits.length - 1].id)
+  })
+
+  it('shows the logo upload, and placement once a logo exists', () => {
+    const kit = useTweetStudioStore.getState().brandKits[0]
+    useTweetStudioStore.setState({ activeBrandKitId: kit.id })
+    render(<BrandKit />)
+    expect(screen.getByText(/upload logo/i)).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Logo top right' })).toBeNull()
+    cleanup()
+
+    useTweetStudioStore.getState().setBrandLogo(kit.id, 'data:image/png;base64,AAA')
+    render(<BrandKit />)
+    fireEvent.click(screen.getByRole('button', { name: 'Logo top right' }))
+    expect(useTweetStudioStore.getState().logoOverlay.position).toBe('top-right')
   })
 })

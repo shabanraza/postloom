@@ -146,3 +146,58 @@ export function nextFrame(): Promise<void> {
 export function sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }
+
+/** 245760 -> "240 KB", 1572864 -> "1.5 MB" */
+export function formatBytes(bytes: number): string {
+    if (bytes < 1024) return `${bytes} B`
+    if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(1).replace(/\.0$/, '')} MB`
+}
+
+/** Scale (width, height) down so the longer side is at most `max`, keeping the shape. */
+export function fitWithin(width: number, height: number, max: number) {
+    const ratio = Math.min(1, max / Math.max(width, height))
+    return { width: Math.round(width * ratio), height: Math.round(height * ratio) }
+}
+
+/**
+ * Where the brand logo sits on the canvas. Size is a % of the canvas's short side,
+ * and the margin from the edges is 4% of it. Returns null when the logo is hidden.
+ */
+export function logoPlacement(
+    canvasWidth: number,
+    canvasHeight: number,
+    overlay: { position: 'none' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'; size: number }
+): ({ size: number } & Partial<Record<'top' | 'right' | 'bottom' | 'left', number>>) | null {
+    if (overlay.position === 'none') return null
+    const short = Math.min(canvasWidth, canvasHeight)
+    const size = Math.round((short * overlay.size) / 100)
+    const margin = Math.round(short * 0.04)
+    const [v, h] = overlay.position.split('-') as ['top' | 'bottom', 'left' | 'right']
+    return { size, [h]: margin, [v]: margin }
+}
+
+/** True when keyboard shortcuts should stay out of the way (the user is typing). */
+export function isTypingTarget(target: EventTarget | null): boolean {
+    if (!(target instanceof HTMLElement)) return false
+    return (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        target.isContentEditable === true
+    )
+}
+
+/**
+ * Wait for the browser to paint. Falls back to a short timer because background
+ * tabs never fire animation frames (an export would hang if the user switched tabs).
+ */
+export function waitForPaint(fallbackMs = 50): Promise<void> {
+    return new Promise((resolve) => {
+        const timer = setTimeout(resolve, fallbackMs)
+        requestAnimationFrame(() => {
+            clearTimeout(timer)
+            resolve()
+        })
+    })
+}

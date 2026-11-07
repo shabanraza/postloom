@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { useTweetStudioStore } from '../../-state'
 import { CardRenderer } from '../cards'
+import { BrandLogoOverlay } from '../BrandLogoOverlay'
 import { PlatformSelector } from './PlatformSelector'
 import { ModeToggle } from './ModeToggle'
 import type { DesignSettings } from '../../-types'
@@ -139,6 +140,7 @@ export function PreviewPanel() {
                     <div className="relative z-10 w-full h-full flex items-center justify-center pointer-events-none">
                         <CardRenderer />
                     </div>
+                    <BrandLogoOverlay canvasWidth={width} canvasHeight={height} />
                 </div>
 
                 {/* Dimensions Badge - Positioned near canvas */}

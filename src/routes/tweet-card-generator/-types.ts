@@ -282,3 +282,20 @@ export interface BrandKit {
     logoUrl?: string
     createdAt: Date
 }
+
+// Brand logo placed on the canvas
+export type LogoPosition = 'none' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+export interface LogoOverlay {
+    position: LogoPosition
+    size: number // % of the canvas short side, 5-30
+}
+
+// A saved look the user can re-apply in one click
+export interface SavedStyle {
+    id: string
+    name: string
+    design: DesignSettings
+    theme: TweetCardTheme
+    size: { preset: ExportPreset; width: number; height: number }
+    createdAt: number
+}

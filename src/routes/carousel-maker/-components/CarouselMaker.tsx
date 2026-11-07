@@ -135,8 +135,9 @@ export function CarouselMaker({
             className="font-mono text-sm"
           />
           <p className="text-xs text-muted-foreground">
-            A blank line or <code>---</code> starts a new slide. Thread numbers like “1/” are
-            removed. Over {MAX_SLIDE_CHARS} characters splits into extra slides.
+            A blank line starts a new slide. To keep blank lines inside a slide, put{' '}
+            <code>---</code> between slides instead. Thread numbers like “1/” are removed. Over{' '}
+            {MAX_SLIDE_CHARS} characters splits into extra slides.
           </p>
         </div>
 

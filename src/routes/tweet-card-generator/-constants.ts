@@ -297,6 +297,17 @@ export const LIMITS = {
     tweetText: 280,
 } as const
 
+/** Longest post each platform allows, used as the editor's text limit */
+const TEXT_LIMITS = {
+    twitter: 280,
+    threads: 500,
+    linkedin: 3000,
+} as const
+
+export function textLimitFor(platform: 'twitter' | 'threads' | 'linkedin'): number {
+    return TEXT_LIMITS[platform]
+}
+
 // Social Platforms for Presets
 export const SOCIAL_PLATFORMS = [
     { id: 'instagram', name: 'Instagram', color: 'bg-gradient-to-br from-purple-500 to-pink-500' },

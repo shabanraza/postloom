@@ -1,14 +1,8 @@
 import { cn } from '@/lib/utils'
+import { formatNumber } from '../../-utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useTweetStudioStore } from '../../-state'
 import { AnimatedText } from '../AnimatedText'
-
-function formatNumber(num: number): string {
-    if (!num || num === 0) return ''
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M'
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'K'
-    return num.toString()
-}
 
 // Get card max-width based on canvas size
 function getCardMaxWidth(canvasWidth: number, canvasHeight: number): number {

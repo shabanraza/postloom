@@ -10,16 +10,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Format number to compact notation (1.2K, 45.6K, 1.2M)
+ * Format a count the way X shows it (7, 1.3K, 1K, 2.4M). Zero or missing
+ * counts return '' so cards show just the icon.
  */
 export function formatNumber(num: number): string {
-    if (num >= 1_000_000) {
-        return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'
-    }
-    if (num >= 1_000) {
-        return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'K'
-    }
-    return num.toString()
+    if (!Number.isFinite(num) || num <= 0) return ''
+    const compact = (value: number, unit: string) =>
+        value.toFixed(1).replace(/\.0$/, '') + unit
+    // 999,950 and up would round to "1000K", so it becomes "1M"
+    if (num >= 999_950) return compact(num / 1_000_000, 'M')
+    if (num >= 1_000) return compact(num / 1_000, 'K')
+    return String(num)
 }
 
 /**

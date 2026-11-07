@@ -1,16 +1,10 @@
 import { cn } from '@/lib/utils'
+import { formatNumber } from '../-utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useTweetStudioStore } from '../-state'
 import { AnimatedText } from './AnimatedText'
 import { PollDisplay } from './PollDisplay'
 import { QuoteTweetDisplay } from './QuoteTweetDisplay'
-
-function formatNumber(num: number): string {
-    if (!num || num === 0) return ''
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M'
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'K'
-    return num.toString()
-}
 
 // Get card max-width based on canvas size - TARGET 80% COVERAGE
 function getCardMaxWidth(canvasWidth: number, canvasHeight: number): number {
@@ -285,7 +279,7 @@ export function TweetCard() {
                         }}
                     >
                         <span suppressHydrationWarning>{formatDate(content.timestamp)}</span>
-                        {metrics.showMetrics && (
+                        {metrics.showMetrics && metrics.views > 0 && (
                             <> · <span className={themeStyles.text + " font-bold"}>{formatNumber(metrics.views)}</span> <span className="font-normal">Views</span></>
                         )}
                     </div>

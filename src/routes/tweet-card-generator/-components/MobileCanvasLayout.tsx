@@ -154,7 +154,8 @@ export function MobileCanvasLayout() {
     const [activeTab, setActiveTab] = useState<TabType>('content')
 
     return (
-        <div className="flex flex-col h-full bg-card">
+        // min-w-0: as a flex item it would otherwise grow to its widest row and get clipped on phones
+        <div className="flex flex-col h-full w-full min-w-0 bg-card">
             {/* Canvas Section - Fixed height */}
             <div className="h-[40%] shrink-0 border-b border-border">
                 <MobilePreview />

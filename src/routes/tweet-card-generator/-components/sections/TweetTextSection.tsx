@@ -2,15 +2,15 @@ import { useRef } from 'react'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { useTweetStudioStore } from '../../-state'
-import { LIMITS } from '../../-constants'
+import { textLimitFor } from '../../-constants'
 import { cn } from '../../-utils'
 import { EmojiPicker } from '../EmojiPicker'
 
 export function TweetTextSection() {
-    const { tweet, setTweetText } = useTweetStudioStore()
+    const { tweet, setTweetText, platform } = useTweetStudioStore()
     const textareaRef = useRef<HTMLTextAreaElement>(null)
     const charCount = tweet.content.text.length
-    const maxChars = LIMITS.tweetText
+    const maxChars = textLimitFor(platform)
     const remaining = maxChars - charCount
 
     const handleEmojiSelect = (emoji: string) => {

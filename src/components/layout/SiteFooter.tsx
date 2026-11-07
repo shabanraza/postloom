@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { Container } from './Container'
 import { PostloomLogo } from '@/components/PostloomLogo'
+import { CookieSettingsButton } from '@/components/PrivacyNotice'
 import { LANDING_PAGES, TOOLS } from '@/lib/tools'
 
 export function SiteFooter() {
@@ -18,8 +19,14 @@ export function SiteFooter() {
           <FooterLinks label="Popular" links={LANDING_PAGES} />
         </div>
       </Container>
-      <Container className="border-t border-border py-4">
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Postloom</p>
+      <Container className="flex flex-wrap items-center justify-between gap-3 border-t border-border py-4 text-xs text-muted-foreground">
+        <p>© {new Date().getFullYear()} Postloom</p>
+        <div className="flex gap-4">
+          <Link to="/privacy" className="transition-colors hover:text-foreground">
+            Privacy
+          </Link>
+          <CookieSettingsButton className="transition-colors hover:text-foreground" />
+        </div>
       </Container>
     </footer>
   )

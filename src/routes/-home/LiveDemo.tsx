@@ -98,7 +98,7 @@ export function LiveDemo({ source = 'home' }: { source?: string } = {}) {
 
   return (
     <div className="rounded-2xl border border-border bg-card p-3 shadow-lg sm:p-4">
-      <div className="overflow-hidden rounded-xl">
+      <div data-clarity-mask="true" className="overflow-hidden rounded-xl">
         <DemoCard ref={cardRef} text={text} style={style} caret={typing && !touched} />
       </div>
 

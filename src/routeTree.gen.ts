@@ -15,6 +15,7 @@ import { Route as TweetToImageIndexRouteImport } from './routes/tweet-to-image/i
 import { Route as TweetCardGeneratorIndexRouteImport } from './routes/tweet-card-generator/index'
 import { Route as ThreadToCarouselIndexRouteImport } from './routes/thread-to-carousel/index'
 import { Route as TestimonialGeneratorIndexRouteImport } from './routes/testimonial-generator/index'
+import { Route as PrivacyIndexRouteImport } from './routes/privacy/index'
 import { Route as LinkedinCarouselMakerIndexRouteImport } from './routes/linkedin-carousel-maker/index'
 import { Route as InstagramCarouselMakerIndexRouteImport } from './routes/instagram-carousel-maker/index'
 import { Route as CarouselMakerIndexRouteImport } from './routes/carousel-maker/index'
@@ -51,6 +52,11 @@ const TestimonialGeneratorIndexRoute =
     path: '/testimonial-generator/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
+  id: '/privacy/',
+  path: '/privacy/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LinkedinCarouselMakerIndexRoute =
   LinkedinCarouselMakerIndexRouteImport.update({
     id: '/linkedin-carousel-maker/',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/carousel-maker': typeof CarouselMakerIndexRoute
   '/instagram-carousel-maker': typeof InstagramCarouselMakerIndexRoute
   '/linkedin-carousel-maker': typeof LinkedinCarouselMakerIndexRoute
+  '/privacy': typeof PrivacyIndexRoute
   '/testimonial-generator': typeof TestimonialGeneratorIndexRoute
   '/thread-to-carousel': typeof ThreadToCarouselIndexRoute
   '/tweet-card-generator': typeof TweetCardGeneratorIndexRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/carousel-maker': typeof CarouselMakerIndexRoute
   '/instagram-carousel-maker': typeof InstagramCarouselMakerIndexRoute
   '/linkedin-carousel-maker': typeof LinkedinCarouselMakerIndexRoute
+  '/privacy': typeof PrivacyIndexRoute
   '/testimonial-generator': typeof TestimonialGeneratorIndexRoute
   '/thread-to-carousel': typeof ThreadToCarouselIndexRoute
   '/tweet-card-generator': typeof TweetCardGeneratorIndexRoute
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/carousel-maker/': typeof CarouselMakerIndexRoute
   '/instagram-carousel-maker/': typeof InstagramCarouselMakerIndexRoute
   '/linkedin-carousel-maker/': typeof LinkedinCarouselMakerIndexRoute
+  '/privacy/': typeof PrivacyIndexRoute
   '/testimonial-generator/': typeof TestimonialGeneratorIndexRoute
   '/thread-to-carousel/': typeof ThreadToCarouselIndexRoute
   '/tweet-card-generator/': typeof TweetCardGeneratorIndexRoute
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/carousel-maker'
     | '/instagram-carousel-maker'
     | '/linkedin-carousel-maker'
+    | '/privacy'
     | '/testimonial-generator'
     | '/thread-to-carousel'
     | '/tweet-card-generator'
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/carousel-maker'
     | '/instagram-carousel-maker'
     | '/linkedin-carousel-maker'
+    | '/privacy'
     | '/testimonial-generator'
     | '/thread-to-carousel'
     | '/tweet-card-generator'
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/carousel-maker/'
     | '/instagram-carousel-maker/'
     | '/linkedin-carousel-maker/'
+    | '/privacy/'
     | '/testimonial-generator/'
     | '/thread-to-carousel/'
     | '/tweet-card-generator/'
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   CarouselMakerIndexRoute: typeof CarouselMakerIndexRoute
   InstagramCarouselMakerIndexRoute: typeof InstagramCarouselMakerIndexRoute
   LinkedinCarouselMakerIndexRoute: typeof LinkedinCarouselMakerIndexRoute
+  PrivacyIndexRoute: typeof PrivacyIndexRoute
   TestimonialGeneratorIndexRoute: typeof TestimonialGeneratorIndexRoute
   ThreadToCarouselIndexRoute: typeof ThreadToCarouselIndexRoute
   TweetCardGeneratorIndexRoute: typeof TweetCardGeneratorIndexRoute
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestimonialGeneratorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy/': {
+      id: '/privacy/'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/linkedin-carousel-maker/': {
       id: '/linkedin-carousel-maker/'
       path: '/linkedin-carousel-maker'
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   CarouselMakerIndexRoute: CarouselMakerIndexRoute,
   InstagramCarouselMakerIndexRoute: InstagramCarouselMakerIndexRoute,
   LinkedinCarouselMakerIndexRoute: LinkedinCarouselMakerIndexRoute,
+  PrivacyIndexRoute: PrivacyIndexRoute,
   TestimonialGeneratorIndexRoute: TestimonialGeneratorIndexRoute,
   ThreadToCarouselIndexRoute: ThreadToCarouselIndexRoute,
   TweetCardGeneratorIndexRoute: TweetCardGeneratorIndexRoute,

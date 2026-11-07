@@ -29,6 +29,9 @@ declare global {
 export const GA4_MEASUREMENT_ID: string =
   import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-7T3RYZQR2M'
 
+/** Microsoft Clarity project ID (session recordings, heatmaps). Empty means Clarity is off. */
+export const CLARITY_PROJECT_ID: string = import.meta.env.VITE_CLARITY_PROJECT_ID || ''
+
 export type ToolId = 'tweet_card' | 'carousel' | 'testimonial' | 'tweet_demo'
 export type ExportFormat = 'png' | 'gif' | 'pdf' | 'embed' | 'clipboard'
 type Params = Record<string, string | number | boolean | undefined>

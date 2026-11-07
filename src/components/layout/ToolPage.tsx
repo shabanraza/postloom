@@ -84,7 +84,7 @@ export function ToolWorkspace({
   preview: React.ReactNode
 }) {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:items-start">
+    <div data-clarity-mask="true" className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:items-start">
       <div className="order-2 lg:order-1">{controls}</div>
       <div className="order-1 lg:order-2">{preview}</div>
     </div>

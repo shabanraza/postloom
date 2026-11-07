@@ -31,9 +31,12 @@ export function ToolsBento() {
           </TileHeading>
           <div className="mt-6 overflow-hidden rounded-lg border border-border shadow-lg transition-transform duration-300 group-hover:-translate-y-1">
             <img
-              src="/assets/landing-editor-screenshot.png"
-              alt="Postloom tweet card editor"
+              src="/assets/landing-editor.webp"
+              alt="The Postloom tweet card editor with a tweet on a sage background"
+              width={1600}
+              height={1000}
               loading="lazy"
+              decoding="async"
               className="h-auto w-full"
             />
           </div>

@@ -10,8 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WallOfLoveGeneratorIndexRouteImport } from './routes/wall-of-love-generator/index'
+import { Route as TweetToImageIndexRouteImport } from './routes/tweet-to-image/index'
 import { Route as TweetCardGeneratorIndexRouteImport } from './routes/tweet-card-generator/index'
+import { Route as ThreadToCarouselIndexRouteImport } from './routes/thread-to-carousel/index'
 import { Route as TestimonialGeneratorIndexRouteImport } from './routes/testimonial-generator/index'
+import { Route as LinkedinCarouselMakerIndexRouteImport } from './routes/linkedin-carousel-maker/index'
+import { Route as InstagramCarouselMakerIndexRouteImport } from './routes/instagram-carousel-maker/index'
 import { Route as CarouselMakerIndexRouteImport } from './routes/carousel-maker/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -19,15 +24,43 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WallOfLoveGeneratorIndexRoute =
+  WallOfLoveGeneratorIndexRouteImport.update({
+    id: '/wall-of-love-generator/',
+    path: '/wall-of-love-generator/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const TweetToImageIndexRoute = TweetToImageIndexRouteImport.update({
+  id: '/tweet-to-image/',
+  path: '/tweet-to-image/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TweetCardGeneratorIndexRoute = TweetCardGeneratorIndexRouteImport.update({
   id: '/tweet-card-generator/',
   path: '/tweet-card-generator/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThreadToCarouselIndexRoute = ThreadToCarouselIndexRouteImport.update({
+  id: '/thread-to-carousel/',
+  path: '/thread-to-carousel/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TestimonialGeneratorIndexRoute =
   TestimonialGeneratorIndexRouteImport.update({
     id: '/testimonial-generator/',
     path: '/testimonial-generator/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LinkedinCarouselMakerIndexRoute =
+  LinkedinCarouselMakerIndexRouteImport.update({
+    id: '/linkedin-carousel-maker/',
+    path: '/linkedin-carousel-maker/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const InstagramCarouselMakerIndexRoute =
+  InstagramCarouselMakerIndexRouteImport.update({
+    id: '/instagram-carousel-maker/',
+    path: '/instagram-carousel-maker/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const CarouselMakerIndexRoute = CarouselMakerIndexRouteImport.update({
@@ -39,48 +72,83 @@ const CarouselMakerIndexRoute = CarouselMakerIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/carousel-maker': typeof CarouselMakerIndexRoute
+  '/instagram-carousel-maker': typeof InstagramCarouselMakerIndexRoute
+  '/linkedin-carousel-maker': typeof LinkedinCarouselMakerIndexRoute
   '/testimonial-generator': typeof TestimonialGeneratorIndexRoute
+  '/thread-to-carousel': typeof ThreadToCarouselIndexRoute
   '/tweet-card-generator': typeof TweetCardGeneratorIndexRoute
+  '/tweet-to-image': typeof TweetToImageIndexRoute
+  '/wall-of-love-generator': typeof WallOfLoveGeneratorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/carousel-maker': typeof CarouselMakerIndexRoute
+  '/instagram-carousel-maker': typeof InstagramCarouselMakerIndexRoute
+  '/linkedin-carousel-maker': typeof LinkedinCarouselMakerIndexRoute
   '/testimonial-generator': typeof TestimonialGeneratorIndexRoute
+  '/thread-to-carousel': typeof ThreadToCarouselIndexRoute
   '/tweet-card-generator': typeof TweetCardGeneratorIndexRoute
+  '/tweet-to-image': typeof TweetToImageIndexRoute
+  '/wall-of-love-generator': typeof WallOfLoveGeneratorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/carousel-maker/': typeof CarouselMakerIndexRoute
+  '/instagram-carousel-maker/': typeof InstagramCarouselMakerIndexRoute
+  '/linkedin-carousel-maker/': typeof LinkedinCarouselMakerIndexRoute
   '/testimonial-generator/': typeof TestimonialGeneratorIndexRoute
+  '/thread-to-carousel/': typeof ThreadToCarouselIndexRoute
   '/tweet-card-generator/': typeof TweetCardGeneratorIndexRoute
+  '/tweet-to-image/': typeof TweetToImageIndexRoute
+  '/wall-of-love-generator/': typeof WallOfLoveGeneratorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/carousel-maker'
+    | '/instagram-carousel-maker'
+    | '/linkedin-carousel-maker'
     | '/testimonial-generator'
+    | '/thread-to-carousel'
     | '/tweet-card-generator'
+    | '/tweet-to-image'
+    | '/wall-of-love-generator'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/carousel-maker'
+    | '/instagram-carousel-maker'
+    | '/linkedin-carousel-maker'
     | '/testimonial-generator'
+    | '/thread-to-carousel'
     | '/tweet-card-generator'
+    | '/tweet-to-image'
+    | '/wall-of-love-generator'
   id:
     | '__root__'
     | '/'
     | '/carousel-maker/'
+    | '/instagram-carousel-maker/'
+    | '/linkedin-carousel-maker/'
     | '/testimonial-generator/'
+    | '/thread-to-carousel/'
     | '/tweet-card-generator/'
+    | '/tweet-to-image/'
+    | '/wall-of-love-generator/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CarouselMakerIndexRoute: typeof CarouselMakerIndexRoute
+  InstagramCarouselMakerIndexRoute: typeof InstagramCarouselMakerIndexRoute
+  LinkedinCarouselMakerIndexRoute: typeof LinkedinCarouselMakerIndexRoute
   TestimonialGeneratorIndexRoute: typeof TestimonialGeneratorIndexRoute
+  ThreadToCarouselIndexRoute: typeof ThreadToCarouselIndexRoute
   TweetCardGeneratorIndexRoute: typeof TweetCardGeneratorIndexRoute
+  TweetToImageIndexRoute: typeof TweetToImageIndexRoute
+  WallOfLoveGeneratorIndexRoute: typeof WallOfLoveGeneratorIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,6 +160,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/wall-of-love-generator/': {
+      id: '/wall-of-love-generator/'
+      path: '/wall-of-love-generator'
+      fullPath: '/wall-of-love-generator'
+      preLoaderRoute: typeof WallOfLoveGeneratorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tweet-to-image/': {
+      id: '/tweet-to-image/'
+      path: '/tweet-to-image'
+      fullPath: '/tweet-to-image'
+      preLoaderRoute: typeof TweetToImageIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tweet-card-generator/': {
       id: '/tweet-card-generator/'
       path: '/tweet-card-generator'
@@ -99,11 +181,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TweetCardGeneratorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/thread-to-carousel/': {
+      id: '/thread-to-carousel/'
+      path: '/thread-to-carousel'
+      fullPath: '/thread-to-carousel'
+      preLoaderRoute: typeof ThreadToCarouselIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/testimonial-generator/': {
       id: '/testimonial-generator/'
       path: '/testimonial-generator'
       fullPath: '/testimonial-generator'
       preLoaderRoute: typeof TestimonialGeneratorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/linkedin-carousel-maker/': {
+      id: '/linkedin-carousel-maker/'
+      path: '/linkedin-carousel-maker'
+      fullPath: '/linkedin-carousel-maker'
+      preLoaderRoute: typeof LinkedinCarouselMakerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/instagram-carousel-maker/': {
+      id: '/instagram-carousel-maker/'
+      path: '/instagram-carousel-maker'
+      fullPath: '/instagram-carousel-maker'
+      preLoaderRoute: typeof InstagramCarouselMakerIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/carousel-maker/': {
@@ -119,8 +222,13 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CarouselMakerIndexRoute: CarouselMakerIndexRoute,
+  InstagramCarouselMakerIndexRoute: InstagramCarouselMakerIndexRoute,
+  LinkedinCarouselMakerIndexRoute: LinkedinCarouselMakerIndexRoute,
   TestimonialGeneratorIndexRoute: TestimonialGeneratorIndexRoute,
+  ThreadToCarouselIndexRoute: ThreadToCarouselIndexRoute,
   TweetCardGeneratorIndexRoute: TweetCardGeneratorIndexRoute,
+  TweetToImageIndexRoute: TweetToImageIndexRoute,
+  WallOfLoveGeneratorIndexRoute: WallOfLoveGeneratorIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

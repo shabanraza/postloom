@@ -9,6 +9,7 @@ import { TOOLS } from '@/lib/tools'
 export function NotFound() {
   return (
     <MarketingLayout>
+      <section className="hero-glow -mt-14 pt-14">
       <Container className="py-20 sm:py-28">
         <p className="text-sm font-medium text-brand">404</p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">Page not found</h1>
@@ -36,6 +37,7 @@ export function NotFound() {
           <Link to="/">Back to home</Link>
         </Button>
       </Container>
+      </section>
     </MarketingLayout>
   )
 }

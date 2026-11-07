@@ -64,7 +64,7 @@ const faqs = [
 function HomePage() {
   return (
     <MarketingLayout>
-      <section className="hero-glow relative overflow-hidden">
+      <section className="hero-glow relative -mt-14 overflow-hidden pt-14">
         <div className="pointer-events-none absolute inset-0 -z-10 opacity-60 [background-image:linear-gradient(var(--border)_1px,transparent_1px),linear-gradient(90deg,var(--border)_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_75%)]" />
         <Container className="grid gap-12 py-14 lg:grid-cols-[1fr_minmax(0,500px)] lg:items-center lg:py-20">
           <div>

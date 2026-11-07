@@ -22,7 +22,7 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => {
     const siteUrl = 'https://postloom.studio'
-    const ogImage = `${siteUrl}/postloom_light.png`
+    const ogImage = `${siteUrl}/og-image.png`
     
     return {
       meta: [
@@ -162,10 +162,10 @@ function RootComponent() {
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
-        {/* Apply the theme before first paint: stored choice, else system preference */}
+        {/* Apply the theme before first paint: light unless the visitor chose dark */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d)}catch(e){}`,
+            __html: `try{document.documentElement.classList.toggle('dark',localStorage.getItem('theme')==='dark')}catch(e){}`,
           }}
         />
         {/* Google Analytics 4 - Standard Google Format */}
@@ -208,7 +208,7 @@ function RootComponent() {
               },
               description: 'Free tweet card generator and social media card creator. Design professional Instagram posts, Twitter cards, LinkedIn graphics, and animated GIFs. No design skills needed. 100% free forever.',
               url: 'https://postloom.studio',
-              image: 'https://postloom.studio/postloom_light.png',
+              image: 'https://postloom.studio/og-image.png',
               featureList: [
                 'Tweet Card Generator',
                 'Social Media Card Creator',

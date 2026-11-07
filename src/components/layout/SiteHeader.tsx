@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { ChevronDown, Menu } from 'lucide-react'
 import { Container } from './Container'
@@ -19,10 +20,32 @@ import {
 } from '@/components/ui/sheet'
 import { trackCtaClick } from '@/lib/analytics'
 import { TOOLS } from '@/lib/tools'
+import { cn } from '@/lib/utils'
 
+/**
+ * Transparent over the hero at the top of the page, then a frosted bar with a
+ * border once the page scrolls. Heroes use `-mt-14 pt-14` (the header height)
+ * so their background runs behind it.
+ */
 export function SiteHeader() {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 8)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [])
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+    <header
+      className={cn(
+        'sticky top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-200',
+        scrolled
+          ? 'border-border bg-background/80 backdrop-blur-xl'
+          : 'border-transparent bg-transparent',
+      )}
+    >
       <Container className="flex h-14 items-center justify-between gap-4">
         <Link to="/" aria-label="Postloom home">
           <PostloomLogo size="md" />

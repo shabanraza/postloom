@@ -77,10 +77,15 @@ public/
 ## Adding a new tool
 
 1. Create `src/routes/<tool-slug>/index.tsx` using `ToolPage` + `ToolWorkspace` from `@/components/layout/ToolPage` (hero, settings | preview, How it works, FAQ with FAQPage JSON-LD).
-2. Give the route its own `head()`: unique title, description, OG/Twitter tags and `canonical` (copy the pattern in `carousel-maker/index.tsx`).
+2. Give the route its own `head()` with `pageHead({ path, title, description })` from `@/lib/seo` (unique title, description, OG/Twitter tags and canonical).
 3. Register it in `src/lib/tools.ts`, and add its URL to `public/sitemap.xml` and `public/llms.txt` (`src/lib/tools.test.ts` fails if they drift).
 4. Track `export_start`, `export_complete`, `export_error` via `trackEvent` with a `format` param (e.g. `carousel_pdf`).
 5. Keep heavy work in the browser; put pure logic in `-lib/` with unit tests.
+6. Put the tool UI in `-components/` as a configurable component (copy, FAQs, defaults as props) so landing pages can reuse it.
+
+## Adding a landing page
+
+Landing pages target one search phrase (e.g. `/linkedin-carousel-maker`) and run an existing tool with their own h1, intro, steps, FAQs and defaults. Create `src/routes/<slug>/index.tsx` with `pageHead`, register it in `LANDING_PAGES` in `src/lib/tools.ts` (footer "Popular" column), and add it to `sitemap.xml` and `llms.txt`. Copy must be unique per page and honest about what the tool does.
 
 ## Design rules (follow for every UI change)
 
@@ -110,7 +115,7 @@ Card designs users export (tweet card backgrounds, carousel slide themes) are co
 - Structured data must be honest: no invented ratings or reviews.
 - `public/llms.txt` describes the tools for AI assistants; keep it current.
 - GA4 (`G-7T3RYZQR2M`, overridable by `VITE_GA4_MEASUREMENT_ID`) loads in `__root.tsx`. Consent default is read from `localStorage['analytics-consent']`, so a decline persists.
-- Theme: an inline script in `__root.tsx` applies `dark` before first paint from `localStorage['theme']`, else system preference.
+- Theme: light by default. An inline script in `__root.tsx` applies `dark` before first paint only when `localStorage['theme'] === 'dark'` (set by the theme toggle).
 
 ## Environment variables
 
@@ -122,7 +127,7 @@ Via `@t3-oss/env-core` in `src/env.ts` (`import { env } from '@/env'`). `VITE_` 
 ## Known leftovers from the earlier product
 
 The repo started as a social media scheduler. These remain and can be removed in a cleanup:
-- `vite-plugin-db` / `neon-vite-plugin.ts`, `db/init.sql`, `@neondatabase/*` packages, the `@neondatabase/neon-js/ui/tailwind` import in `styles.css`
+- `vite-plugin-db` / `neon-vite-plugin.ts`, `db/init.sql`, `@neondatabase/*` packages
 - The `*/5 * * * *` cron trigger in `wrangler.jsonc` (no handler exists)
 - Unused dependencies such as `@tanstack/ai*`, `@tanstack/react-db`
 - Duplicate editor tabs (`-components/tabs/` vs `-components/SettingsPanel/`) and hardcoded colors in the editor (being migrated to tokens)

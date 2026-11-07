@@ -94,7 +94,7 @@ export function OnboardingOverlay() {
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100]" onClick={handleSkip} />
 
             {/* Modal Card */}
-            <div className="fixed z-[101] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md">
+            <div className="fixed z-[101] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] max-w-md">
                 <div className="bg-card rounded-2xl shadow-2xl border border-border overflow-hidden">
                     {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b border-border">

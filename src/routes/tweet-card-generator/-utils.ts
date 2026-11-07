@@ -61,33 +61,6 @@ export function downloadBlob(blob: Blob, filename: string): void {
 }
 
 /**
- * Calculate estimated file size (rough estimate)
- */
-export function estimateFileSize(
-    width: number,
-    height: number,
-    format: 'png' | 'gif',
-    frameCount: number = 1
-): string {
-    // Rough estimates based on compression
-    const pixelCount = width * height
-    let bytes: number
-
-    if (format === 'png') {
-        // PNG: roughly 3-4 bytes per pixel after compression
-        bytes = pixelCount * 3.5
-    } else {
-        // GIF: roughly 0.5-1 byte per pixel per frame (256 colors)
-        bytes = pixelCount * 0.75 * frameCount
-    }
-
-    if (bytes >= 1_000_000) {
-        return (bytes / 1_000_000).toFixed(1) + ' MB'
-    }
-    return (bytes / 1_000).toFixed(0) + ' KB'
-}
-
-/**
  * Calculate animation duration
  */
 export function calculateAnimationDuration(

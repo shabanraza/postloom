@@ -371,39 +371,3 @@ export async function exportAsGif(
         throw error
     }
 }
-
-/**
- * Estimate file size (more accurate calculation)
- */
-export function estimateFileSize(
-    width: number,
-    height: number,
-    format: 'png' | 'gif',
-    textLength: number = 0,
-    fps: number = 20
-): string {
-    const pixels = width * height
-
-    if (format === 'png') {
-        // PNG: More accurate estimate based on typical compression
-        // High quality PNGs typically use 3-4 bytes per pixel after compression
-        // For tweet cards with text and simple graphics, compression is better (~2.5 bytes/pixel)
-        const bytes = pixels * 2.5
-        return formatBytes(bytes)
-    } else {
-        // GIF: Calculate based on actual frame count
-        // Each character typically takes ~0.05 seconds at default speed
-        const charsPerSecond = 50 // Default speed
-        const totalSeconds = textLength > 0 ? (textLength / charsPerSecond) + 1 : 5 // +1 for final frame
-        const frameCount = Math.ceil(totalSeconds * fps)
-        // GIF with 256 colors: ~0.5-1 byte per pixel per frame after compression
-        const bytes = frameCount * pixels * 0.75
-        return formatBytes(Math.min(bytes, 10 * 1024 * 1024)) // Cap at 10MB for display
-    }
-}
-
-function formatBytes(bytes: number): string {
-    if (bytes < 1024) return `${bytes} B`
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}

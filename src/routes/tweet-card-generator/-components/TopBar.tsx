@@ -14,7 +14,7 @@ import { Progress } from '@/components/ui/progress'
 import { ThemeToggle } from './ThemeToggle'
 import { useTweetStudioStore } from '../-state'
 import { EXPORT_SIZES } from '../-constants'
-import { exportAsPng, exportAsGif, copyToClipboard, estimateFileSize } from '../-export'
+import { exportAsPng, exportAsGif, copyToClipboard } from '../-export'
 import { sizeParams, trackExportComplete, trackExportStart, trackExportError, trackExportSizeChange } from '@/lib/analytics'
 import { PostloomLogo } from '@/components/PostloomLogo'
 import type { ExportPreset } from '../-types'
@@ -129,15 +129,6 @@ export function TopBar() {
             setIsExporting(false)
         }
     }
-
-    const estimatedPngSize = estimateFileSize(exportSettings.width, exportSettings.height, 'png')
-    const estimatedGifSize = estimateFileSize(
-        exportSettings.width,
-        exportSettings.height,
-        'gif',
-        tweet.content.text.length,
-        animation.fps
-    )
 
     return (
         <TooltipProvider delayDuration={300}>
@@ -260,7 +251,7 @@ export function TopBar() {
                                         <Image className="h-3.5 w-3.5" />
                                     </div>
                                     <span className="flex-1 text-left font-medium">Download PNG</span>
-                                    <span className="text-xs text-muted-foreground">~{estimatedPngSize}</span>
+                                    <span className="text-xs text-muted-foreground">Still</span>
                                 </Button>
                                 <Button
                                     variant="ghost"
@@ -272,7 +263,7 @@ export function TopBar() {
                                         <Film className="h-3.5 w-3.5" />
                                     </div>
                                     <span className="flex-1 text-left font-medium">Download GIF</span>
-                                    <span className="text-xs text-muted-foreground">~{estimatedGifSize}</span>
+                                    <span className="text-xs text-muted-foreground">Animated</span>
                                 </Button>
 
                                 <DropdownMenuSeparator className="bg-muted my-1" />

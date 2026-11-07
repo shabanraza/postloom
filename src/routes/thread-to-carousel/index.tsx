@@ -17,7 +17,7 @@ export const Route = createFileRoute('/thread-to-carousel/')({
       steps={[
         'Copy your thread from X and paste it. Each tweet (or blank-line-separated paragraph) becomes a slide.',
         'Thread numbers like “1/” and “2/5” are stripped automatically. Long tweets split into extra slides.',
-        'Download one PDF for LinkedIn or PNG slides for Instagram.',
+        'Download one PDF for LinkedIn or PNG slides (in one ZIP) for Instagram.',
       ]}
       faqs={[
         {

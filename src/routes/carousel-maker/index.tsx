@@ -17,7 +17,7 @@ export const Route = createFileRoute('/carousel-maker/')({
       steps={[
         'Paste a tweet thread, newsletter section or list of tips.',
         'Add your name and handle, then pick a paper, charcoal or sage style and an accent color.',
-        'Download one PDF to upload as a LinkedIn document post, or PNG slides for an Instagram carousel.',
+        'Download one PDF to upload as a LinkedIn document post, or PNG slides (in one ZIP) for an Instagram carousel.',
       ]}
       faqs={CAROUSEL_FAQS}
     />

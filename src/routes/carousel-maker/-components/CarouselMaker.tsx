@@ -6,6 +6,7 @@ import {
   SLIDE_HEIGHT,
   SLIDE_WIDTH,
   buildPdfFromJpegs,
+  buildZip,
   downloadBlob,
   fontSizeFor,
   splitIntoSlides,
@@ -22,7 +23,7 @@ import { trackExportComplete, trackExportError, trackExportStart } from '@/lib/a
 
 export type ThemeId = 'light' | 'dark' | 'sage'
 
-const THEMES: Record<ThemeId, { label: string; background: string; text: string; muted: string }> = {
+export const THEMES: Record<ThemeId, { label: string; background: string; text: string; muted: string }> = {
   light: { label: 'Paper', background: '#faf9f6', text: '#1c1b18', muted: '#6f6b63' },
   dark: { label: 'Charcoal', background: '#1c1b18', text: '#ecebe6', muted: '#a09c92' },
   sage: {
@@ -97,10 +98,15 @@ export function CarouselMaker({
       const elements = slideElements()
       const base = (handle || 'postloom').replace(/[^a-z0-9_-]/gi, '') || 'postloom'
       if (format === 'png') {
+        const files = []
         for (let i = 0; i < elements.length; i++) {
           const blob = await domToBlob(elements[i], { ...captureOptions, type: 'image/png' })
-          downloadBlob(blob, `${base}-carousel-${i + 1}.png`)
+          files.push({ name: `${base}-carousel-${i + 1}.png`, data: new Uint8Array(await blob.arrayBuffer()) })
         }
+        // One slide downloads as a PNG; several come as one ZIP so the browser
+        // doesn't block or ask about multiple downloads
+        if (files.length === 1) downloadBlob(new Blob([files[0].data], { type: 'image/png' }), files[0].name)
+        else downloadBlob(buildZip(files), `${base}-carousel.zip`)
       } else {
         const pages = []
         for (const el of elements) {
@@ -280,7 +286,7 @@ interface SlideProps {
   ref?: React.Ref<HTMLDivElement>
 }
 
-function Slide({ text, index, total, name, handle, theme, accent, ref }: SlideProps) {
+export function Slide({ text, index, total, name, handle, theme, accent, ref }: SlideProps) {
   const initials =
     name
       .split(/\s+/)
@@ -355,7 +361,8 @@ function Slide({ text, index, total, name, handle, theme, accent, ref }: SlidePr
         <span>
           <span style={{ color: accent, fontWeight: 700 }}>{index + 1}</span> / {total}
         </span>
-        <span>{isLast ? 'Made with postloom.studio' : 'Swipe →'}</span>
+        {/* No credit on the last slide: downloads have no watermark */}
+        {!isLast && <span>Swipe →</span>}
       </div>
     </div>
   )

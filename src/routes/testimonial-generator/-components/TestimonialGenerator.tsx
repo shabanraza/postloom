@@ -5,6 +5,7 @@ import { downloadBlob } from '../../carousel-maker/-lib/carousel'
 import { fetchTweetFromUrl } from '../../tweet-card-generator/-utils/fetch-tweet'
 import {
   CARD_SIZES,
+  DEFAULT_SHOW_STARS,
   buildWallEmbed,
   cleanTweetText,
   initialsOf,
@@ -100,7 +101,7 @@ export function TestimonialGenerator({ title, description, steps, faqs, defaultT
   const [sizeId, setSizeId] = useState<CardSize['id']>('square')
   const [accent, setAccent] = useState('#4a6b57')
   const [brand, setBrand] = useState('Acme')
-  const [stars, setStars] = useState(true)
+  const [stars, setStars] = useState(DEFAULT_SHOW_STARS)
   const [wallTitle, setWallTitle] = useState('Loved by makers')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)

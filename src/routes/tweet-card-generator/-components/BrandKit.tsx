@@ -1,12 +1,48 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Plus, Trash2, Type, Check, X } from 'lucide-react'
+import { Plus, Trash2, Type, Check, X, Pencil, Upload, EyeOff } from 'lucide-react'
+import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
 import { useTweetStudioStore } from '../-state'
 import { BRAND_FONT_CHOICES, isHexColor } from '../-constants'
+import { fitWithin } from '../-utils'
+import type { LogoPosition } from '../-types'
+
+const MAX_LOGO_BYTES = 5 * 1024 * 1024
+
+/** Read an uploaded logo as a small data URL (max 512px) so it can be saved in the browser. */
+async function readLogoFile(file: File): Promise<string> {
+    const asDataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(String(reader.result))
+        reader.onerror = () => reject(reader.error)
+        reader.readAsDataURL(file)
+    })
+    if (file.type === 'image/svg+xml') return asDataUrl
+    const img = new Image()
+    await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve()
+        img.onerror = () => reject(new Error('Could not read that image'))
+        img.src = asDataUrl
+    })
+    const { width, height } = fitWithin(img.naturalWidth, img.naturalHeight, 512)
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+    canvas.getContext('2d')!.drawImage(img, 0, 0, width, height)
+    return canvas.toDataURL('image/png')
+}
+
+const LOGO_SPOTS: { position: Exclude<LogoPosition, 'none'>; label: string; className: string }[] = [
+    { position: 'top-left', label: 'Logo top left', className: 'items-start justify-start' },
+    { position: 'top-right', label: 'Logo top right', className: 'items-start justify-end' },
+    { position: 'bottom-left', label: 'Logo bottom left', className: 'items-end justify-start' },
+    { position: 'bottom-right', label: 'Logo bottom right', className: 'items-end justify-end' },
+]
 
 export function BrandKit() {
     const [newColorName, setNewColorName] = useState('')
@@ -25,6 +61,16 @@ export function BrandKit() {
     const applyBrandColor = useTweetStudioStore((state) => state.applyBrandColor)
     const applyBrandFont = useTweetStudioStore((state) => state.applyBrandFont)
     const design = useTweetStudioStore((state) => state.design)
+    const createBrandKit = useTweetStudioStore((state) => state.createBrandKit)
+    const renameBrandKit = useTweetStudioStore((state) => state.renameBrandKit)
+    const deleteBrandKit = useTweetStudioStore((state) => state.deleteBrandKit)
+    const setActiveBrandKit = useTweetStudioStore((state) => state.setActiveBrandKit)
+    const setBrandLogo = useTweetStudioStore((state) => state.setBrandLogo)
+    const logoOverlay = useTweetStudioStore((state) => state.logoOverlay)
+    const setLogoOverlay = useTweetStudioStore((state) => state.setLogoOverlay)
+    const [renaming, setRenaming] = useState(false)
+    const [kitName, setKitName] = useState('')
+    const fileRef = useRef<HTMLInputElement>(null)
 
     // Use first brand kit if none active
     const activeKit = brandKits.find((k) => k.id === activeBrandKitId) || brandKits[0]
@@ -52,8 +98,235 @@ export function BrandKit() {
 
     if (!activeKit) return null
 
+    const handleLogoFile = async (file: File | undefined) => {
+        if (!file) return
+        if (!file.type.startsWith('image/')) {
+            toast.error('That file is not an image', { description: 'Use a PNG, SVG, JPG or WebP logo.' })
+            return
+        }
+        if (file.size > MAX_LOGO_BYTES) {
+            toast.error('That logo is too big', { description: 'Use an image under 5 MB.' })
+            return
+        }
+        try {
+            setBrandLogo(activeKit.id, await readLogoFile(file))
+            if (logoOverlay.position === 'none') setLogoOverlay({ position: 'bottom-right' })
+        } catch {
+            toast.error('Could not read that image', { description: 'Try a PNG or JPG instead.' })
+        }
+    }
+
+    const handleDeleteKit = () => {
+        const removed = activeKit
+        const index = brandKits.findIndex((k) => k.id === removed.id)
+        deleteBrandKit(removed.id)
+        setActiveBrandKit(null)
+        toast(`Deleted "${removed.name}"`, {
+            duration: 10000,
+            action: {
+                label: 'Undo',
+                onClick: () =>
+                    useTweetStudioStore.setState((st) => {
+                        const kits = [...st.brandKits]
+                        kits.splice(index, 0, removed)
+                        return { brandKits: kits, activeBrandKitId: removed.id }
+                    }),
+            },
+        })
+    }
+
+    const commitRename = () => {
+        renameBrandKit(activeKit.id, kitName)
+        setRenaming(false)
+    }
+
     return (
         <div className="space-y-6">
+            {/* Which brand kit */}
+            <div className="space-y-2">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Brand kit</p>
+                {renaming ? (
+                    <Input
+                        autoFocus
+                        aria-label="Brand kit name"
+                        value={kitName}
+                        maxLength={40}
+                        onChange={(e) => setKitName(e.target.value)}
+                        onBlur={commitRename}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') commitRename()
+                            if (e.key === 'Escape') {
+                                e.preventDefault()
+                                setRenaming(false)
+                            }
+                        }}
+                        className="h-8 text-sm"
+                    />
+                ) : (
+                    <div className="flex gap-1.5">
+                        <select
+                            aria-label="Choose brand kit"
+                            value={activeKit.id}
+                            onChange={(e) => setActiveBrandKit(e.target.value)}
+                            className="h-8 min-w-0 flex-1 rounded-md border border-border bg-background px-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        >
+                            {brandKits.map((kit) => (
+                                <option key={kit.id} value={kit.id}>
+                                    {kit.name}
+                                </option>
+                            ))}
+                        </select>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8 shrink-0"
+                            aria-label="Rename brand kit"
+                            title="Rename"
+                            onClick={() => {
+                                setKitName(activeKit.name)
+                                setRenaming(true)
+                            }}
+                        >
+                            <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8 shrink-0"
+                            aria-label="New brand kit"
+                            title="New brand kit"
+                            onClick={() => createBrandKit(`Brand ${brandKits.length + 1}`)}
+                        >
+                            <Plus className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+                            aria-label="Delete brand kit"
+                            title={brandKits.length <= 1 ? 'You need at least one brand kit' : 'Delete this brand kit'}
+                            disabled={brandKits.length <= 1}
+                            onClick={handleDeleteKit}
+                        >
+                            <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                    </div>
+                )}
+            </div>
+
+            {/* Logo */}
+            <div className="space-y-3">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Logo</p>
+                <input
+                    ref={fileRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                    className="sr-only"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    onChange={(e) => {
+                        void handleLogoFile(e.target.files?.[0])
+                        e.target.value = ''
+                    }}
+                />
+                {activeKit.logoUrl ? (
+                    <>
+                        <div className="flex items-center gap-3">
+                            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border border-border bg-[repeating-conic-gradient(var(--muted)_0%_25%,transparent_0%_50%)] bg-[length:12px_12px] p-1.5">
+                                <img src={activeKit.logoUrl} alt="" className="max-h-full max-w-full object-contain" />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => fileRef.current?.click()}>
+                                    Replace
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-7 text-xs text-muted-foreground hover:text-destructive"
+                                    onClick={() => setBrandLogo(activeKit.id, undefined)}
+                                >
+                                    Remove
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <p className="text-xs text-muted-foreground">Place on the card</p>
+                            <div className="flex gap-1.5">
+                                {LOGO_SPOTS.map((spot) => (
+                                    <button
+                                        key={spot.position}
+                                        type="button"
+                                        aria-label={spot.label}
+                                        aria-pressed={logoOverlay.position === spot.position}
+                                        title={spot.label}
+                                        onClick={() => setLogoOverlay({ position: spot.position })}
+                                        className={cn(
+                                            'flex h-9 flex-1 rounded-md border p-1.5 transition-colors',
+                                            spot.className,
+                                            logoOverlay.position === spot.position
+                                                ? 'border-primary bg-muted'
+                                                : 'border-border hover:border-foreground/30'
+                                        )}
+                                    >
+                                        <span className="h-2 w-2 rounded-sm bg-foreground/70" />
+                                    </button>
+                                ))}
+                                <button
+                                    type="button"
+                                    aria-label="Hide logo"
+                                    aria-pressed={logoOverlay.position === 'none'}
+                                    title="Hide logo"
+                                    onClick={() => setLogoOverlay({ position: 'none' })}
+                                    className={cn(
+                                        'flex h-9 flex-1 items-center justify-center rounded-md border transition-colors',
+                                        logoOverlay.position === 'none'
+                                            ? 'border-primary bg-muted'
+                                            : 'border-border hover:border-foreground/30'
+                                    )}
+                                >
+                                    <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
+                                </button>
+                            </div>
+                        </div>
+
+                        {logoOverlay.position !== 'none' && (
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                    <span>Size</span>
+                                    <span className="font-mono">{logoOverlay.size}%</span>
+                                </div>
+                                <Slider
+                                    aria-label="Logo size"
+                                    min={5}
+                                    max={30}
+                                    step={1}
+                                    value={[logoOverlay.size]}
+                                    onValueChange={([v]) => setLogoOverlay({ size: v })}
+                                />
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={() => fileRef.current?.click()}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => {
+                            e.preventDefault()
+                            void handleLogoFile(e.dataTransfer.files?.[0])
+                        }}
+                        className="flex w-full flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-border px-3 py-4 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+                    >
+                        <Upload className="h-4 w-4" />
+                        <span className="font-medium">Upload logo</span>
+                        <span className="text-[11px]">PNG, SVG or JPG. A transparent PNG looks best.</span>
+                    </button>
+                )}
+            </div>
+
+            <div className="h-px bg-border" />
+
             {/* Brand Colors */}
             <div className="space-y-3">
                 <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Brand Colors</p>

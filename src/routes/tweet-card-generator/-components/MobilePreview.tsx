@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import { Image as ImageIcon, Film } from 'lucide-react'
 import { useTweetStudioStore } from '../-state'
 import { CardRenderer } from './cards'
+import { BrandLogoOverlay } from './BrandLogoOverlay'
 import { cn } from '@/lib/utils'
 import type { DesignSettings, Platform } from '../-types'
 
@@ -210,7 +211,7 @@ export function MobilePreview() {
                     >
                         <div
                             id="tweet-canvas"
-                            className="shadow-xl ring-1 ring-primary/5 overflow-hidden"
+                            className="relative shadow-xl ring-1 ring-primary/5 overflow-hidden"
                             style={{
                                 width: canvasWidth,
                                 height: canvasHeight,
@@ -223,6 +224,7 @@ export function MobilePreview() {
                             <div className="w-full h-full flex items-center justify-center pointer-events-none">
                                 <CardRenderer />
                             </div>
+                            <BrandLogoOverlay canvasWidth={canvasWidth} canvasHeight={canvasHeight} />
                         </div>
                     </div>
                 </div>

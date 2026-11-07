@@ -21,6 +21,8 @@ import type {
     BrandKit,
     BrandColor,
     BrandFont,
+    LogoOverlay,
+    SavedStyle,
 } from '../-types'
 import {
     EXPORT_SIZES,
@@ -66,6 +68,8 @@ interface TweetStudioState {
     // Brand Kit
     brandKits: BrandKit[]
     activeBrandKitId: string | null
+    logoOverlay: LogoOverlay
+    savedStyles: SavedStyle[]
 
     // Actions - Platform
     setPlatform: (platform: Platform) => void
@@ -192,6 +196,14 @@ interface TweetStudioState {
     removeBrandFont: (kitId: string, fontId: string) => void
     applyBrandColor: (color: string) => void
     applyBrandFont: (fontFamily: string, fontWeight: number) => void
+    renameBrandKit: (id: string, name: string) => void
+    setBrandLogo: (kitId: string, logoUrl: string | undefined) => void
+    setLogoOverlay: (overlay: Partial<LogoOverlay>) => void
+
+    // Actions - Saved styles
+    saveStyle: (name: string) => void
+    applySavedStyle: (id: string) => void
+    deleteSavedStyle: (id: string) => void
 
     // Getters - Get current platform's metrics
     getCurrentMetrics: () => TwitterMetrics | ThreadsMetrics | LinkedInMetrics
@@ -370,6 +382,8 @@ export const useTweetStudioStore = create<TweetStudioState>()(
             // Brand Kit
             brandKits: [initialBrandKit],
             activeBrandKitId: null,
+            logoOverlay: { position: 'none', size: 12 },
+            savedStyles: [],
 
             // Platform Action
             setPlatform: (platform) => set({ platform }),
@@ -414,12 +428,13 @@ export const useTweetStudioStore = create<TweetStudioState>()(
             },
 
             // Brand Kit Actions
-            createBrandKit: (name) =>
+            createBrandKit: (name) => {
+                const id = String(Date.now())
                 set((state) => ({
                     brandKits: [
                         ...state.brandKits,
                         {
-                            id: String(Date.now()),
+                            id,
                             name,
                             colors: [],
                             fonts: [],
@@ -427,10 +442,12 @@ export const useTweetStudioStore = create<TweetStudioState>()(
                             createdAt: new Date(),
                         },
                     ],
-                })),
+                    activeBrandKitId: id,
+                }))
+            },
 
             deleteBrandKit: (id) =>
-                set((state) => ({
+                set((state) => state.brandKits.length <= 1 ? {} : ({
                     brandKits: state.brandKits.filter((kit) => kit.id !== id),
                     activeBrandKitId: state.activeBrandKitId === id ? null : state.activeBrandKitId,
                 })),
@@ -495,6 +512,63 @@ export const useTweetStudioStore = create<TweetStudioState>()(
             applyBrandFont: (fontFamily, fontWeight) =>
                 set((state) => ({
                     design: { ...state.design, fontFamily, fontWeight },
+                })),
+
+            renameBrandKit: (id, name) =>
+                set((state) => ({
+                    brandKits: state.brandKits.map((kit) =>
+                        kit.id === id ? { ...kit, name: name.trim() || kit.name } : kit
+                    ),
+                })),
+
+            setBrandLogo: (kitId, logoUrl) =>
+                set((state) => ({
+                    brandKits: state.brandKits.map((kit) =>
+                        kit.id === kitId ? { ...kit, logoUrl } : kit
+                    ),
+                })),
+
+            setLogoOverlay: (overlay) =>
+                set((state) => {
+                    const next = { ...state.logoOverlay, ...overlay }
+                    next.size = Math.min(30, Math.max(5, next.size))
+                    return { logoOverlay: next }
+                }),
+
+            // Saved styles
+            saveStyle: (name) =>
+                set((state) => ({
+                    savedStyles: [
+                        ...state.savedStyles,
+                        {
+                            id: String(Date.now()) + Math.random().toString(36).slice(2, 6),
+                            name: name.trim() || `Style ${state.savedStyles.length + 1}`,
+                            design: structuredClone(state.design),
+                            theme: state.tweet.theme,
+                            size: {
+                                preset: state.export.preset,
+                                width: state.export.width,
+                                height: state.export.height,
+                            },
+                            createdAt: Date.now(),
+                        },
+                    ],
+                })),
+
+            applySavedStyle: (id) =>
+                set((state) => {
+                    const style = state.savedStyles.find((st) => st.id === id)
+                    if (!style) return {}
+                    return {
+                        design: structuredClone(style.design),
+                        tweet: { ...state.tweet, theme: style.theme },
+                        export: { ...state.export, ...style.size },
+                    }
+                }),
+
+            deleteSavedStyle: (id) =>
+                set((state) => ({
+                    savedStyles: state.savedStyles.filter((st) => st.id !== id),
                 })),
 
             // Import from URL - populate all tweet data
@@ -1161,6 +1235,10 @@ export const useTweetStudioStore = create<TweetStudioState>()(
             // History Actions
             saveToHistory: () => {
                 const { tweet, design, history, historyIndex } = get()
+                const current = history[historyIndex]
+                // Nothing changed since the last step (e.g. right after undo/redo)
+                if (current && current.tweet === tweet && current.design === design) return
+                if (current && JSON.stringify(current) === JSON.stringify({ tweet, design })) return
                 const newHistory = history.slice(0, historyIndex + 1)
                 newHistory.push({ tweet: structuredClone(tweet), design: structuredClone(design) })
 
@@ -1176,12 +1254,14 @@ export const useTweetStudioStore = create<TweetStudioState>()(
             },
 
             undo: () => {
+                // Record a change that is still waiting to be saved, so Undo returns to just before it
+                get().saveToHistory()
                 const { history, historyIndex } = get()
                 if (historyIndex > 0) {
                     const prevState = history[historyIndex - 1]
                     set({
-                        tweet: structuredClone(prevState.tweet),
-                        design: structuredClone(prevState.design),
+                        tweet: prevState.tweet,
+                        design: prevState.design,
                         historyIndex: historyIndex - 1,
                     })
                 }
@@ -1192,15 +1272,17 @@ export const useTweetStudioStore = create<TweetStudioState>()(
                 if (historyIndex < history.length - 1) {
                     const nextState = history[historyIndex + 1]
                     set({
-                        tweet: structuredClone(nextState.tweet),
-                        design: structuredClone(nextState.design),
+                        tweet: nextState.tweet,
+                        design: nextState.design,
                         historyIndex: historyIndex + 1,
                     })
                 }
             },
 
             // Reset
-            reset: () =>
+            reset: () => {
+                // Keep the current card in history so Reset can be undone
+                get().saveToHistory()
                 set({
                     platform: 'twitter',
                     tweet: initialTweet,
@@ -1213,7 +1295,8 @@ export const useTweetStudioStore = create<TweetStudioState>()(
                     export: initialExport,
                     isExporting: false,
                     exportProgress: 0,
-                }),
+                })
+            },
         }),
         {
             name: 'tweet-studio-storage',
@@ -1223,7 +1306,29 @@ export const useTweetStudioStore = create<TweetStudioState>()(
                 export: state.export,
                 brandKits: state.brandKits,
                 activeBrandKitId: state.activeBrandKitId,
+                logoOverlay: state.logoOverlay,
+                savedStyles: state.savedStyles,
             }),
         }
     )
 )
+
+/**
+ * Records a history step shortly after the post or design stops changing,
+ * so Undo/Redo work without every action having to remember to save.
+ * Returns a function that stops recording.
+ */
+export function startHistoryRecording(delay = 400): () => void {
+    const store = useTweetStudioStore
+    store.getState().saveToHistory()
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const unsubscribe = store.subscribe((state, prev) => {
+        if (state.tweet === prev.tweet && state.design === prev.design) return
+        clearTimeout(timer)
+        timer = setTimeout(() => store.getState().saveToHistory(), delay)
+    })
+    return () => {
+        clearTimeout(timer)
+        unsubscribe()
+    }
+}

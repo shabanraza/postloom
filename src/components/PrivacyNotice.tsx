@@ -5,11 +5,11 @@ import { OPEN_COOKIE_SETTINGS, readConsent, saveConsent } from '@/lib/consent'
 import type { ConsentChoice } from '@/lib/consent'
 
 /**
- * Cookie banner. Where the law needs opt-in (EEA, UK, Switzerland) nothing
+ * Cookie banner. Where the law needs opt-in (EEA, UK, Switzerland, Quebec) nothing
  * runs until "Accept", and Accept and Reject are equally easy. Elsewhere it
  * is a notice with an opt-out. A Global Privacy Control signal is treated as
- * an opt-out, so those visitors aren't asked. The footer's "Cookie settings"
- * reopens it so anyone can change their mind.
+ * an opt-out, so those visitors aren't asked. The footer's "Your privacy choices"
+ * link (the label California's CPRA rules use) reopens it so anyone can change their mind.
  */
 export function PrivacyNotice({ optIn }: { optIn: boolean }) {
   const [show, setShow] = useState(false)
@@ -59,7 +59,7 @@ export function PrivacyNotice({ optIn }: { optIn: boolean }) {
   )
 }
 
-/** Footer link that reopens the cookie banner */
+/** Footer link that reopens the cookie banner, labelled the way US privacy laws expect */
 export function CookieSettingsButton({ className }: { className?: string }) {
   return (
     <button
@@ -67,7 +67,7 @@ export function CookieSettingsButton({ className }: { className?: string }) {
       className={className}
       onClick={() => window.dispatchEvent(new Event(OPEN_COOKIE_SETTINGS))}
     >
-      Cookie settings
+      Your privacy choices
     </button>
   )
 }

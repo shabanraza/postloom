@@ -5,7 +5,7 @@ import { CookieSettingsButton } from '@/components/PrivacyNotice'
 import { pageHead } from '@/lib/seo'
 
 const CONTACT_EMAIL = 'msvoide@gmail.com'
-const UPDATED = '7 November 2026'
+const UPDATED = 'November 7, 2026'
 
 export const Route = createFileRoute('/privacy/')({
   head: () =>
@@ -48,8 +48,9 @@ function PrivacyPage() {
               <li>What you write and design is processed in your browser. Images are made on your device.</li>
               <li>We use Google Analytics and Microsoft Clarity to learn which tools people use and to fix problems.</li>
               <li>
-                In the EU, EEA, UK and Switzerland they only run if you accept. Elsewhere you can opt out at any
-                time, and we treat a Global Privacy Control signal from your browser as an opt-out.
+                In Quebec, the EU, EEA, UK and Switzerland they only run if you accept. Everywhere else, including
+                the rest of Canada and the US, you can opt out at any time, and we treat a Global Privacy Control
+                signal from your browser as an opt-out.
               </li>
             </ul>
           </section>
@@ -125,28 +126,31 @@ function PrivacyPage() {
               </table>
             </div>
             <p className="mt-4">
-              Change your choice at any time:{' '}
-              <CookieSettingsButton className="text-foreground underline underline-offset-2" />. Rejecting stops
-              analytics and deletes their cookies on this site.
+              Change your choice at any time with{' '}
+              <CookieSettingsButton className="text-foreground underline underline-offset-2" /> (also in the
+              footer of every page). Rejecting or opting out stops analytics and deletes their cookies on this site.
             </p>
           </section>
 
           <section>
             <h2>Why we're allowed to</h2>
             <p>
-              In the EU, EEA, UK and Switzerland we rely on your consent, which you can withdraw at any time.
-              Elsewhere we rely on our legitimate interest in understanding how the site is used, and you can
-              object by opting out.
+              In Quebec, the EU, EEA, UK and Switzerland we rely on your consent, which you can withdraw at any
+              time. In the rest of Canada we rely on your implied consent after this notice, under PIPEDA, and you
+              can withdraw it by opting out. Elsewhere, including the US, we rely on our legitimate interest in
+              understanding how the site is used, and you can opt out.
             </p>
           </section>
 
           <section>
             <h2>Your rights</h2>
             <p>
-              Depending on where you live (for example under the GDPR, UK GDPR, California's CCPA/CPRA, Brazil's
-              LGPD or India's DPDP Act), you can ask to access, correct or delete data about you, object to or
-              restrict its use, and withdraw consent. We don't sell or share personal information as those laws
-              define it. Analytics data isn't tied to your name, so the quickest way to stop collection is to
+              Depending on where you live, you can ask to access, correct or delete data about you, object to or
+              restrict its use, and withdraw consent. This includes your rights under US state privacy laws (such
+              as California's CCPA/CPRA and the laws of Colorado, Connecticut, Virginia, Texas, Oregon and others),
+              Canada's PIPEDA and Quebec's Law 25, the GDPR and UK GDPR, and Australia's Privacy Act. We don't sell
+              personal information, and we don't share it for cross-context behavioral advertising. We honor
+              Global Privacy Control signals, and we won't treat you differently for using any of these rights. Analytics data isn't tied to your name, so the quickest way to stop collection is to
               reject cookies. For anything else, email{' '}
               <a className="text-foreground underline underline-offset-2" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>{' '}
               and we'll reply within 30 days. You can also complain to your local data protection authority.

@@ -1,11 +1,13 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getRequestHeader } from '@tanstack/react-start/server'
+import { getRequest, getRequestHeader } from '@tanstack/react-start/server'
 
 /**
- * Countries where analytics may only start after the visitor opts in
- * (GDPR / ePrivacy in the EEA, UK GDPR + PECR, Swiss FADP). Everywhere else
- * analytics run by default with a notice and an opt-out, and a Global
- * Privacy Control signal counts as opting out (CCPA/CPRA and other US laws).
+ * Where analytics may only start after the visitor opts in:
+ * - EEA, UK, Switzerland (GDPR / ePrivacy, UK GDPR + PECR, Swiss FADP)
+ * - Quebec (Law 25: tracking that can profile or locate must be off by default)
+ * Everywhere else, including the US and the rest of Canada (PIPEDA), analytics
+ * run by default with a notice and an opt-out, and a Global Privacy Control
+ * signal counts as opting out (CCPA/CPRA and the other US state laws).
  */
 export const OPT_IN_COUNTRIES = new Set([
   // EU
@@ -15,16 +17,28 @@ export const OPT_IN_COUNTRIES = new Set([
   'IS', 'LI', 'NO', 'GB', 'CH',
 ])
 
-/** Whether a country code (from Cloudflare's CF-IPCountry) needs opt-in consent */
-export function needsOptIn(country: string | undefined | null): boolean {
-  // Unknown location (no header, Tor 'T1', 'XX'): take the strict route
+/** Provinces/states (ISO 3166-2 subdivision, as Cloudflare reports it) that need opt-in */
+export const OPT_IN_REGIONS = new Set(['CA-QC'])
+
+/**
+ * Whether a visitor needs opt-in consent, from Cloudflare's country code and
+ * region code (e.g. 'CA' + 'QC'). An unknown country takes the strict route.
+ * In Canada an unknown province also takes the strict route, since it might be Quebec.
+ */
+export function needsOptIn(country: string | undefined | null, region?: string | null): boolean {
   if (!country || country.length !== 2 || country === 'XX' || country === 'T1') return true
-  return OPT_IN_COUNTRIES.has(country.toUpperCase())
+  const c = country.toUpperCase()
+  if (OPT_IN_COUNTRIES.has(c)) return true
+  if (c === 'CA' && !region) return true
+  return !!region && OPT_IN_REGIONS.has(`${c}-${region.toUpperCase()}`)
 }
 
-/** Read the visitor's country on the server; Cloudflare adds the header to every request */
+/** Read the visitor's location on the server from what Cloudflare attaches to the request */
 export const getConsentRegion = createServerFn({ method: 'GET' }).handler(() => {
-  return { optIn: needsOptIn(getRequestHeader('cf-ipcountry')) }
+  const cf = (getRequest() as Request & { cf?: { country?: string; regionCode?: string } }).cf
+  const country = cf?.country ?? getRequestHeader('cf-ipcountry')
+  const region = cf?.regionCode ?? getRequestHeader('cf-region-code')
+  return { optIn: needsOptIn(country, region) }
 })
 
 export const CONSENT_KEY = 'analytics-consent'

@@ -78,11 +78,12 @@ export function BackgroundTab() {
                             <button
                                 key={color}
                                 className={cn(
-                                    'aspect-square rounded-full transition-all hover:scale-110',
+                                    'aspect-square rounded-full border border-foreground/15 transition-all hover:scale-110',
                                     design.backgroundColor === color
-                                        ? 'ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-slate-900 scale-110'
+                                        ? 'ring-2 ring-primary ring-offset-2 ring-offset-background scale-110'
                                         : ''
                                 )}
+                                aria-label={`Background ${color}`}
                                 style={{ backgroundColor: color }}
                                 onClick={() => setBackgroundColor(color)}
                             />

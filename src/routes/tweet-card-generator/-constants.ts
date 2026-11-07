@@ -316,3 +316,21 @@ export const SOCIAL_PLATFORMS = [
     { id: 'twitter', name: 'Twitter/X', color: 'bg-black' },
     { id: 'youtube', name: 'YouTube', color: 'bg-[#FF0000]' },
 ]
+
+// Export menu copy: says what each file is for, not just its format
+export const EXPORT_FORMAT_COPY = {
+    png: { title: 'Download PNG', hint: 'Sharp image for any post' },
+    gif: { title: 'Download GIF', hint: 'Text types itself out' },
+} as const
+
+export function isHexColor(value: string): boolean {
+    return /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value)
+}
+
+// Typefaces a brand font can use (all render without loading web fonts)
+export const BRAND_FONT_CHOICES = [
+    { label: 'Sans', fontFamily: 'system-ui, sans-serif' },
+    { label: 'Serif', fontFamily: 'Georgia, serif' },
+    { label: 'Mono', fontFamily: 'ui-monospace, monospace' },
+    { label: 'Handwritten', fontFamily: 'cursive' },
+] as const

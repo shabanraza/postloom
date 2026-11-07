@@ -489,7 +489,7 @@ export const useTweetStudioStore = create<TweetStudioState>()(
 
             applyBrandColor: (color) =>
                 set((state) => ({
-                    design: { ...state.design, backgroundColor: color },
+                    design: { ...state.design, backgroundType: 'solid', backgroundColor: color },
                 })),
 
             applyBrandFont: (fontFamily, fontWeight) =>
@@ -1221,6 +1221,8 @@ export const useTweetStudioStore = create<TweetStudioState>()(
                 // Only persist settings, not the tweet content
                 design: state.design,
                 export: state.export,
+                brandKits: state.brandKits,
+                activeBrandKitId: state.activeBrandKitId,
             }),
         }
     )

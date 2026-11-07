@@ -24,6 +24,11 @@ const PANEL_CONFIG = {
     brandkit: { icon: Palette, label: 'Brand Kit', color: 'text-brand' },
 }
 
+/** Escape closes the panel, unless a popover or menu inside it already used that Escape. */
+export function shouldClosePanelOnKey(event: KeyboardEvent): boolean {
+    return event.key === 'Escape' && !event.defaultPrevented
+}
+
 export function ExpandablePanel({ activePanel, onClose }: ExpandablePanelProps) {
     // Panel stays open - no click-outside-to-close behavior
     // User can close by clicking the X button or clicking the same icon in sidebar
@@ -31,7 +36,7 @@ export function ExpandablePanel({ activePanel, onClose }: ExpandablePanelProps) 
     // Close on Escape key
     useEffect(() => {
         const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
+            if (shouldClosePanelOnKey(event)) {
                 onClose()
             }
         }

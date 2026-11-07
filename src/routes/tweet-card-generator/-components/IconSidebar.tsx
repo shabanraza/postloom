@@ -39,6 +39,8 @@ export function IconSidebar({ activePanel, onPanelChange }: IconSidebarProps) {
                             <TooltipTrigger asChild>
                                 <button
                                     onClick={() => handleClick(item.id)}
+                                    aria-label={item.label}
+                                    aria-pressed={isActive}
                                     className={cn(
                                         "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200",
                                         "hover:bg-accent",

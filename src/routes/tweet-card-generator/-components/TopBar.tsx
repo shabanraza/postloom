@@ -13,7 +13,7 @@ import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from '@/comp
 import { Progress } from '@/components/ui/progress'
 import { ThemeToggle } from './ThemeToggle'
 import { useTweetStudioStore } from '../-state'
-import { EXPORT_SIZES } from '../-constants'
+import { EXPORT_FORMAT_COPY, EXPORT_SIZES } from '../-constants'
 import { exportAsPng, exportAsGif, copyToClipboard } from '../-export'
 import { sizeParams, trackExportComplete, trackExportStart, trackExportError, trackExportSizeChange } from '@/lib/analytics'
 import { PostloomLogo } from '@/components/PostloomLogo'
@@ -243,27 +243,25 @@ export function TopBar() {
                             <div className="p-1 space-y-1">
                                 <Button
                                     variant="ghost"
-                                    className="w-full justify-start gap-3 h-10 rounded-lg hover:bg-accent"
+                                    className="w-full justify-start gap-3 h-12 rounded-lg hover:bg-accent"
                                     onClick={handleExportPng}
                                     disabled={isExporting}
                                 >
                                     <div className="w-6 h-6 rounded bg-emerald-100 flex items-center justify-center text-emerald-600">
                                         <Image className="h-3.5 w-3.5" />
                                     </div>
-                                    <span className="flex-1 text-left font-medium">Download PNG</span>
-                                    <span className="text-xs text-muted-foreground">Still</span>
+                                    <span className="flex flex-1 flex-col items-start text-left leading-tight"><span className="font-medium">{EXPORT_FORMAT_COPY.png.title}</span><span className="text-xs font-normal text-muted-foreground">{EXPORT_FORMAT_COPY.png.hint}</span></span>
                                 </Button>
                                 <Button
                                     variant="ghost"
-                                    className="w-full justify-start gap-3 h-10 rounded-lg hover:bg-accent"
+                                    className="w-full justify-start gap-3 h-12 rounded-lg hover:bg-accent"
                                     onClick={handleExportGif}
                                     disabled={isExporting || !tweet.content.text || (tweet.content.text?.trim() ?? '').length === 0}
                                 >
                                     <div className="w-6 h-6 rounded bg-brand/10 flex items-center justify-center text-brand">
                                         <Film className="h-3.5 w-3.5" />
                                     </div>
-                                    <span className="flex-1 text-left font-medium">Download GIF</span>
-                                    <span className="text-xs text-muted-foreground">Animated</span>
+                                    <span className="flex flex-1 flex-col items-start text-left leading-tight"><span className="font-medium">{EXPORT_FORMAT_COPY.gif.title}</span><span className="text-xs font-normal text-muted-foreground">{EXPORT_FORMAT_COPY.gif.hint}</span></span>
                                 </Button>
 
                                 <DropdownMenuSeparator className="bg-muted my-1" />

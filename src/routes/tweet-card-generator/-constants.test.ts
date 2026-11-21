@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { BRAND_FONT_CHOICES, EXPORT_FORMAT_COPY, brandFontName, isHexColor, textLimitFor } from './-constants'
+import { ANIMATION_DEFAULTS, BRAND_FONT_CHOICES, EXPORT_FORMAT_COPY, brandFontName, isHexColor, textLimitFor } from './-constants'
 
 describe('textLimitFor', () => {
   it('matches each platform\'s post length', () => {
@@ -51,5 +51,11 @@ describe('brand font choices', () => {
   it('names a font from what was picked, so nobody has to type one', () => {
     expect(brandFontName('Georgia', 400)).toBe('Georgia')
     expect(brandFontName('Georgia', 700)).toBe('Georgia Bold')
+  })
+})
+
+describe('ANIMATION_DEFAULTS', () => {
+  it('loops exported GIFs by default', () => {
+    expect(ANIMATION_DEFAULTS.loop).toBe(true)
   })
 })

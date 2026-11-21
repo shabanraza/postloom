@@ -1,5 +1,6 @@
-import { domToPng, domToBlob } from 'modern-screenshot'
+import { domToPng, domToCanvas, createContext, destroyContext, type Context } from 'modern-screenshot'
 import { GIFEncoder, quantize, applyPalette } from 'gifenc'
+import { gifOutputSize, frameIndexes, frameStepFor, samplePalettePixels } from './gif-helpers'
 import { generateFilename, downloadBlob, waitForPaint } from '../-utils'
 
 interface ExportOptions {
@@ -166,21 +167,16 @@ export async function copyToClipboard(
 
 /**
  * Capture an element with typewriter animation as GIF
- * Uses gifenc library - fast, reliable, and bulletproof for any content size
+ * Uses gifenc. One modern-screenshot context is reused for every frame (fonts and images
+ * are embedded once), frames render straight to a canvas at GIF size (max 800px), the
+ * palette comes from a pixel sample, and we yield to the event loop so the tab stays alive.
  */
 export async function exportAsGif(
     element: HTMLElement,
     username: string,
     options: GifOptions
 ): Promise<ExportResult> {
-    const {
-        text,
-        width,
-        height,
-        fps,
-        loop,
-        onProgress
-    } = options
+    const { text, width, height, fps, loop, onProgress } = options
 
     // Find the text element to animate
     const textElement = element.querySelector('[data-tweet-text]') as HTMLElement
@@ -189,195 +185,81 @@ export async function exportAsGif(
     }
 
     // Store original content properly
-    const originalHTML = textElement.innerHTML
+    const originalNodes = Array.from(textElement.childNodes)
+    const yieldToBrowser = () => new Promise<void>((r) => setTimeout(r, 0))
+    let context: Context<HTMLElement> | undefined
 
     try {
-        // Calculate frame timing - use reasonable frame count for smooth animation
-        const frameStep = Math.max(1, Math.floor(text.length / 20)) // ~20 frames for smooth animation
-        const frameDelay = Math.round((1000 / fps) * frameStep) // Delay per frame in ms
+        const out = gifOutputSize(width, height)
+        const frameStep = frameStepFor(text.length) // ~20 frames
+        const frameDelay = Math.round((1000 / fps) * frameStep)
+        const indexes = frameIndexes(text.length, frameStep)
 
-        const frames: { canvas: HTMLCanvasElement; delay: number }[] = []
-
-        // Capture frames efficiently
-        for (let i = 0; i <= text.length; i += frameStep) {
-            const displayText = text.slice(0, i) + (i < text.length ? '|' : '')
-            
-            // Update DOM
-            textElement.innerHTML = ''
-            textElement.textContent = displayText
-            
-            // Wait for render
-            await waitForPaint()
-            await waitForPaint()
-            await new Promise(r => setTimeout(r, 16))
-
-            // Capture frame
-            const blob = await domToBlob(element, {
-                width,
-                height,
-                scale: 1,
-                type: 'image/png',
-                style: {
-                    transform: 'none',
-                    width: `${width}px`,
-                    height: `${height}px`,
-                },
-            })
-
-            // Convert to canvas
-            const img = new Image()
-            const canvas = document.createElement('canvas')
-            canvas.width = width
-            canvas.height = height
-            const ctx = canvas.getContext('2d')!
-
-            await new Promise<void>((resolve, reject) => {
-                const timeout = setTimeout(() => reject(new Error('Image load timeout')), 5000)
-                img.onload = () => {
-                    clearTimeout(timeout)
-                    ctx.drawImage(img, 0, 0, width, height)
-                    // No watermark - high quality export
-                    resolve()
-                }
-                img.onerror = () => {
-                    clearTimeout(timeout)
-                    reject(new Error('Image load failed'))
-                }
-                img.src = URL.createObjectURL(blob)
-            })
-
-            frames.push({ canvas, delay: frameDelay })
-            URL.revokeObjectURL(img.src)
-
-            if (onProgress) {
-                onProgress((i / text.length) * 0.8) // 80% for frame capture
-            }
-        }
-
-        // Final frame (complete text)
-        textElement.innerHTML = ''
-        textElement.textContent = text
-        await waitForPaint()
-        await waitForPaint()
-        await new Promise(r => setTimeout(r, 50))
-
-        const endBlob = await domToBlob(element, {
+        // Created once: re-cloned from the live DOM on every domToCanvas call, so text
+        // changes show up, while fonts/images fetched for it are cached in the context.
+        context = await createContext(element, {
             width,
             height,
-            scale: 1,
-            type: 'image/png',
-            style: {
-                transform: 'none',
-                width: `${width}px`,
-                height: `${height}px`,
-            },
+            scale: out.scale,
+            style: { transform: 'none', width: `${width}px`, height: `${height}px` },
         })
 
-        const endImg = new Image()
-        const endCanvas = document.createElement('canvas')
-        endCanvas.width = width
-        endCanvas.height = height
-        const endCtx = endCanvas.getContext('2d')!
+        const frames: { data: Uint8ClampedArray; delay: number }[] = []
+        let gifWidth = out.width
+        let gifHeight = out.height
 
-        await new Promise<void>((resolve, reject) => {
-            const timeout = setTimeout(() => reject(new Error('End image load timeout')), 5000)
-            endImg.onload = () => {
-                clearTimeout(timeout)
-                endCtx.drawImage(endImg, 0, 0, width, height)
-                // No watermark - high quality export
-                resolve()
-            }
-            endImg.onerror = () => {
-                clearTimeout(timeout)
-                reject(new Error('End image load failed'))
-            }
-            endImg.src = URL.createObjectURL(endBlob)
-        })
+        for (let n = 0; n < indexes.length; n++) {
+            const i = indexes[n]
+            const isLast = n === indexes.length - 1
+            textElement.textContent = isLast ? text : text.slice(0, i) + '|'
 
-        frames.push({ canvas: endCanvas, delay: 1000 }) // 1 second pause at end
-        URL.revokeObjectURL(endImg.src)
+            await waitForPaint()
+            const canvas = await domToCanvas(context)
+            gifWidth = canvas.width
+            gifHeight = canvas.height
+            const data = canvas.getContext('2d')!.getImageData(0, 0, gifWidth, gifHeight).data
+            frames.push({ data, delay: isLast ? 1000 : frameDelay }) // 1s hold on the full text
 
-        // Restore original content
-        textElement.innerHTML = originalHTML
-
-        if (onProgress) {
-            onProgress(0.85) // 85% - starting encoding
+            onProgress?.(((n + 1) / indexes.length) * 0.8) // 80% for frame capture
+            await yieldToBrowser()
         }
 
-        // Use gifenc to encode - it's fast and reliable
-        // Collect all frame image data to create a global palette
-        const allImageData: Uint8ClampedArray[] = []
-        for (const { canvas } of frames) {
-            const ctx = canvas.getContext('2d')!
-            const imageData = ctx.getImageData(0, 0, width, height)
-            allImageData.push(imageData.data)
-        }
+        onProgress?.(0.85)
+        await yieldToBrowser()
 
-        // Combine all frames to create optimal palette
-        const combinedData = new Uint8ClampedArray(allImageData.length * width * height * 4)
-        let offset = 0
-        for (const data of allImageData) {
-            combinedData.set(data, offset)
-            offset += data.length
-        }
+        const palette = quantize(samplePalettePixels(frames.map((f) => f.data)), 256)
+        onProgress?.(0.9)
+        await yieldToBrowser()
 
-        // Create optimized palette (256 colors for GIF) from all frames
-        const palette = quantize(combinedData, 256)
-
-        if (onProgress) {
-            onProgress(0.90) // 90% - palette created
-        }
-
-        // Create GIF encoder
         const gif = GIFEncoder()
-
-        // Encode all frames
         for (let i = 0; i < frames.length; i++) {
-            const { canvas, delay } = frames[i]
-            const ctx = canvas.getContext('2d')!
-            const imageData = ctx.getImageData(0, 0, width, height)
-            
-            // Apply palette to get indexed bitmap
-            const indexed = applyPalette(imageData.data, palette)
-            
-            // Write frame to GIF (delay in milliseconds, first frame sets global palette and repeat)
-            gif.writeFrame(indexed, width, height, {
+            const { data, delay } = frames[i]
+            const indexed = applyPalette(data, palette)
+            gif.writeFrame(indexed, gifWidth, gifHeight, {
                 palette: i === 0 ? palette : undefined, // Global palette on first frame
-                delay: delay, // Delay in milliseconds
-                first: i === 0, // Mark first frame
+                delay,
+                first: i === 0,
                 repeat: i === 0 ? (loop ? 0 : -1) : undefined, // Set repeat on first frame only
             })
-
-            if (onProgress) {
-                onProgress(0.90 + (i / frames.length) * 0.09) // 90-99% encoding frames
-            }
+            onProgress?.(0.9 + ((i + 1) / frames.length) * 0.09)
+            if (i % 4 === 3) await yieldToBrowser()
         }
-
-        // Finish encoding
         gif.finish()
+        onProgress?.(1.0)
 
-        if (onProgress) {
-            onProgress(1.0) // 100% - complete
-        }
-
-        // Get the binary GIF data
         const gifBytes = gif.bytes()
-        
-        // Convert to blob and download
-        // Create a new ArrayBuffer to ensure compatibility
         const buffer = new ArrayBuffer(gifBytes.byteLength)
-        const view = new Uint8Array(buffer)
-        view.set(gifBytes)
+        new Uint8Array(buffer).set(gifBytes)
         const blob = new Blob([buffer], { type: 'image/gif' })
         const filename = generateFilename(username, 'gif')
         downloadBlob(blob, filename)
-        return { filename, width, height, bytes: blob.size }
+        return { filename, width: gifWidth, height: gifHeight, bytes: blob.size }
     } catch (error) {
-        // Restore original content on error
-        if (textElement) {
-            textElement.innerHTML = originalHTML
-        }
         console.error('GIF export failed:', error)
         throw error
+    } finally {
+        // Put back the original nodes (not innerHTML) so React keeps its references
+        textElement.replaceChildren(...originalNodes)
+        if (context) destroyContext(context)
     }
 }

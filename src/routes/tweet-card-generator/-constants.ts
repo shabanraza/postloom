@@ -233,7 +233,7 @@ export const QUICK_PRESETS: QuickPreset[] = [
 export const ANIMATION_DEFAULTS = {
     speed: 50, // chars per second
     delay: 0,
-    loop: false,
+    loop: true,
     showCursor: true,
     fps: 20,
 } as const
